@@ -5,16 +5,16 @@ import com.grahamedgecombe.rs2.model.PlayerDetails;
 
 public interface WorldLoader {
 	
-	public static class LoadResult {
+	public static class LoginResult {
 		
 		private int returnCode;
 		private Player player;
 		
-		public LoadResult(int returnCode) {
+		public LoginResult(int returnCode) {
 			this(returnCode, null);
 		}
 		
-		public LoadResult(int returnCode, Player player) {
+		public LoginResult(int returnCode, Player player) {
 			this.returnCode = returnCode;
 			this.player = player;
 		}
@@ -29,7 +29,8 @@ public interface WorldLoader {
 		
 	}
 	
-	public LoadResult loadPlayer(PlayerDetails pd);
+	public LoginResult checkLogin(PlayerDetails pd);
+	public boolean loadPlayer(Player player);
 	public boolean savePlayer(Player player);
 
 }

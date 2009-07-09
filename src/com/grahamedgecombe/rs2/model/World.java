@@ -4,12 +4,11 @@ import java.util.logging.Logger;
 
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
-import org.apache.mina.core.future.WriteFuture;
 
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.GenericWorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader;
-import com.grahamedgecombe.rs2.WorldLoader.LoadResult;
+import com.grahamedgecombe.rs2.WorldLoader.LoginResult;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
 
@@ -44,18 +43,13 @@ public class World {
 	public void load(final PlayerDetails pd) {
 		engine.getWorkService().submit(new Runnable() {
 			public void run() {
-				LoadResult lr = loader.loadPlayer(pd);
-				PacketBuilder bldr = new PacketBuilder();
-				bldr.put((byte) lr.getReturnCode());
-				if(lr.getReturnCode() == 2) {
-					bldr.put((byte) lr.getPlayer().getRights().toInteger());
-				} else {
-					bldr.put((byte) 0);
-				}
-				bldr.put((byte) 0);
-				WriteFuture wf = pd.getSession().write(bldr.toPacket());
+				LoginResult lr = loader.checkLogin(pd);
 				if(lr.getReturnCode() != 2) {
-					wf.addListener(new IoFutureListener<IoFuture>() {
+					PacketBuilder bldr = new PacketBuilder();
+					bldr.put((byte) lr.getReturnCode());
+					bldr.put((byte) 0);
+					bldr.put((byte) 0);
+					pd.getSession().write(bldr.toPacket()).addListener(new IoFutureListener<IoFuture>() {
 						@Override
 						public void operationComplete(IoFuture future) {
 							future.getSession().close(false);
@@ -63,6 +57,7 @@ public class World {
 					});
 				} else {
 					lr.getPlayer().getSession().setAttribute("player", lr.getPlayer());
+					loader.loadPlayer(lr.getPlayer());
 					engine.pushTask(new SessionLoginTask(lr.getPlayer()));
 				}
 			}
@@ -70,7 +65,16 @@ public class World {
 	}
 
 	public void register(Player player) {
-		logger.info("Registered player : " + player);
+		// do final checks e.g. is player online? is world full?
+		int returnCode = 2;
+		PacketBuilder bldr = new PacketBuilder();
+		bldr.put((byte) returnCode);
+		bldr.put((byte) player.getRights().toInteger());
+		bldr.put((byte) 0);
+		player.getSession().write(bldr.toPacket());
+		if(returnCode == 2) {
+			logger.info("Registered player : " + player);
+		}
 	}
 	
 	public void unregister(Player player) {

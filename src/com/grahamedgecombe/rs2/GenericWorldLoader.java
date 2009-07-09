@@ -6,14 +6,17 @@ import com.grahamedgecombe.rs2.model.PlayerDetails;
 public class GenericWorldLoader implements WorldLoader {
 
 	@Override
-	public LoadResult loadPlayer(PlayerDetails pd) {
-		int code = 2;
-		Player p = new Player(pd);
-		return new LoadResult(code, p);
+	public LoginResult checkLogin(PlayerDetails pd) {
+		return new LoginResult(2, new Player(pd));
 	}
 
 	@Override
 	public boolean savePlayer(Player player) {
+		return true;
+	}
+
+	@Override
+	public boolean loadPlayer(Player player) {
 		return true;
 	}
 
