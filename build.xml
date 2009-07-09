@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<project name="rs2" default="build" basedir=".">
+	<path id="libs">
+		<fileset dir="lib" includes="**.jar"/>
+	</path>
+	<path id="classes">
+		<fileset dir="bin" includes="**.class"/>
+	</path>
+	<target name="init">
+		<mkdir dir="bin"/>
+	</target>
+	<target name="build" depends="init">
+		<javac srcdir="src" classpath="${toString:libs}" destdir="bin"/>
+	</target>
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+	<target name="rebuild" depends="clean,build"/>
+</project>
