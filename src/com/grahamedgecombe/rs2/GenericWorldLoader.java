@@ -8,7 +8,7 @@ public class GenericWorldLoader implements WorldLoader {
 	@Override
 	public LoadResult loadPlayer(PlayerDetails pd) {
 		int code = 2;
-		Player p = new Player(pd.getSession());
+		Player p = new Player(pd);
 		return new LoadResult(code, p);
 	}
 

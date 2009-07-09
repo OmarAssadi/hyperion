@@ -53,7 +53,7 @@ public class GameEngine implements Runnable {
 		while(running) {
 			try {
 				tasks.take().execute(this);
-			} catch (InterruptedException e) {
+			} catch(InterruptedException e) {
 				continue;
 			}
 		}
