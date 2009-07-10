@@ -38,6 +38,7 @@ public class Player extends Entity {
 	private final int uid;
 	private String pass;
 	private Rights rights = Rights.PLAYER;
+	private boolean active = false;
 	
 	public Player(PlayerDetails details) {
 		this.session = details.getSession();
@@ -46,6 +47,14 @@ public class Player extends Entity {
 		this.name = details.getName();
 		this.pass = details.getPassword();
 		this.uid = details.getUID();
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	public boolean isActive() {
+		return active;
 	}
 	
 	public ActionSender getActionSender() {

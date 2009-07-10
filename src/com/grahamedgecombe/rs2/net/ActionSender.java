@@ -12,6 +12,7 @@ public class ActionSender {
 	}
 	
 	public void sendLogin() {
+		player.setActive(true);
 		sendMessage("Welcome to RuneScape.");
 	}
 	
