@@ -7,9 +7,9 @@ import org.apache.mina.filter.codec.ProtocolEncoder;
 
 public class RS2CodecFactory implements ProtocolCodecFactory {
 	
-	private static final RS2LoginDecoder loginDecoder = new RS2LoginDecoder();
-	private static final RS2Decoder decoder = new RS2Decoder();
-	private static final RS2Encoder encoder = new RS2Encoder();
+	private static final RS2LoginDecoder LOGIN_DECODER = new RS2LoginDecoder();
+	private static final RS2Decoder DECODER = new RS2Decoder();
+	private static final RS2Encoder ENCODER = new RS2Encoder();
 	
 	public static final RS2CodecFactory LOGIN = new RS2CodecFactory(false);
 	public static final RS2CodecFactory GAME = new RS2CodecFactory(true);
@@ -22,12 +22,12 @@ public class RS2CodecFactory implements ProtocolCodecFactory {
 
 	@Override
 	public ProtocolDecoder getDecoder(IoSession session) throws Exception {
-		return loginComplete ? decoder : loginDecoder;
+		return loginComplete ? DECODER : LOGIN_DECODER;
 	}
 
 	@Override
 	public ProtocolEncoder getEncoder(IoSession session) throws Exception {
-		return encoder;
+		return ENCODER;
 	}
 
 }

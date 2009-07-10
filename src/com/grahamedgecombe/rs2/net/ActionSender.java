@@ -14,22 +14,25 @@ public class ActionSender {
 		this.player = player;
 	}
 	
-	public void sendLogin() {
+	public ActionSender sendLogin() {
 		player.setActive(true);
 		sendMessage("Welcome to RuneScape.");
+		return this;
 	}
 	
-	public void sendMessage(String message) {
+	public ActionSender sendMessage(String message) {
 		player.getSession().write(new PacketBuilder(253, Type.VARIABLE).putRS2String(message).toPacket());
+		return this;
 	}
 	
-	public void sendLogout() {
+	public ActionSender sendLogout() {
 		player.getSession().write(new PacketBuilder(109).toPacket()).addListener(new IoFutureListener<IoFuture>() {
 			@Override
 			public void operationComplete(IoFuture future) {
 				future.getSession().close(false);
 			}
 		});
+		return this;
 	}
 
 }
