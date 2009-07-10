@@ -5,6 +5,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 
+import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.RS2CodecFactory;
 import com.grahamedgecombe.rs2.task.SessionClosedTask;
 import com.grahamedgecombe.rs2.task.SessionOpenedTask;
@@ -24,7 +25,7 @@ public class ConnectionHandler implements IoHandler {
 
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
-		
+		server.getEngine().pushTask(new SessionMessageTask(session, (Packet) message));
 	}
 
 	@Override
