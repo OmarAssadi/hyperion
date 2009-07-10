@@ -9,7 +9,10 @@ public class RS2Decoder extends CumulativeProtocolDecoder {
 
 	@Override
 	protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
-		return false;
+		synchronized(session) {
+			
+			return false;
+		}
 	}
 
 }

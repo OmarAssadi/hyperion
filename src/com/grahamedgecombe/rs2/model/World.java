@@ -64,14 +64,19 @@ public class World {
 		});
 	}
 
-	public void register(Player player) {
+	public void register(final Player player) {
 		// do final checks e.g. is player online? is world full?
 		int returnCode = 2;
 		PacketBuilder bldr = new PacketBuilder();
 		bldr.put((byte) returnCode);
 		bldr.put((byte) player.getRights().toInteger());
 		bldr.put((byte) 0);
-		player.getSession().write(bldr.toPacket());
+		player.getSession().write(bldr.toPacket()).addListener(new IoFutureListener<IoFuture>() {
+			@Override
+			public void operationComplete(IoFuture future) {
+				player.getActionSender().sendLogin();
+			}
+		});
 		if(returnCode == 2) {
 			logger.info("Registered player : " + player);
 		}

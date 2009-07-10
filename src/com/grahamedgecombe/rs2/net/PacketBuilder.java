@@ -54,4 +54,10 @@ public class PacketBuilder {
 		return new Packet(opcode, type, payload.flip().asReadOnlyBuffer());
 	}
 
+	public PacketBuilder putRS2String(String string) {
+		payload.put(string.getBytes());
+		payload.put((byte) 10);
+		return this;
+	}
+
 }

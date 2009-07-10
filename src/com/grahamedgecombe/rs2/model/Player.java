@@ -2,6 +2,7 @@ package com.grahamedgecombe.rs2.model;
 
 import org.apache.mina.core.session.IoSession;
 
+import com.grahamedgecombe.rs2.net.ActionSender;
 import com.grahamedgecombe.rs2.net.ISAACCipher;
 
 public class Player extends Entity {
@@ -22,12 +23,20 @@ public class Player extends Entity {
 		}
 	}
 	
+	/*
+	 * Attributes specific to our session.
+	 */
 	private final IoSession session;
 	private final ISAACCipher inCipher;
 	private final ISAACCipher outCipher;
+	private final ActionSender actionSender = new ActionSender(this);
+	
+	/*
+	 * Core login details.
+	 */
 	private final String name;
-	private String pass;
 	private final int uid;
+	private String pass;
 	private Rights rights = Rights.PLAYER;
 	
 	public Player(PlayerDetails details) {
@@ -37,6 +46,10 @@ public class Player extends Entity {
 		this.name = details.getName();
 		this.pass = details.getPassword();
 		this.uid = details.getUID();
+	}
+	
+	public ActionSender getActionSender() {
+		return actionSender;
 	}
 	
 	public ISAACCipher getInCipher() {
