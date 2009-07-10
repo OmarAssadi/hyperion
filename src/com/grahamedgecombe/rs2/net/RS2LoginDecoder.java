@@ -11,7 +11,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
 import com.grahamedgecombe.rs2.model.PlayerDetails;
 import com.grahamedgecombe.rs2.model.World;
-import com.grahamedgecombe.util.IoBufferUtils;
+import com.grahamedgecombe.rs2.util.IoBufferUtils;
 
 public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 

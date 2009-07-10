@@ -1,4 +1,4 @@
-package com.grahamedgecombe.util;
+package com.grahamedgecombe.rs2.util;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
