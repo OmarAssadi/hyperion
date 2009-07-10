@@ -4,7 +4,7 @@ import org.apache.mina.core.session.IoSession;
 
 import com.grahamedgecombe.rs2.net.ISAACCipher;
 
-public class Player {
+public class Player extends Entity {
 	
 	public enum Rights {
 		PLAYER(0),
