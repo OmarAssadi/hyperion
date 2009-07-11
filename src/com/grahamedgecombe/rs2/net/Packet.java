@@ -44,6 +44,10 @@ public class Packet {
 		return payload.get();
 	}
 	
+	public void get(byte[] b) {
+		payload.get(b);
+	}
+	
 	public byte getByte() {
 		return get();
 	}
