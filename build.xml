@@ -17,12 +17,12 @@
 		<delete dir="bin"/>
 	</target>
 	<target name="test" depends="build">
-	    <junit haltonfailure="true">
+	    <junit haltonfailure="true" printsummary="yes">
 	        <classpath>
 	            <pathelement path="${toString:libs}"/>
 	            <pathelement path="bin"/>
 	        </classpath>
-	        <formatter type="plain"/>
+	        <formatter type="plain" usefile="false"/>
 	        <batchtest>
 	            <fileset dir="bin">
 	                <include name="**/*Test*.class"/>
