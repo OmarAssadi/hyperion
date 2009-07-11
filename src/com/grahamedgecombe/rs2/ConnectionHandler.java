@@ -48,6 +48,7 @@ public class ConnectionHandler implements IoHandler {
 
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
+		session.setAttribute("remote", session.getRemoteAddress());
 		session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(RS2CodecFactory.LOGIN));
 		engine.pushTask(new SessionOpenedTask(session));
 	}

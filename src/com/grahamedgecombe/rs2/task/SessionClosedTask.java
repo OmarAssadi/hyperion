@@ -1,5 +1,6 @@
 package com.grahamedgecombe.rs2.task;
 
+import java.net.SocketAddress;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.session.IoSession;
@@ -19,7 +20,8 @@ public class SessionClosedTask implements Task {
 
 	@Override
 	public void execute(GameEngine context) {
-		logger.info("Session closed : " + session.getRemoteAddress());
+		SocketAddress address = (SocketAddress) session.getAttribute("remote");
+		logger.info("Session closed : " + address);
 		if(session.containsAttribute("player")) {
 			Player p = (Player) session.getAttribute("player");
 			World.getWorld().unregister(p);
