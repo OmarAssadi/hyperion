@@ -9,6 +9,7 @@ import com.grahamedgecombe.rs2.model.Entity;
 public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> {
 	
 	private Entity[] entities;
+	private int size = 0;
 	
 	public EntityList(int capacity) {
 		entities = new Entity[capacity+1]; // do not use idx 0
@@ -42,6 +43,7 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 		}
 		entities[id] = arg0;
 		arg0.setIndex(id);
+		size++;
 		return true;
 	}
 
@@ -61,6 +63,7 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 		for(int i = 1; i < entities.length; i++) {
 			entities[i] = null;
 		}
+		size = 0;
 	}
 
 	@Override
@@ -99,6 +102,7 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 		for(int i = 1; i < entities.length; i++) {
 			if(entities[i] == arg0) {
 				entities[i] = null;
+				size--;
 				return true;
 			}
 		}
@@ -123,6 +127,7 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 			if(entities[i] != null) {
 				if(!arg0.contains(entities[i])) {
 					entities[i] = null;
+					size--;
 					changed = true;
 				}
 			}
@@ -132,12 +137,6 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 
 	@Override
 	public int size() {
-		int size = 0;
-		for(int i = 1; i < entities.length; i++) {
-			if(entities[i] != null) {
-				size++;
-			}
-		}
 		return size;
 	}
 
