@@ -14,6 +14,17 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 		entities = new Entity[capacity+1]; // do not use idx 0
 	}
 	
+	public Entity get(int index) {
+		if(index < 0 || index >= entities.length) {
+			throw new IndexOutOfBoundsException();
+		}
+		return entities[index];
+	}
+	
+	public int indexOf(Entity entity) {
+		return entity.getIndex();
+	}
+	
 	private int getNextId() {
 		for(int i = 1; i < entities.length; i++) {
 			if(entities[i] == null) {

@@ -76,6 +76,26 @@ public class TestEntityList {
 		list.addAll(stubs);
 		assertTrue(list.containsAll(stubs));
 	}
+	
+	@Test
+	public void testGet() {
+		EntityStub stub1 = new EntityStub();
+		EntityStub stub2 = new EntityStub();
+		list.add(stub1);
+		list.add(stub2);
+		assertEquals(stub1, list.get(1));
+		assertEquals(stub2, list.get(2));
+	}
+	
+	@Test
+	public void testIndexOf() {
+		EntityStub stub1 = new EntityStub();
+		EntityStub stub2 = new EntityStub();
+		list.add(stub1);
+		list.add(stub2);
+		assertEquals(1, list.indexOf(stub1));
+		assertEquals(2, list.indexOf(stub2));
+	}
 
 	@Test
 	public void testIsEmpty() {
