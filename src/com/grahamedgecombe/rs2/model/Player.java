@@ -42,6 +42,12 @@ public class Player extends Entity {
 	private Rights rights = Rights.PLAYER;
 	private boolean members = true;
 	
+	/*
+	 * Attributes.
+	 */
+	private Appearance appearance = new Appearance();
+	private Equipment equipment = new Equipment();
+	
 	public Player(PlayerDetails details) {
 		this.session = details.getSession();
 		this.inCipher = details.getInCipher();
@@ -51,6 +57,14 @@ public class Player extends Entity {
 		this.uid = details.getUID();
 		
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
+	
+	public Appearance getAppearance() {
+		return appearance;
+	}
+	
+	public Equipment getEquipment() {
+		return equipment;
 	}
 	
 	public void setLastKnownRegion(Location lastKnownRegion) {
