@@ -4,6 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
 
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.util.BlockingExecutorService;
@@ -11,10 +12,15 @@ import com.grahamedgecombe.util.BlockingExecutorService;
 public class GameEngine implements Runnable {
 	
 	private final BlockingQueue<Task> tasks = new LinkedBlockingQueue<Task>();
+	private final ScheduledExecutorService logicService = Executors.newScheduledThreadPool(1);
 	private final BlockingExecutorService taskService = new BlockingExecutorService(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
 	private final ExecutorService workService = Executors.newSingleThreadExecutor();
 	private boolean running = false;
 	private Thread thread;
+	
+	public ScheduledExecutorService getLogicService() {
+		return logicService;
+	}
 	
 	public ExecutorService getWorkService() {
 		return workService;
@@ -52,7 +58,13 @@ public class GameEngine implements Runnable {
 	public void run() {
 		while(running) {
 			try {
-				tasks.take().execute(this);
+				final Task task = tasks.take();
+				logicService.submit(new Runnable() {
+					@Override
+					public void run() {
+						task.execute(GameEngine.this);
+					}
+				});
 			} catch(InterruptedException e) {
 				continue;
 			}

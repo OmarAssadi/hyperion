@@ -10,6 +10,9 @@ import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.GenericWorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader.LoginResult;
+import com.grahamedgecombe.rs2.event.Event;
+import com.grahamedgecombe.rs2.event.EventManager;
+import com.grahamedgecombe.rs2.event.UpdateEvent;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
 import com.grahamedgecombe.rs2.util.EntityList;
@@ -24,6 +27,7 @@ public class World {
 	}
 
 	private GameEngine engine;
+	private EventManager eventManager;
 	private WorldLoader loader = new GenericWorldLoader();
 	private EntityList<Player> players = new EntityList<Player>(Constants.MAX_PLAYERS);
 	
@@ -32,7 +36,17 @@ public class World {
 			throw new IllegalStateException("The world has already been initialized.");
 		} else {
 			this.engine = engine;
+			this.eventManager = new EventManager(engine);
+			this.registerEvents();
 		}
+	}
+	
+	public void registerEvents() {
+		submit(new UpdateEvent());
+	}
+	
+	public void submit(Event event) {
+		this.eventManager.submit(event);
 	}
 	
 	public WorldLoader getWorldLoader() {
@@ -95,6 +109,10 @@ public class World {
 		if(returnCode == 2) {
 			logger.info("Registered player : " + player + " [online=" + players.size() + "]");
 		}
+	}
+	
+	public EntityList<Player> getPlayers() {
+		return players;
 	}
 	
 	public boolean isPlayerOnline(String name) {
