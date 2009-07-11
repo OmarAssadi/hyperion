@@ -39,5 +39,33 @@ public class Packet {
 	public int getLength() {
 		return payload.limit();
 	}
+	
+	public byte get() {
+		return payload.get();
+	}
+	
+	public byte getByte() {
+		return get();
+	}
+	
+	public int getUnsignedByte() {
+		return payload.getUnsigned();
+	}
+	
+	public short getShort() {
+		return payload.getShort();
+	}
+	
+	public int getUnsignedShort() {
+		return payload.getUnsignedShort();
+	}
+	
+	public int getInt() {
+		return payload.getInt();
+	}
+	
+	public long getLong() {
+		return payload.getLong();
+	}
 
 }
