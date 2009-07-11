@@ -9,11 +9,11 @@ import java.util.concurrent.ExecutionException;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.util.BlockingExecutorService;
 
-public class ParalellTask implements Task {
+public class ParallelTask implements Task {
 	
 	private Collection<Task> tasks;
 	
-	public ParalellTask(Task... tasks) {
+	public ParallelTask(Task... tasks) {
 		List<Task> taskList = new ArrayList<Task>();
 		for(Task task : tasks) {
 			taskList.add(task);
