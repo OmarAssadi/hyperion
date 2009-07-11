@@ -27,7 +27,7 @@ public class BlockingExecutorService implements ExecutorService {
 			}
 			try {
 				pendingTasks.take().get();
-			} catch (InterruptedException e) {
+			} catch(InterruptedException e) {
 				continue;
 			}
 		}
