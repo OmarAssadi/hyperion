@@ -13,7 +13,7 @@ public class UpdateTask implements Task {
 
 	@Override
 	public void execute(GameEngine context) {
-		
+		player.getUpdateFlags().reset();
 	}
 
 }

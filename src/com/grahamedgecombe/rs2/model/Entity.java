@@ -6,6 +6,7 @@ public abstract class Entity {
 	
 	private int index;
 	private Location location = DEFAULT_LOCATION;
+	private UpdateFlags updateFlags = new UpdateFlags();
 	
 	public void setIndex(int index) {
 		this.index = index;
@@ -21,6 +22,10 @@ public abstract class Entity {
 	
 	public Location getLocation() {
 		return location;
+	}
+	
+	public UpdateFlags getUpdateFlags() {
+		return updateFlags;
 	}
 
 }
