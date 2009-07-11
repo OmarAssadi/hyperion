@@ -89,15 +89,17 @@ public class PacketBuilder {
 		return payload.position() == 0;
 	}
 
-	public void startBitAccess() {
+	public PacketBuilder startBitAccess() {
 		bitPosition = payload.position() * 8;
+		return this;
 	}
 	
-	public void finishBitAccess() {
+	public PacketBuilder finishBitAccess() {
 		payload.position((bitPosition + 7) / 8);
+		return this;
 	}
 
-	public void putBits(int numBits, int value) {
+	public PacketBuilder putBits(int numBits, int value) {
 		if(!payload.hasArray()) {
 			throw new UnsupportedOperationException("The IoBuffer implementation must support array() for bit usage.");
 		}
@@ -125,10 +127,17 @@ public class PacketBuilder {
 			buffer[bytePos] &= ~(BIT_MASK_OUT[numBits]<<(bitOffset - numBits));
 			buffer[bytePos] |= (value & BIT_MASK_OUT[numBits]) << (bitOffset - numBits);
 		}
+		return this;
 	}
 
-	public void put(IoBuffer buf) {
+	public PacketBuilder put(IoBuffer buf) {
 		payload.put(buf);
+		return this;
+	}
+
+	public PacketBuilder putByteC(int val) {
+		put((byte) (-val));
+		return this;
 	}
 
 }

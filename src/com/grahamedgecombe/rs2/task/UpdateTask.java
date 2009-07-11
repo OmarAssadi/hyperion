@@ -6,8 +6,10 @@ import com.grahamedgecombe.rs2.Constants;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
+import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
 import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
+import com.grahamedgecombe.rs2.util.NameUtils;
 
 public class UpdateTask implements Task {
 	
@@ -19,15 +21,16 @@ public class UpdateTask implements Task {
 
 	@Override
 	public void execute(GameEngine context) {
+		PacketBuilder updateBlock = new PacketBuilder();
+		
 		PacketBuilder packet = new PacketBuilder(81, Packet.Type.VARIABLE_SHORT);
 		packet.startBitAccess();
 		
 		updateThisPlayerMovement(packet);
-		updatePlayer(packet, player);
+		updatePlayer(updateBlock, player);
 		
 		packet.putBits(8, player.getLocalEntities().size());
 		
-		PacketBuilder updateBlock = new PacketBuilder();
 		for(Iterator<Player> it$ = player.getLocalEntities().iterator(); it$.hasNext();) {
 			Player otherPlayer = it$.next();
 			if(otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
@@ -60,6 +63,10 @@ public class UpdateTask implements Task {
 		}
 		int mask = 0;
 		
+		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE)) {
+			mask |= 0x10;
+		}
+		
 		if(mask >= 0x100) {
 			mask |= 0x40;
 			packet.put((byte) (mask & 0xFF));
@@ -67,6 +74,52 @@ public class UpdateTask implements Task {
 		} else {
 			packet.put((byte) (mask));
 		}
+		
+		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE)) {
+			appendPlayerAppearance(packet, otherPlayer);
+		}
+	}
+	
+	public void appendPlayerAppearance(PacketBuilder packet, Player otherPlayer) {
+		PacketBuilder playerProps = new PacketBuilder();
+		playerProps.put((byte) 0); // gender
+		playerProps.put((byte) 0); // skull icon
+		
+		playerProps.put((byte) 0); // hat
+		playerProps.put((byte) 0); // cape
+		playerProps.put((byte) 0); // amulet
+		playerProps.put((byte) 0); // weapon
+		playerProps.putShort((short) 0x100 + 19); // chest
+		playerProps.putShort((short) 0x100 + 29); // shield
+		playerProps.put((byte) 0); // chest
+		playerProps.putShort((short) 0x100 + 39); // legs
+		playerProps.putShort((short) 0x100 + 3); // head
+		playerProps.putShort((short) 0x100 + 35); // hands
+		playerProps.putShort((short) 0x100 + 44); // feet
+		playerProps.putShort((short) 0x100 + 0); // beard
+		
+		playerProps.put((byte) 7); // hairc
+		playerProps.put((byte) 8); // torsoc
+		playerProps.put((byte) 9); // legc
+		playerProps.put((byte) 5); // feetc
+		playerProps.put((byte) 0); // skinc
+		
+		playerProps.putShort((short) 0x328); // stand
+		playerProps.putShort((short) 0x337); // stand turn
+		playerProps.putShort((short) 0x333); // walk
+		playerProps.putShort((short) 0x334); // turn 180
+		playerProps.putShort((short) 0x335); // turn 90 cw
+		playerProps.putShort((short) 0x336); // turn 90 ccw
+		playerProps.putShort((short) 0x338); // run
+		
+		playerProps.putLong(NameUtils.nameToLong(otherPlayer.getName()));
+		playerProps.put((byte) 3); // combat level
+		playerProps.putShort(0);
+		
+		Packet propsPacket = playerProps.toPacket();
+		
+		packet.putByteC(propsPacket.getLength());
+		packet.put(propsPacket.getPayload());
 	}
 
 	public void updateThisPlayerMovement(PacketBuilder packet) {

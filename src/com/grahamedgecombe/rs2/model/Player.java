@@ -2,6 +2,7 @@ package com.grahamedgecombe.rs2.model;
 
 import org.apache.mina.core.session.IoSession;
 
+import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
 import com.grahamedgecombe.rs2.net.ActionSender;
 import com.grahamedgecombe.rs2.net.ISAACCipher;
 
@@ -48,6 +49,8 @@ public class Player extends Entity {
 		this.name = details.getName();
 		this.pass = details.getPassword();
 		this.uid = details.getUID();
+		
+		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 	
 	public void setLastKnownRegion(Location lastKnownRegion) {
