@@ -19,7 +19,14 @@ public class PacketManager {
 		/*
 		 * Set handlers.
 		 */
+		// keep alive
 		packetHandlers[0] = new QuietPacketHandler();
+		// region load
+		packetHandlers[121] = new QuietPacketHandler();
+		// click
+		packetHandlers[241] = new QuietPacketHandler();
+		// action button
+		packetHandlers[185] = new ActionButtonPacketHandler();
 		
 		/*
 		 * Set default handlers.
