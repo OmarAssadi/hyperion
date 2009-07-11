@@ -40,8 +40,8 @@ public class Constants {
 		0, 0, 6, 6, 0, 0, 0            //250
 	};
 
-	public static final int MAX_PLAYERS = 2048;
+	public static final int MAX_PLAYERS = 2000;
 	
-	public static final int MAX_NPCS = 32768;
+	public static final int MAX_NPCS = 32000;
 
 }

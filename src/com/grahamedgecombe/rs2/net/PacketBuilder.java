@@ -77,4 +77,24 @@ public class PacketBuilder {
 		return this;
 	}
 
+	public boolean isEmpty() {
+		return payload.position() == 0;
+	}
+
+	public void startBitAccess() {
+		
+	}
+	
+	public void finishBitAccess() {
+		
+	}
+
+	public void putBits(int numBits, int value) {
+		
+	}
+
+	public void put(IoBuffer buf) {
+		payload.put(buf);
+	}
+
 }

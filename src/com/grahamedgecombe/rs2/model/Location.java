@@ -42,5 +42,13 @@ public class Location {
 	public int getRegionY() {
 		return y >> 3;
 	}
+	
+	public boolean isWithinDistance(Location other) {
+		if(z != other.z) {
+			return false;
+		}
+		int deltaX = other.x - x, deltaY = other.y - y;
+		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+	}
 
 }
