@@ -8,6 +8,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.RS2CodecFactory;
 import com.grahamedgecombe.rs2.task.SessionClosedTask;
+import com.grahamedgecombe.rs2.task.SessionMessageTask;
 import com.grahamedgecombe.rs2.task.SessionOpenedTask;
 
 public class ConnectionHandler implements IoHandler {

@@ -1,10 +1,10 @@
-package com.grahamedgecombe.rs2;
+package com.grahamedgecombe.rs2.task;
 
 import org.apache.mina.core.session.IoSession;
 
+import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.PacketManager;
-import com.grahamedgecombe.rs2.task.Task;
 
 public class SessionMessageTask implements Task {
 	
