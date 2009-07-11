@@ -11,6 +11,8 @@ public class Constants {
 		},
 	};
 	
+	public static final byte SERVER_DIRECTION_TO_CLIENT[] = new byte[]{ 1, 2, 4, 7, 6, 5, 3, 0 };
+	
 	public static final int PACKET_SIZES[] = {
 		0, 0, 0, 1, -1, 0, 0, 0, 0, 0, //0
 		0, 0, 0, 0, 8, 0, 6, 2, 2, 0,  //10

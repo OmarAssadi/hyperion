@@ -6,9 +6,17 @@ import com.grahamedgecombe.rs2.net.Packet.Type;
 
 public class PacketBuilder {
 	
+	public static final int[] BIT_MASK_OUT = new int[32];
+	static {
+		for(int i = 0; i < BIT_MASK_OUT.length; i++) {
+			BIT_MASK_OUT[i] = (1 << i) - 1;
+		}
+	}
+	
 	private int opcode;
 	private Type type;
 	private IoBuffer payload = IoBuffer.allocate(16);
+	private int bitPosition;
 	
 	public PacketBuilder() {
 		this(-1);
@@ -82,15 +90,41 @@ public class PacketBuilder {
 	}
 
 	public void startBitAccess() {
-		
+		bitPosition = payload.position() * 8;
 	}
 	
 	public void finishBitAccess() {
-		
+		payload.position((bitPosition + 7) / 8);
 	}
 
 	public void putBits(int numBits, int value) {
+		if(!payload.hasArray()) {
+			throw new UnsupportedOperationException("The IoBuffer implementation must support array() for bit usage.");
+		}
 		
+		int bytes = (int) Math.ceil((double) numBits / 8D);
+		if(payload.remaining() < bytes) {
+			payload.expand(payload.remaining() - bytes);
+		}
+		
+		byte[] buffer = payload.array();
+		
+		int bytePos = bitPosition >> 3;
+		int bitOffset = 8 - (bitPosition & 7);
+		bitPosition += numBits;
+		
+		for(; numBits > bitOffset; bitOffset = 8) {
+			buffer[bytePos] &= ~BIT_MASK_OUT[bitOffset];
+			buffer[bytePos++] |= (value >> (numBits-bitOffset)) & BIT_MASK_OUT[bitOffset];
+			numBits -= bitOffset;
+		}
+		if(numBits == bitOffset) {
+			buffer[bytePos] &= ~BIT_MASK_OUT[bitOffset];
+			buffer[bytePos] |= value & BIT_MASK_OUT[bitOffset];
+		} else {
+			buffer[bytePos] &= ~(BIT_MASK_OUT[numBits]<<(bitOffset - numBits));
+			buffer[bytePos] |= (value & BIT_MASK_OUT[numBits]) << (bitOffset - numBits);
+		}
 	}
 
 	public void put(IoBuffer buf) {

@@ -20,7 +20,7 @@ public class UpdateFlags {
 		}
 	}
 	
-	public boolean updateRequired() {
+	public boolean isUpdateRequired() {
 		return !flags.isEmpty();
 	}
 	

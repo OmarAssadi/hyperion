@@ -9,8 +9,22 @@ public abstract class Entity {
 	
 	private int index;
 	private Location location = DEFAULT_LOCATION;
-	private UpdateFlags updateFlags = new UpdateFlags();
-	private List<Player> localPlayers = new LinkedList<Player>();
+	private final UpdateFlags updateFlags = new UpdateFlags();
+	private final List<Player> localPlayers = new LinkedList<Player>();
+	private boolean teleporting = true;
+	private final Sprites sprites = new Sprites();
+	
+	public Sprites getSprites() {
+		return sprites;
+	}
+	
+	public boolean isTeleporting() {
+		return teleporting;
+	}
+	
+	public void setTeleporting(boolean teleporting) {
+		this.teleporting = teleporting;
+	}
 	
 	public List<Player> getLocalEntities() {
 		return localPlayers;
