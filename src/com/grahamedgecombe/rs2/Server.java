@@ -28,7 +28,7 @@ public class Server {
 	public Server() {
 		logger.info("Starting...");
 		World.getWorld().init(engine);
-		acceptor.setHandler(new ConnectionHandler(this));
+		acceptor.setHandler(new ConnectionHandler());
 	}
 	
 	public Server bind(int port) throws IOException {
@@ -40,10 +40,6 @@ public class Server {
 	public void start() {
 		engine.start();
 		logger.info("Ready");
-	}
-	
-	public GameEngine getEngine() {
-		return engine;
 	}
 
 }
