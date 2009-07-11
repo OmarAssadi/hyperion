@@ -35,8 +35,8 @@ public class PacketBuilder {
 		return this;
 	}
 	
-	public PacketBuilder putShort(short s) {
-		payload.putShort(s);
+	public PacketBuilder putShort(int s) {
+		payload.putShort((short) s);
 		return this;
 	}
 	
@@ -57,6 +57,23 @@ public class PacketBuilder {
 	public PacketBuilder putRS2String(String string) {
 		payload.put(string.getBytes());
 		payload.put((byte) 10);
+		return this;
+	}
+
+	public PacketBuilder putShortA(int val) {
+		payload.put((byte) (val >> 8));
+		payload.put((byte) (val + 128));
+		return this;
+	}
+
+	public PacketBuilder putByteA(int val) {
+		payload.put((byte) (val + 128));
+		return this;
+	}
+
+	public PacketBuilder putLEShortA(int val) {
+		payload.put((byte) (val + 128));
+		payload.put((byte) (val >> 8));
 		return this;
 	}
 

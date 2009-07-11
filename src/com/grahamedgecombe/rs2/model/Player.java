@@ -30,6 +30,7 @@ public class Player extends Entity {
 	private final ISAACCipher inCipher;
 	private final ISAACCipher outCipher;
 	private final ActionSender actionSender = new ActionSender(this);
+	private Location lastKnownRegion;
 	
 	/*
 	 * Core login details.
@@ -38,6 +39,7 @@ public class Player extends Entity {
 	private final int uid;
 	private String pass;
 	private Rights rights = Rights.PLAYER;
+	private boolean members = true;
 	private boolean active = false;
 	
 	public Player(PlayerDetails details) {
@@ -47,6 +49,14 @@ public class Player extends Entity {
 		this.name = details.getName();
 		this.pass = details.getPassword();
 		this.uid = details.getUID();
+	}
+	
+	public void setLastKnownRegion(Location lastKnownRegion) {
+		this.lastKnownRegion = lastKnownRegion;
+	}
+	
+	public Location getLastKnownRegion() {
+		return lastKnownRegion;
 	}
 	
 	public void setActive(boolean active) {
@@ -95,6 +105,14 @@ public class Player extends Entity {
 
 	public Rights getRights() {
 		return rights;
+	}
+
+	public boolean isMembers() {
+		return members;
+	}
+	
+	public void setMembers(boolean members) {
+		this.members = members;
 	}
 
 }
