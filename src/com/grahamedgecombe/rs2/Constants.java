@@ -2,6 +2,15 @@ package com.grahamedgecombe.rs2;
 
 public class Constants {
 	
+	public static final int SIDEBAR_INTERFACES[][] = new int[][] {
+		new int[] {
+			1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 0
+		},
+		new int[] {
+			3917, 638, 3213, 1644, 5608, 1151, 5065, 5715, 2449, 4445, 147, 6299, 2423
+		},
+	};
+	
 	public static final int PACKET_SIZES[] = {
 		0, 0, 0, 1, -1, 0, 0, 0, 0, 0, //0
 		0, 0, 0, 0, 8, 0, 6, 2, 2, 0,  //10
@@ -30,5 +39,9 @@ public class Constants {
 		0, 4, 0, 0, 0, 0, -1, 0, -1, 4,//240
 		0, 0, 6, 6, 0, 0, 0            //250
 	};
+
+	public static final int MAX_PLAYERS = 2048;
+	
+	public static final int MAX_NPCS = 32768;
 
 }

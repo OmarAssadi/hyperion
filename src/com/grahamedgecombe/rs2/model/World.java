@@ -5,12 +5,14 @@ import java.util.logging.Logger;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 
+import com.grahamedgecombe.rs2.Constants;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.GenericWorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader.LoginResult;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
+import com.grahamedgecombe.rs2.util.EntityList;
 
 public class World {
 	
@@ -23,6 +25,7 @@ public class World {
 
 	private GameEngine engine;
 	private WorldLoader loader = new GenericWorldLoader();
+	private EntityList<Player> players = new EntityList<Player>(Constants.MAX_PLAYERS);
 	
 	public void init(GameEngine engine) {
 		if(this.engine != null) {
@@ -39,7 +42,7 @@ public class World {
 	public GameEngine getEngine() {
 		return engine;
 	}
-
+	
 	public void load(final PlayerDetails pd) {
 		engine.getWorkService().submit(new Runnable() {
 			public void run() {
@@ -67,6 +70,14 @@ public class World {
 	public void register(final Player player) {
 		// do final checks e.g. is player online? is world full?
 		int returnCode = 2;
+		if(isPlayerOnline(player.getName())) {
+			returnCode = 5;
+		}
+		if(!players.add(player)) {
+			returnCode = 7;
+			logger.info("Could not register player : " + player + " [world full]");
+		}
+		final int fReturnCode = returnCode;
 		PacketBuilder bldr = new PacketBuilder();
 		bldr.put((byte) returnCode);
 		bldr.put((byte) player.getRights().toInteger());
@@ -74,17 +85,31 @@ public class World {
 		player.getSession().write(bldr.toPacket()).addListener(new IoFutureListener<IoFuture>() {
 			@Override
 			public void operationComplete(IoFuture future) {
-				player.getActionSender().sendLogin();
+				if(fReturnCode != 2) {
+					player.getSession().close(false);
+				} else {
+					player.getActionSender().sendLogin();
+				}
 			}
 		});
 		if(returnCode == 2) {
-			logger.info("Registered player : " + player);
+			logger.info("Registered player : " + player + " [online=" + players.size() + "]");
 		}
 	}
 	
+	public boolean isPlayerOnline(String name) {
+		for(Player player : players) {
+			if(player.getName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void unregister(Player player) {
 		player.getSession().close(false);
-		logger.info("Unregistered player : " + player);
+		players.remove(player);
+		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
 	}
 	
 }

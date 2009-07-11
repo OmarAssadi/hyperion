@@ -40,7 +40,6 @@ public class Player extends Entity {
 	private String pass;
 	private Rights rights = Rights.PLAYER;
 	private boolean members = true;
-	private boolean active = false;
 	
 	public Player(PlayerDetails details) {
 		this.session = details.getSession();
@@ -57,14 +56,6 @@ public class Player extends Entity {
 	
 	public Location getLastKnownRegion() {
 		return lastKnownRegion;
-	}
-	
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
-	public boolean isActive() {
-		return active;
 	}
 	
 	public ActionSender getActionSender() {
