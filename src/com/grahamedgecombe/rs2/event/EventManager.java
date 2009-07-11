@@ -16,9 +16,9 @@ public class EventManager {
 		engine.getLogicService().schedule(new Runnable() {
 			@Override
 			public void run() {
-				event.execute();
 				if(event.isRunning()) {
 					submit(event);
+					event.execute();
 				}
 			}
 		}, event.getDelay(), TimeUnit.MILLISECONDS);
