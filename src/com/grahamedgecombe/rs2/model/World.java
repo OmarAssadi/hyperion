@@ -14,7 +14,9 @@ import com.grahamedgecombe.rs2.event.Event;
 import com.grahamedgecombe.rs2.event.EventManager;
 import com.grahamedgecombe.rs2.event.UpdateEvent;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
+import com.grahamedgecombe.rs2.task.ConsecutiveTask;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
+import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.util.EntityList;
 
 public class World {
@@ -47,6 +49,10 @@ public class World {
 	
 	public void submit(Event event) {
 		this.eventManager.submit(event);
+	}
+	
+	public void submit(Task task) {
+		this.engine.pushTask(task);
 	}
 	
 	public WorldLoader getWorldLoader() {

@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
+import com.grahamedgecombe.rs2.task.ConsecutiveTask;
+import com.grahamedgecombe.rs2.task.LocalListTask;
 import com.grahamedgecombe.rs2.task.ParallelTask;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.task.UpdateTask;
@@ -19,11 +21,17 @@ public class UpdateEvent extends Event {
 
 	@Override
 	public void execute() {
-		List<Task> tasks = new ArrayList<Task>();
+		List<Task> localListTasks = new ArrayList<Task>();
 		for(Player player : World.getWorld().getPlayers()) {
-			tasks.add(new UpdateTask(player));
+			localListTasks.add(new LocalListTask(player));
 		}
-		World.getWorld().getEngine().pushTask(new ParallelTask(tasks.toArray(new Task[0])));
+		Task localListTask = new ParallelTask(localListTasks.toArray(new Task[0]));
+		List<Task> updateTasks = new ArrayList<Task>();
+		for(Player player : World.getWorld().getPlayers()) {
+			updateTasks.add(new UpdateTask(player));
+		}
+		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
+		World.getWorld().submit(new ConsecutiveTask(localListTask, updateTask));
 	}
 
 }
