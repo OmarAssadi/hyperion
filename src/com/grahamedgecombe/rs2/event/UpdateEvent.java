@@ -31,7 +31,12 @@ public class UpdateEvent extends Event {
 			updateTasks.add(new UpdateTask(player));
 		}
 		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
-		World.getWorld().submit(new ConsecutiveTask(localListTask, updateTask));
+		List<Task> resetTasks = new ArrayList<Task>();
+		for(Player player : World.getWorld().getPlayers()) {
+			resetTasks.add(new UpdateTask(player));
+		}
+		Task resetTask = new ParallelTask(resetTasks.toArray(new Task[0]));
+		World.getWorld().submit(new ConsecutiveTask(localListTask, updateTask, resetTask));
 	}
 
 }
