@@ -11,9 +11,25 @@
 	</target>
 	<target name="build" depends="init">
 		<javac srcdir="src" classpath="${toString:libs}" destdir="bin"/>
+		<javac srcdir="test" classpath="${toString:libs}" destdir="bin"/>
 	</target>
 	<target name="clean">
 		<delete dir="bin"/>
+	</target>
+	<target name="test" depends="build">
+	    <junit haltonfailure="true">
+	        <classpath>
+	            <pathelement path="${toString:libs}"/>
+	            <pathelement path="bin"/>
+	        </classpath>
+	        <formatter type="plain"/>
+	        <batchtest>
+	            <fileset dir="bin">
+	                <include name="**/*Test*.class"/>
+	                <exclude name="**/*Test*$*.class"/>
+	            </fileset>
+	        </batchtest>
+	    </junit>
 	</target>
 	<target name="rebuild" depends="clean,build"/>
 </project>
