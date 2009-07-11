@@ -14,7 +14,6 @@ import com.grahamedgecombe.rs2.event.Event;
 import com.grahamedgecombe.rs2.event.EventManager;
 import com.grahamedgecombe.rs2.event.UpdateEvent;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
-import com.grahamedgecombe.rs2.task.ConsecutiveTask;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.util.EntityList;
