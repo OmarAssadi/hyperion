@@ -29,6 +29,7 @@ public class TickTask implements Task {
 		this.player = player;
 	}
 
+	@Override
 	public void execute(GameEngine context) {
 		Queue<ChatMessage> messages = player.getChatMessageQueue();
 		if(messages.size() > 0) {

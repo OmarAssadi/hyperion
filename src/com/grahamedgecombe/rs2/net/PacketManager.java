@@ -60,6 +60,8 @@ public class PacketManager {
 		packetHandlers[98] = new WalkingPacketHandler();
 		// public chat
 		packetHandlers[4] = new ChatPacketHandler();
+		// commands
+		packetHandlers[103] = new CommandPacketHandler();
 		
 		/*
 		 * Set default handlers.

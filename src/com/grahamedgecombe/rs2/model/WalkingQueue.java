@@ -336,17 +336,34 @@ public class WalkingQueue {
 		 * changed, set the appropriate flag so the new map region packet
 		 * is sent.
 		 */
-		int regionDiffX = currentLocation.getRegionX() - player.getLastKnownRegion().getRegionX();
-		int regionDiffY = currentLocation.getRegionY() - player.getLastKnownRegion().getRegionY();
-		if(regionDiffX <= -4 || regionDiffY <= -4 || regionDiffX >= 4 || regionDiffY >= 4) {
+		int localDiffX = player.getLocation().getLocalX() - player.getLastKnownRegion().getLocalX(player.getLocation());
+		int localDiffY = player.getLocation().getLocalY() - player.getLastKnownRegion().getLocalY(player.getLocation());
+		boolean changed = false;
+		int diffX = 0, diffY = 0;
+		if(localDiffX <= -32) {
+			changed = true;
+			diffX -= 64;
+		} else if(localDiffX >= 32) {
+			changed = true;
+			diffX += 64;
+		}
+		if(localDiffY <= -32) {
+			changed = true;
+			diffY -= 64;
+		} else if(localDiffY >= 32) {
+			changed = true;
+			diffY += 64;
+		}
+		if(changed) {
 			/*
 			 * Set the map region changing flag so the new map region packet is
-			 * sent upon update.
+			 * sent upon the next update.
 			 */
 			player.setMapRegionChanging(true);
 			
 			/*
 			 * If we were not already teleporting we need to put some points back onto the queue.
+			 * These will be processed after the teleport is complete as normal.
 			 */
 			if(!teleporting) {
 				/*
@@ -368,6 +385,14 @@ public class WalkingQueue {
 				}
 				if(walkPoint != null) {
 					waypoints.addFirst(walkPoint);
+				}
+				
+				/*
+				 * Now adjust all of our waypoint's coordinates.
+				 */
+				for(Point p : waypoints) {
+					p.x += diffX;
+					p.y += diffY;
 				}
 			}
 		}
