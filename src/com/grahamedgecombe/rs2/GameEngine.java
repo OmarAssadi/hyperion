@@ -1,6 +1,7 @@
 package com.grahamedgecombe.rs2;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -59,12 +60,16 @@ public class GameEngine implements Runnable {
 		while(running) {
 			try {
 				final Task task = tasks.take();
-				logicService.submit(new Runnable() {
-					@Override
-					public void run() {
-						task.execute(GameEngine.this);
-					}
-				});
+				try {
+					logicService.submit(new Runnable() {
+						@Override
+						public void run() {
+							task.execute(GameEngine.this);
+						}
+					}).get();
+				} catch(ExecutionException e) {
+					throw new RuntimeException(e);
+				}
 			} catch(InterruptedException e) {
 				continue;
 			}

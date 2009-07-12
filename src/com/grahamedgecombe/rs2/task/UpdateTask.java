@@ -36,7 +36,7 @@ public class UpdateTask implements Task {
 		
 		for(Iterator<Player> it$ = player.getLocalPlayers().iterator(); it$.hasNext();) {
 			Player otherPlayer = it$.next();
-			if(!otherPlayer.isTeleporting() && otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
+			if(World.getWorld().getPlayers().contains(otherPlayer) && !otherPlayer.isTeleporting() && otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
 				updatePlayerMovement(packet, otherPlayer);
 				if(otherPlayer.getUpdateFlags().isUpdateRequired()) {
 					updatePlayer(updateBlock, otherPlayer, false);

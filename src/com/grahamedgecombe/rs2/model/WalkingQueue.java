@@ -378,7 +378,7 @@ public class WalkingQueue {
 		/*
 		 * Checks if there are no more points.
 		 */
-		if(p == null) {
+		if(p == null || p.dir == -1) {
 			/*
 			 * Return <code>null</code> indicating no movement happened.
 			 */

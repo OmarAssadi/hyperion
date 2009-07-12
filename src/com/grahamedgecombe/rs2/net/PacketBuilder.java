@@ -104,9 +104,9 @@ public class PacketBuilder {
 			throw new UnsupportedOperationException("The IoBuffer implementation must support array() for bit usage.");
 		}
 		
-		int bytes = (int) Math.ceil((double) numBits / 8D);
+		int bytes = (int) Math.ceil((double) numBits / 8D) + 1;
 		if(payload.remaining() < bytes) {
-			payload.expand(payload.remaining() - bytes);
+			payload.expand(payload.capacity() + bytes);
 		}
 		
 		byte[] buffer = payload.array();
@@ -124,7 +124,7 @@ public class PacketBuilder {
 			buffer[bytePos] &= ~BIT_MASK_OUT[bitOffset];
 			buffer[bytePos] |= value & BIT_MASK_OUT[bitOffset];
 		} else {
-			buffer[bytePos] &= ~(BIT_MASK_OUT[numBits]<<(bitOffset - numBits));
+			buffer[bytePos] &= ~(BIT_MASK_OUT[numBits] << (bitOffset - numBits));
 			buffer[bytePos] |= (value & BIT_MASK_OUT[numBits]) << (bitOffset - numBits);
 		}
 		return this;
