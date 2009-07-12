@@ -23,9 +23,8 @@ public class WalkingPacketHandler implements PacketHandler {
 		    path[i][1] = packet.getByte();
 		}
 		final int firstY = packet.getLEShort() - player.getLocation().getRegionY() * 8;
-		@SuppressWarnings("unused")
 		final boolean runSteps = packet.getByteC() == 1;
-		// TODO player.getWalkingQueue().setIsRunning(runSteps);
+		player.getWalkingQueue().setRunningQueue(runSteps);
 		player.getWalkingQueue().addStep(firstX, firstY);
 		for (int i = 0; i < steps; i++) {
 		    path[i][0] += firstX;

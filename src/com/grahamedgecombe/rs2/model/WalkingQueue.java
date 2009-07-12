@@ -56,6 +56,10 @@ public class WalkingQueue {
 	 */
 	private Deque<Point> waypoints = new LinkedList<Point>();
 	
+	private boolean runToggled = false;
+	
+	private boolean runQueue = false;
+	
 	/**
 	 * Creates the <code>WalkingQueue</code> for the specified
 	 * <code>Player</code>.
@@ -66,9 +70,50 @@ public class WalkingQueue {
 	}
 	
 	/**
+	 * Sets the run toggled flag.
+	 * @param runToggled The run toggled flag.
+	 */
+	public void setRunningToggled(boolean runToggled) {
+		this.runToggled = runToggled;
+	}
+	
+	/**
+	 * Sets the run queue flag.
+	 * @param runQueue The run queue flag.
+	 */
+	public void setRunningQueue(boolean runQueue) {
+		this.runQueue = runQueue;
+	}
+	
+	/**
+	 * Gets the run toggled flag.
+	 * @return The run toggled flag.
+	 */
+	public boolean isRunningToggled() {
+		return runToggled;
+	}
+	
+	/**
+	 * Gets the running queue flag.
+	 * @return The running queue flag.
+	 */
+	public boolean isRunningQueue() {
+		return runQueue;
+	}
+	
+	/**
+	 * Checks if any running flag is set.
+	 * @return <code>true</code. if so, <code>false</code> if not.
+	 */
+	public boolean isRunning() {
+		return runToggled || runQueue;
+	}
+	
+	/**
 	 * Resets the walking queue so it contains no more steps.
 	 */
 	public void reset() {
+		runQueue = false;
 		waypoints.clear();
 		Point p = new Point();
 		p.x = player.getLocation().getLocalX();
@@ -266,7 +311,7 @@ public class WalkingQueue {
 			/*
 			 * Technically we should check for running here.
 			 */
-			if(false) {
+			if(runToggled || runQueue) {
 				runPoint = getNextPoint();
 			}
 			
