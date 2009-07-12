@@ -25,6 +25,16 @@ public class Player extends Entity {
 		public int toInteger() {
 			return value;
 		}
+
+		public static Rights getRights(int value) {
+			if(value == 1) {
+				return MODERATOR;
+			} else if(value == 2) {
+				return ADMINISTRATOR;
+			} else {
+				return PLAYER;
+			}
+		}
 	}
 	
 	/*

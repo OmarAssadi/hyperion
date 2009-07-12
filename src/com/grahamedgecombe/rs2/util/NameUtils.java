@@ -14,5 +14,13 @@ public class NameUtils {
 		while(l % 37L == 0L && l != 0L) l /= 37L;
 		return l;
 	}
+	
+	public static String formatNameForProtocol(String s) {
+		return s.toLowerCase().replace(" ", "_");
+	}
+
+	public static String formatName(String s) {
+		return s;
+	}
 
 }

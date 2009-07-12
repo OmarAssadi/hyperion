@@ -129,10 +129,15 @@ public class World {
 		return false;
 	}
 
-	public void unregister(Player player) {
+	public void unregister(final Player player) {
 		player.getSession().close(false);
 		players.remove(player);
 		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
+		engine.getWorkService().submit(new Runnable() {
+			public void run() {
+				loader.savePlayer(player);
+			}
+		});
 	}
 	
 }
