@@ -19,23 +19,59 @@ import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.util.EntityList;
 import com.grahamedgecombe.rs2.util.NameUtils;
 
+/**
+ * Holds data global to the game world.
+ * @author Graham
+ *
+ */
 public class World {
 	
+	/**
+	 * Logging class.
+	 */
 	private static final Logger logger = Logger.getLogger(World.class.getName());
+	
+	/**
+	 * World instance.
+	 */
 	private static final World world = new World();
 	
+	/**
+	 * Gets the world instance.
+	 * @return The world instance.
+	 */
 	public static World getWorld() {
 		return world;
 	}
 
+	/**
+	 * The game engine.
+	 */
 	private GameEngine engine;
+	
+	/**
+	 * The event manager.
+	 */
 	private EventManager eventManager;
+	
+	/**
+	 * The current loader implementation.
+	 */
 	private WorldLoader loader = new GenericWorldLoader();
+	
+	/**
+	 * A list of connected players.
+	 */
 	private EntityList<Player> players = new EntityList<Player>(Constants.MAX_PLAYERS);
 	
+	/**
+	 * Initialises the world.
+	 * @param engine The engine processing this world's tasks.
+	 * @throws IllegalStateException if the world is already initialised.
+	 */
 	public void init(GameEngine engine) {
 		if(this.engine != null) {
-			throw new IllegalStateException("The world has already been initialized.");
+			throw new IllegalStateException("The world has already been initialised.");
 		} else {
 			this.engine = engine;
 			this.eventManager = new EventManager(engine);
@@ -43,26 +79,49 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Registers global events such as updating.
+	 */
 	public void registerEvents() {
 		submit(new UpdateEvent());
 	}
 	
+	/**
+	 * Submits a new event.
+	 * @param event The event to submit.
+	 */
 	public void submit(Event event) {
 		this.eventManager.submit(event);
 	}
 	
+	/**
+	 * Submits a new task.
+	 * @param task The task to submit.
+	 */
 	public void submit(Task task) {
 		this.engine.pushTask(task);
 	}
 	
+	/**
+	 * Gets the world loader.
+	 * @return The world loader.
+	 */
 	public WorldLoader getWorldLoader() {
 		return loader;
 	}
 	
+	/**
+	 * Gets the game engine.
+	 * @return The game engine.
+	 */
 	public GameEngine getEngine() {
 		return engine;
 	}
 	
+	/**
+	 * Loads a player's game in the work service.
+	 * @param pd The player's details.
+	 */
 	public void load(final PlayerDetails pd) {
 		engine.getWorkService().submit(new Runnable() {
 			public void run() {
@@ -91,6 +150,10 @@ public class World {
 		});
 	}
 
+	/**
+	 * Registers a new player.
+	 * @param player The player to register.
+	 */
 	public void register(final Player player) {
 		// do final checks e.g. is player online? is world full?
 		int returnCode = 2;
@@ -121,11 +184,21 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Gets the player list.
+	 * @return The player list.
+	 */
 	public EntityList<Player> getPlayers() {
 		return players;
 	}
 	
+	/**
+	 * Checks if a player is online.
+	 * @param name The player's name.
+	 * @return <code>true</code> if they are online, <code>false</code> if not.
+	 */
 	public boolean isPlayerOnline(String name) {
+		name = NameUtils.formatName(name);
 		for(Player player : players) {
 			if(player.getName().equalsIgnoreCase(name)) {
 				return true;
@@ -134,6 +207,10 @@ public class World {
 		return false;
 	}
 
+	/**
+	 * Unregisters a player, and saves their game.
+	 * @param player The player to unregister.
+	 */
 	public void unregister(final Player player) {
 		player.getSession().close(false);
 		players.remove(player);

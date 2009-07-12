@@ -18,6 +18,13 @@ import com.grahamedgecombe.rs2.model.Skills;
 import com.grahamedgecombe.rs2.util.NameUtils;
 import com.grahamedgecombe.util.Streams;
 
+/**
+ * An implementation of the <code>WorldLoader</code> class that saves players
+ * in binary, gzip-compressed files in the <code>data/players/</code>
+ * directory.
+ * @author Graham
+ *
+ */
 public class GenericWorldLoader implements WorldLoader {
 
 	@Override

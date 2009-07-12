@@ -2,8 +2,16 @@ package com.grahamedgecombe.rs2.model;
 
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
 
+/**
+ * Represents the player's equipment inventory.
+ * @author Graham
+ *
+ */
 public class Equipment {
 	
+	/**
+	 * Items which are classified as capes.
+	 */
 	public static int CAPES[] = { 3781, 3783, 3785, 3787, 3789, 3777, 3779,
 		3759, 3761, 3763, 3765, 6111, 6570, 6568, 1007, 1019, 1021, 1023,
 		1027, 1029, 1031, 1052, 2412, 2413, 2414, 4304, 4315, 4317, 4319,
@@ -13,18 +21,27 @@ public class Equipment {
 		4387, 4389, 4391, 4393, 4395, 4397, 4399, 4401, 4403, 4405, 4407,
 		4409, 4411, 4413, 4514, 4516, 6070, 6568, 6570 };
 
+	/**
+	 * Items which are classified as boots.
+	 */
 	public static int BOOTS[] = { 7596, 6619, 7159, 7991, 6666, 6061, 6106, 88,
 		89, 626, 628, 630, 632, 634, 1061, 1837, 1846, 2577, 2579, 2894,
 		2904, 2914, 2924, 2934, 3061, 3105, 3107, 3791, 4097, 4107, 4117,
 		4119, 4121, 4123, 4125, 4127, 4129, 4131, 4310, 5064, 5345, 5557,
 		6069, 6106, 6143, 6145, 6147, 6328, 6920, 6349, 6357, 3393 };
 
+	/**
+	 * Items which are classified as gloves.
+	 */
 	public static int GLOVES[] = { 7595, 6629, 2491, 1065, 2487, 2489, 3060,
 		1495, 775, 777, 778, 6708, 1059, 1063, 1065, 1580, 2487, 2489,
 		2491, 2902, 2912, 2922, 2932, 2942, 3060, 3799, 4095, 4105, 4115,
 		4308, 5556, 6068, 6110, 6149, 6151, 6153, 6922, 7454, 7455, 7456,
 		7457, 7458, 7459, 7460, 7461, 7462, 6330, 3391 };
 
+	/**
+	 * Items which are classified as shields.
+	 */
 	public static int SHIELDS[] = { 7342, 7348, 7354, 7360, 7334, 7340, 7347,
 		7352, 7358, 7356, 7350, 7344, 7332, 7338, 7336, 7360, 1171, 1173,
 		1175, 1177, 1179, 1181, 1183, 1185, 1187, 1189, 1191, 1193, 1195,
@@ -36,6 +53,9 @@ public class Equipment {
 		6247, 6249, 6251, 6253, 6255, 6257, 6259, 6261, 6263, 6265, 6267,
 		6269, 6271, 6273, 6275, 6277, 6279, 6524, 6889 };
 
+	/**
+	 * Items which are classified as hats.
+	 */
 	public static int HATS[] = { 4041, 4042, 4502, 7319, 7321, 7323, 7325,
 		7327, 1167, 8074, 4168, 1169, 6665, 6665, 7321, 6886, 6547, 6548,
 		2645, 2647, 2649, 4856, 4857, 4858, 4859, 4880, 4881, 4882, 4883,
@@ -59,12 +79,18 @@ public class Equipment {
 		7394, 7396, 7534, 5574, 6885, 6858, 6860, 6862, 6856, 6326, 6128,
 		6137, 7400, 7323, 7325, 7327, 7003 };
 
+	/**
+	 * Items which are classified as amulets.
+	 */
 	public static int AMULETS[] = { 1654, 1656, 1658, 1660, 1662, 1664, 8081,
 		8033, 7968, 6585, 86, 87, 295, 421, 552, 589, 1478, 1692, 1694,
 		1696, 1698, 1700, 1702, 1704, 1706, 1708, 1710, 1712, 1725, 1727,
 		1729, 1731, 4021, 4081, 4250, 4677, 6040, 6041, 6208, 1718, 1722,
 		6859, 6863, 6857 };
 
+	/**
+	 * Items which are classified as arrows.
+	 */
 	public static int ARROWS[] = { 8052, 8065, 7919, 7906, 78, 598, 877, 878,
 		879, 880, 881, 882, 883, 884, 885, 886, 887, 888, 889, 890, 891,
 		892, 893, 942, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539,
@@ -72,10 +98,16 @@ public class Equipment {
 		5618, 5619, 5620, 5621, 5622, 5623, 5624, 5625, 5626, 5627, 6061,
 		6062 };
 
+	/**
+	 * Items which are classified as rings.
+	 */
 	public static int RINGS[] = { 773, 1635, 1637, 1639, 1641, 1643, 1645,
 		2550, 2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566, 2568, 2570,
 		2572, 4202, 4657, 6465, 6737, 6731, 6735, 6735, 6583, 6733 };
 
+	/**
+	 * Items which are classified as body.
+	 */
 	public static int BODY[] = { 7362, 7364, 636, 638, 640, 642, 644, 426,
 		1005, 1757, 7592, 6617, 7376, 544, 7372, 7370, 577, 3793, 3775,
 		3773, 3771, 3769, 3767, 6139, 1135, 2499, 2501, 1035, 540, 5553,
@@ -89,6 +121,9 @@ public class Equipment {
 		2503, 6341, 6351, 3387, 5030, 5032, 5034, 5030, 5032, 5034, 7392,
 		546 };
 
+	/**
+	 * Items which are classified as legs.
+	 */
 	public static int LEGS[] = { 7378, 7380, 7382, 7368, 7366, 7388, 646, 648,
 		650, 652, 654, 428, 1097, 1095, 7593, 6625, 8020, 8015, 7384, 6141,
 		1835, 538, 1033, 5555, 4759, 6386, 6390, 2497, 2495, 2493, 1099,
@@ -104,6 +139,9 @@ public class Equipment {
 		6404, 6135, 6809, 6916, 4091, 4111, 6655, 6654, 7398, 7398, 7386,
 		6324, 6343, 6353, 3387, 5036, 5038, 5040 };
 
+	/**
+	 * Items which are classified as platebody.
+	 */
 	public static int PLATEBODY[] = { 636, 638, 640, 642, 644, 426, 8031, 8027,
 		6617, 544, 577, 3793, 3773, 3775, 3771, 3769, 3767, 6139, 1035,
 		540, 5553, 4757, 1833, 1835, 6388, 6384, 4111, 4101, 4868, 4869,
@@ -115,6 +153,9 @@ public class Equipment {
 		4728, 4749, 2661, 6129, 6916, 4091, 6654, 6133, 75, 7399, 7390,
 		5575, 6341, 6351, 3387, 5030, 5032, 5034, 7392 };
 
+	/**
+	 * Items which are classified as full helmets.
+	 */
 	public static int FULL_HELM[] = { 4041, 4042, 1147, 3748, 6137, 6128, 3753,
 		3755, 3749, 3751, 1149, 3751, 7594, 4708, 4716, 4745, 4732, 5554,
 		4753, 4732, 4753, 6188, 4511, 4056, 4071, 4724, 6109, 2665, 1153,
@@ -122,24 +163,79 @@ public class Equipment {
 		2627, 2657, 2673, 3486, 6402, 6394, 6131, 74, 7539, 7539, 7534,
 		5574, 6326 };
 
+	/**
+	 * Items which are classified as full masks.
+	 */
 	public static int FULL_MASK[] = { 4502, 6623, 7990, 7594, 1153, 1155, 1157,
 		1159, 1161, 1163, 1165, 4732, 5554, 4753, 4611, 6188, 3507, 4511,
 		4056, 4071, 4724, 2665, 1053, 1055, 1057 };
 	
+	/**
+	 * The size of the equipment container.
+	 */
 	public static final int SIZE = 14;
-		
+	
+	/**
+	 * The helmet slot.
+	 */
 	public static final int SLOT_HELM = 0;
+	
+	/**
+	 * The cape slot.
+	 */
 	public static final int SLOT_CAPE = 1;
+	
+	/**
+	 * The amulet slot.
+	 */
 	public static final int SLOT_AMULET = 2;
+	
+	/**
+	 * The weapon slot.
+	 */
 	public static final int SLOT_WEAPON = 3;
+	
+	/**
+	 * The chest slot.
+	 */
 	public static final int SLOT_CHEST = 4;
+	
+	/**
+	 * The shield slot.
+	 */
 	public static final int SLOT_SHIELD = 5;
+	
+	/**
+	 * The bottoms slot.
+	 */
 	public static final int SLOT_BOTTOMS = 7;
+	
+	/**
+	 * The gloves slot.
+	 */
 	public static final int SLOT_GLOVES = 9;
+	
+	/**
+	 * The boots slot.
+	 */
 	public static final int SLOT_BOOTS = 10;
+	
+	/**
+	 * The rings slot.
+	 */
 	public static final int SLOT_RING = 12;
+	
+	/**
+	 * The arrows slot.
+	 */
 	public static final int SLOT_ARROWS = 13;
 	
+	/**
+	 * Checks if an item is of a certain type.
+	 * @param array The type array.
+	 * @param item The item to check.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
 	public static boolean is(int[] array, Item item) {
 		for(int i : array) {
 			if(i == item.getId()) {
@@ -149,21 +245,47 @@ public class Equipment {
 		return false;
 	}
 	
+	/**
+	 * The internal container.
+	 */
 	private Container<Item> equipment = new Container<Item>(SIZE);
+	
+	/**
+	 * The player whose equipment this is.
+	 */
 	private Player player;
 	
+	/**
+	 * Creates the equipment class.
+	 * @param player The player whose equipment this class represents.
+	 */
 	public Equipment(Player player) {
 		this.player = player;
 	}
 	
+	/**
+	 * Checks if there is an item in a slot.
+	 * @param slot The slot to check.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
 	public boolean isEquipped(int slot) {
 		return equipment.get(slot) != null;
 	}
 	
+	/**
+	 * Gets an equipment item from a specific slot.
+	 * @param slot The slot.
+	 * @return The item.
+	 */
 	public Item getEquipment(int slot) {
 		return equipment.get(slot);
 	}
 	
+	/**
+	 * Sets an equipment item.
+	 * @param slot The slot.
+	 * @param item The item to set.
+	 */
 	public void setEquipment(int slot, Item item) {
 		equipment.set(slot, item);
 		if(player.isActive()) {

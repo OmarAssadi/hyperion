@@ -1,7 +1,18 @@
 package com.grahamedgecombe.rs2.util;
 
+/**
+ * A utility class for direction-related methods.
+ * @author Graham
+ *
+ */
 public class DirectionUtils {
 
+	/**
+	 * Finds a direction.
+	 * @param dx X difference.
+	 * @param dy Y difference.
+	 * @return The direction.
+	 */
 	public static int direction(int dx, int dy) {
 		if(dx < 0) {
 			if(dy < 0) {

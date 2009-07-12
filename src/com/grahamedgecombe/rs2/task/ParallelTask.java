@@ -9,10 +9,22 @@ import java.util.concurrent.ExecutionException;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.util.BlockingExecutorService;
 
+/**
+ * A task which can execute multiple child tasks simultaneously.
+ * @author Graham
+ *
+ */
 public class ParallelTask implements Task {
 	
+	/**
+	 * The child tasks.
+	 */
 	private Collection<Task> tasks;
 	
+	/**
+	 * Creates the parallel task.
+	 * @param tasks The child tasks.
+	 */
 	public ParallelTask(Task... tasks) {
 		List<Task> taskList = new ArrayList<Task>();
 		for(Task task : tasks) {

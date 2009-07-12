@@ -6,26 +6,58 @@ import java.util.Iterator;
 
 import com.grahamedgecombe.rs2.model.Entity;
 
+/**
+ * A class which represents a list of entities.
+ * @author Graham
+ *
+ * @param <E> The type of entity.
+ */
 public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> {
 	
+	/**
+	 * Internal entities array.
+	 */
 	private Entity[] entities;
+	
+	/**
+	 * Current size.
+	 */
 	private int size = 0;
 	
+	/**
+	 * Creates an entity list with the specified capacity.
+	 * @param capacity The capacity.
+	 */
 	public EntityList(int capacity) {
 		entities = new Entity[capacity+1]; // do not use idx 0
 	}
 	
+	/**
+	 * Gets an entity.
+	 * @param index The index.
+	 * @return The entity.
+	 * @throws IndexOutOufBoundException if the index is out of bounds.
+	 */
 	public Entity get(int index) {
-		if(index < 0 || index >= entities.length) {
+		if(index <= 0 || index >= entities.length) {
 			throw new IndexOutOfBoundsException();
 		}
 		return entities[index];
 	}
 	
+	/**
+	 * Gets the index of an entity.
+	 * @param entity The entity.
+	 * @return The index in the list.
+	 */
 	public int indexOf(Entity entity) {
 		return entity.getIndex();
 	}
 	
+	/**
+	 * Gets the next free id.
+	 * @return The next free id.
+	 */
 	private int getNextId() {
 		for(int i = 1; i < entities.length; i++) {
 			if(entities[i] == null) {

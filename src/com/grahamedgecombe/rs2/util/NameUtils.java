@@ -1,11 +1,26 @@
 package com.grahamedgecombe.rs2.util;
 
+/**
+ * Name utility class.
+ * @author Graham
+ *
+ */
 public class NameUtils {
 	
+	/**
+	 * Checks if a name is valid.
+	 * @param s The name.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
 	public static boolean isValidName(String s) {
 		return formatNameForProtocol(s).matches("[a-z0-9_]+");
 	}
 
+	/**
+	 * Converts a name to a long.
+	 * @param s The name.
+	 * @return The long.
+	 */
 	public static long nameToLong(String s) {
 		long l = 0L;
 		for(int i = 0; i < s.length() && i < 12; i++) {
@@ -19,14 +34,29 @@ public class NameUtils {
 		return l;
 	}
 	
+	/**
+	 * Formats a name for use in the protocol.
+	 * @param s The name.
+	 * @return The formatted name.
+	 */
 	public static String formatNameForProtocol(String s) {
 		return s.toLowerCase().replace(" ", "_");
 	}
 
+	/**
+	 * Formats a name for display.
+	 * @param s The name.
+	 * @return The formatted name.
+	 */
 	public static String formatName(String s) {
 		return fixName(s.replace(" ", "_"));
 	}
 	
+	/**
+	 * Method that fixes capitalization in a name.
+	 * @param s The name.
+	 * @return The formatted name.
+	 */
 	private static String fixName(final String s) {
 		if(s.length() > 0) {
 			final char ac[] = s.toCharArray();

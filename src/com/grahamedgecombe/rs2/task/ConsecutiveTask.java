@@ -7,10 +7,22 @@ import java.util.List;
 
 import com.grahamedgecombe.rs2.GameEngine;
 
+/**
+ * A task which executes a group of tasks in a guaranteed sequence.
+ * @author Graham
+ *
+ */
 public class ConsecutiveTask implements Task {
 
+	/**
+	 * The tasks.
+	 */
 	private Collection<Task> tasks;
 	
+	/**
+	 * Creates the consecutive task.
+	 * @param tasks The child tasks to execute.
+	 */
 	public ConsecutiveTask(Task... tasks) {
 		List<Task> taskList = new ArrayList<Task>();
 		for(Task task : tasks) {

@@ -1,6 +1,6 @@
 package com.grahamedgecombe.rs2;
 
-import org.apache.mina.core.service.IoHandler;
+import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
@@ -12,8 +12,17 @@ import com.grahamedgecombe.rs2.task.SessionClosedTask;
 import com.grahamedgecombe.rs2.task.SessionMessageTask;
 import com.grahamedgecombe.rs2.task.SessionOpenedTask;
 
-public class ConnectionHandler implements IoHandler {
+/**
+ * The <code>ConnectionHandler</code> processes incoming events from MINA,
+ * submitting appropriate tasks to the <code>GameEngine</code>.
+ * @author Graham
+ *
+ */
+public class ConnectionHandler extends IoHandlerAdapter {
 	
+	/**
+	 * The <code>GameEngine</code> instance.
+	 */
 	private final GameEngine engine = World.getWorld().getEngine();
 
 	@Override
@@ -27,18 +36,8 @@ public class ConnectionHandler implements IoHandler {
 	}
 
 	@Override
-	public void messageSent(IoSession session, Object message) throws Exception {
-		
-	}
-
-	@Override
 	public void sessionClosed(IoSession session) throws Exception {
 		engine.pushTask(new SessionClosedTask(session));
-	}
-
-	@Override
-	public void sessionCreated(IoSession session) throws Exception {
-		
 	}
 
 	@Override

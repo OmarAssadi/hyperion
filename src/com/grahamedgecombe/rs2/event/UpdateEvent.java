@@ -12,10 +12,21 @@ import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.task.UpdateTask;
 import com.grahamedgecombe.rs2.task.TickTask;
 
+/**
+ * An event which starts player update tasks.
+ * @author Graham
+ *
+ */
 public class UpdateEvent extends Event {
 
+	/**
+	 * The cycle time, in milliseconds.
+	 */
 	public static final int CYCLE_TIME = 600;
 	
+	/**
+	 * Creates the update event to cycle every 600 milliseconds.
+	 */
 	public UpdateEvent() {
 		super(CYCLE_TIME);
 	}

@@ -4,8 +4,14 @@ import com.grahamedgecombe.rs2.model.ChatMessage;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.net.Packet;
 
+/**
+ * Handles public chat messages.
+ * @author Graham
+ *
+ */
 public class ChatPacketHandler implements PacketHandler {
 
+	@Override
 	public void handle(Player player, Packet packet) {
 		int effects = packet.getByteA() & 0xFF;
 		int colour = packet.getByteA() & 0xFF;

@@ -1,21 +1,58 @@
 package com.grahamedgecombe.rs2.net;
 
+/**
+ * An implementation of an ISAAC cipher.
+ * @see http://en.wikipedia.org/wiki/ISAAC_(cipher)
+ * @author Graham
+ *
+ */
 public class ISAACCipher {
 	
+	/**
+	 * Key array index.
+	 */
 	private int keyArrayIdx = 0;
+	
+	/**
+	 * Key set array.
+	 */
 	private int keySetArray[] = new int[256];
+	
+	/**
+	 * Crypt array.
+	 */
 	private int cryptArray[] = new int[256];
+	
+	/**
+	 * Crypt variable 1.
+	 */
 	private int cryptVar1 = 0;
+	
+	/**
+	 * Crypt variable 2.
+	 */
 	private int cryptVar2 = 0;
+	
+	/**
+	 * Crypt variable 3.
+	 */
 	private int cryptVar3 = 0;
-
-	public ISAACCipher(int ai[])  {
-		for(int i = 0; i < ai.length; i++) {
-			keySetArray[i] = ai[i];
+	
+	/**
+	 * Creates the ISAAC cipher.
+	 * @param keys The key set.
+	 */
+	public ISAACCipher(int[] keys)  {
+		for(int i = 0; i < keys.length; i++) {
+			keySetArray[i] = keys[i];
 		}
 		initializeKeySet();
 	}
-
+	
+	/**
+	 * Gets the next key.
+	 * @return The next key.
+	 */
 	public int getNextKey() {
 		if(keyArrayIdx-- == 0)  {
 			generateNextKeySet();
@@ -23,7 +60,10 @@ public class ISAACCipher {
 		}
 		return keySetArray[keyArrayIdx];
 	}
-
+	
+	/**
+	 * Generates the next key set.
+	 */
 	public void generateNextKeySet() {
 		cryptVar2 += ++cryptVar3;
 		for(int i = 0; i < 256; i++) {
@@ -43,7 +83,10 @@ public class ISAACCipher {
 			keySetArray[i] = cryptVar2 = cryptArray[(k >> 8 & 0x3fc) >> 2] + j;
 		}
 	}
-
+	
+	/**
+	 * Intiailises the key set.
+	 */
 	public void initializeKeySet() {
 		int i1;
 		int j1;

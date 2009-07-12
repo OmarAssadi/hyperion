@@ -9,6 +9,11 @@ import com.grahamedgecombe.rs2.Constants;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.net.Packet.Type;
 
+/**
+ * Game protocol decoding class.
+ * @author Graham
+ *
+ */
 public class RS2Decoder extends CumulativeProtocolDecoder {
 
 	@Override

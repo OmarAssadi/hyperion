@@ -14,19 +14,51 @@ import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.util.IoBufferUtils;
 import com.grahamedgecombe.rs2.util.NameUtils;
 
+/**
+ * Login protocol decoding class.
+ * @author Graham
+ *
+ */
 public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 
+	/**
+	 * Logger instance.
+	 */
 	private static final Logger logger = Logger.getLogger(RS2LoginDecoder.class.getName());
 	
+	/**
+	 * Opcode stage.
+	 */
 	public static final int STATE_OPCODE = 0;
+	
+	/**
+	 * Login stage.
+	 */
 	public static final int STATE_LOGIN = 1;
+	
+	/**
+	 * Precrypted stage.
+	 */
 	public static final int STATE_PRECRYPTED = 2;
+	
+	/**
+	 * Crypted stage.
+	 */
 	public static final int STATE_CRYPTED = 3;
 	
+	/**
+	 * Game opcode.
+	 */
 	public static final int OPCODE_GAME = 14;
 	
+	/**
+	 * Secure random number generator.
+	 */
 	private static final SecureRandom RANDOM = new SecureRandom();
 	
+	/**
+	 * Initial login response.
+	 */
 	private static final byte[] INITIAL_RESPONSE = new byte[] {
 		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	};

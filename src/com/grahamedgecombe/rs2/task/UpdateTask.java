@@ -14,10 +14,22 @@ import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
 import com.grahamedgecombe.rs2.util.NameUtils;
 
+/**
+ * A task which creates and sends the update block.
+ * @author Graham
+ *
+ */
 public class UpdateTask implements Task {
 	
+	/**
+	 * The player.
+	 */
 	private Player player;
 	
+	/**
+	 * Creates an update task.
+	 * @param player The player.
+	 */
 	public UpdateTask(Player player) {
 		this.player = player;
 	}
@@ -74,6 +86,11 @@ public class UpdateTask implements Task {
 		player.getSession().write(packet.toPacket());
 	}
 
+	/**
+	 * Updates a non-this player's movement.
+	 * @param packet The packet.
+	 * @param otherPlayer The player.
+	 */
 	public void updatePlayerMovement(PacketBuilder packet, Player otherPlayer) {
 		if(otherPlayer.getSprites().getPrimarySprite() == -1) {
 			if(otherPlayer.getUpdateFlags().isUpdateRequired()) {
@@ -96,6 +113,11 @@ public class UpdateTask implements Task {
 		}
 	}
 
+	/**
+	 * Adds a new player.
+	 * @param packet The packet.
+	 * @param otherPlayer The player.
+	 */
 	public void addNewPlayer(PacketBuilder packet, Player otherPlayer) {
 		packet.putBits(11, otherPlayer.getIndex());
 		packet.putBits(1, 1);
@@ -112,6 +134,12 @@ public class UpdateTask implements Task {
 		packet.putBits(5, xPos);
 	}
 
+	/**
+	 * Updates a player.
+	 * @param packet The packet.
+	 * @param otherPlayer The other player.
+	 * @param forceAppearance The force appearance flag.
+	 */
 	public void updatePlayer(PacketBuilder packet, Player otherPlayer, boolean forceAppearance) {
 		if(!otherPlayer.getUpdateFlags().isUpdateRequired() && !forceAppearance) {
 			return;
@@ -137,10 +165,15 @@ public class UpdateTask implements Task {
 			appendChatUpdate(packet, otherPlayer);
 		}
 		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
-			appendPlayerAppearance(packet, otherPlayer);
+			appendPlayerAppearanceUpdate(packet, otherPlayer);
 		}
 	}
 	
+	/**
+	 * Appends a chat text update.
+	 * @param packet The packet.
+	 * @param otherPlayer The player.
+	 */
 	public void appendChatUpdate(PacketBuilder packet, Player otherPlayer) {
 		ChatMessage cm = otherPlayer.getCurrentChatMessage();
 		
@@ -154,7 +187,12 @@ public class UpdateTask implements Task {
 		}
 	}
 
-	public void appendPlayerAppearance(PacketBuilder packet, Player otherPlayer) {
+	/**
+	 * Appends an appearance update.
+	 * @param packet The packet.
+	 * @param otherPlayer The player.
+	 */
+	public void appendPlayerAppearanceUpdate(PacketBuilder packet, Player otherPlayer) {
 		Appearance app = otherPlayer.getAppearance();
 		Equipment eq = otherPlayer.getEquipment();
 		
@@ -218,7 +256,7 @@ public class UpdateTask implements Task {
 		if(helm != null) {
 			fullHelm = !Equipment.is(Equipment.FULL_HELM, helm);
 		}
-		if(fullHelm || app.getSex() == 1) {
+		if(fullHelm || app.getGender() == 1) {
 			playerProps.put((byte) 0);
 		} else {
 			playerProps.putShort((short) 0x100 + app.getBeard());
@@ -248,6 +286,10 @@ public class UpdateTask implements Task {
 		packet.put(propsPacket.getPayload());
 	}
 
+	/**
+	 * Updates this player's movement.
+	 * @param packet The packet.
+	 */
 	public void updateThisPlayerMovement(PacketBuilder packet) {
 		if(player.isTeleporting() || player.isMapRegionChanging()) {
 			packet.putBits(1, 1);

@@ -1,10 +1,25 @@
 package com.grahamedgecombe.rs2;
 
+/**
+ * Holds global server constants.
+ * @author Graham
+ *
+ */
 public class Constants {
 	
+	/**
+	 * Difference in X coordinates for directions array.
+	 */
 	public static final byte[] DIRECTION_DELTA_X = new byte[] {-1, 0, 1, -1, 1, -1, 0, 1};
+	
+	/**
+	 * Difference in Y coordinates for directions array.
+	 */
 	public static final byte[] DIRECTION_DELTA_Y = new byte[] {1, 1, 1, 0, 0, -1, -1, -1};
 	
+	/**
+	 * Default sidebar interfaces array.
+	 */
 	public static final int SIDEBAR_INTERFACES[][] = new int[][] {
 		new int[] {
 			1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 0
@@ -13,7 +28,10 @@ public class Constants {
 			3917, 638, 3213, 1644, 5608, 1151, 5065, 5715, 2449, 4445, 147, 6299, 2423
 		},
 	};
-		
+	
+	/**
+	 * Incoming packet sizes array.
+	 */
 	public static final int PACKET_SIZES[] = {
 		0, 0, 0, 1, -1, 0, 0, 0, 0, 0, //0
 		0, 0, 0, 0, 8, 0, 6, 2, 2, 0,  //10
@@ -43,8 +61,14 @@ public class Constants {
 		0, 0, 6, 6, 0, 0, 0            //250
 	};
 
+	/**
+	 * The player cap.
+	 */
 	public static final int MAX_PLAYERS = 2000;
 	
+	/**
+	 * The NPC cap.
+	 */
 	public static final int MAX_NPCS = 32000;
 
 }

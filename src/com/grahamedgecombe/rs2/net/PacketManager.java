@@ -7,17 +7,39 @@ import org.apache.mina.core.session.IoSession;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.packet.*;
 
+/**
+ * Managers <code>PacketHandler</code>s.
+ * @author Graham
+ *
+ */
 public class PacketManager {
 	
+	/**
+	 * The logger class.
+	 */
 	private static final Logger logger = Logger.getLogger(PacketManager.class.getName());
+	
+	/**
+	 * The instance.
+	 */
 	private static final PacketManager INSTANCE = new PacketManager();
 	
+	/**
+	 * Gets the packet manager instance.
+	 * @return The packet manager instance.
+	 */
 	public static PacketManager getPacketManager() {
 		return INSTANCE;
 	}
 	
+	/**
+	 * The packet handler array.
+	 */
 	private PacketHandler[] packetHandlers = new PacketHandler[256];
 	
+	/**
+	 * Creates the packet manager.
+	 */
 	public PacketManager() {
 		/*
 		 * Set handlers.
@@ -50,6 +72,11 @@ public class PacketManager {
 		}
 	}
 
+	/**
+	 * Handles a packet.
+	 * @param session The session.
+	 * @param packet The packet.
+	 */
 	public void handle(IoSession session, Packet packet) {
 		try {
 			packetHandlers[packet.getOpcode()].handle((Player) session.getAttribute("player"), packet);

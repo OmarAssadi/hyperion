@@ -3,6 +3,11 @@ package com.grahamedgecombe.rs2.packet;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.net.Packet;
 
+/**
+ * A packet which handles walking requests.
+ * @author Graham
+ *
+ */
 public class WalkingPacketHandler implements PacketHandler {
 
 	@Override

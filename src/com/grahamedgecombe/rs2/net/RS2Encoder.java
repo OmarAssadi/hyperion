@@ -7,6 +7,11 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
 import com.grahamedgecombe.rs2.model.Player;
 
+/**
+ * Game protocol encoding class.
+ * @author Graham
+ *
+ */
 public class RS2Encoder implements ProtocolEncoder {
 
 	@Override
