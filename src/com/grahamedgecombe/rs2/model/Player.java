@@ -31,7 +31,9 @@ public class Player extends Entity {
 	private final ISAACCipher inCipher;
 	private final ISAACCipher outCipher;
 	private final ActionSender actionSender = new ActionSender(this);
-	private Location lastKnownRegion;
+	private final WalkingQueue walkingQueue = new WalkingQueue(this);
+	private Location lastKnownRegion = this.getLocation();
+	private boolean mapRegionChanging = false;
 	
 	/*
 	 * Core login details.
@@ -57,6 +59,18 @@ public class Player extends Entity {
 		this.uid = details.getUID();
 		
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
+	
+	public boolean isMapRegionChanging() {
+		return mapRegionChanging;
+	}
+	
+	public void setMapRegionChanging(boolean mapRegionChanging) {
+		this.mapRegionChanging = mapRegionChanging;
+	}
+	
+	public WalkingQueue getWalkingQueue() {
+		return walkingQueue;
 	}
 	
 	public Appearance getAppearance() {
@@ -122,5 +136,5 @@ public class Player extends Entity {
 	public void setMembers(boolean members) {
 		this.members = members;
 	}
-
+	
 }

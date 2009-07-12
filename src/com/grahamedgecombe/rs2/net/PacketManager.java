@@ -27,6 +27,10 @@ public class PacketManager {
 		packetHandlers[241] = new QuietPacketHandler();
 		// action button
 		packetHandlers[185] = new ActionButtonPacketHandler();
+		// walking
+		packetHandlers[248] = new WalkingPacketHandler();
+		packetHandlers[164] = new WalkingPacketHandler();
+		packetHandlers[98] = new WalkingPacketHandler();
 		
 		/*
 		 * Set default handlers.

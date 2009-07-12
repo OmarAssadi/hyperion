@@ -21,6 +21,10 @@ public class UpdateTask implements Task {
 
 	@Override
 	public void execute(GameEngine context) {
+		if(player.isMapRegionChanging()) {
+			player.getActionSender().sendMapRegion();
+		}
+		
 		PacketBuilder updateBlock = new PacketBuilder();
 		
 		PacketBuilder packet = new PacketBuilder(81, Packet.Type.VARIABLE_SHORT);
@@ -123,7 +127,7 @@ public class UpdateTask implements Task {
 	}
 
 	public void updateThisPlayerMovement(PacketBuilder packet) {
-		if(player.isTeleporting()) {
+		if(player.isTeleporting() || player.isMapRegionChanging()) {
 			packet.putBits(1, 1);
 			packet.putBits(2, 3);
 			packet.putBits(2, player.getLocation().getZ());
@@ -140,6 +144,7 @@ public class UpdateTask implements Task {
 					packet.putBits(1, 0);
 				}
 			} else {
+				System.out.println("movement");
 				if(player.getSprites().getSecondarySprite() == -1) {
 					packet.putBits(1, 1);
 					packet.putBits(2, 1);

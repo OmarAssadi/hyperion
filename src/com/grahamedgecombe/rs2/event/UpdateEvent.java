@@ -9,6 +9,7 @@ import com.grahamedgecombe.rs2.task.ConsecutiveTask;
 import com.grahamedgecombe.rs2.task.ParallelTask;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.task.UpdateTask;
+import com.grahamedgecombe.rs2.task.WalkingTask;
 
 public class UpdateEvent extends Event {
 
@@ -20,17 +21,21 @@ public class UpdateEvent extends Event {
 
 	@Override
 	public void execute() {
+		List<Task> walkingTasks = new ArrayList<Task>();
 		List<Task> updateTasks = new ArrayList<Task>();
-		for(Player player : World.getWorld().getPlayers()) {
-			updateTasks.add(new UpdateTask(player));
-		}
-		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
 		List<Task> resetTasks = new ArrayList<Task>();
+		
 		for(Player player : World.getWorld().getPlayers()) {
+			walkingTasks.add(new WalkingTask(player));
+			updateTasks.add(new UpdateTask(player));
 			resetTasks.add(new UpdateTask(player));
 		}
+		
+		Task walkingTask = new ParallelTask(walkingTasks.toArray(new Task[0]));
+		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
 		Task resetTask = new ParallelTask(resetTasks.toArray(new Task[0]));
-		World.getWorld().submit(new ConsecutiveTask(updateTask, resetTask));
+		
+		World.getWorld().submit(new ConsecutiveTask(walkingTask, updateTask, resetTask));
 	}
 
 }

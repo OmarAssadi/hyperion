@@ -2,6 +2,9 @@ package com.grahamedgecombe.rs2;
 
 public class Constants {
 	
+	public static final byte[] DIRECTION_DELTA_X = new byte[] {-1, 0, 1, -1, 1, -1, 0, 1};
+	public static final byte[] DIRECTION_DELTA_Y = new byte[] {1, 1, 1, 0, 0, -1, -1, -1};
+	
 	public static final int SIDEBAR_INTERFACES[][] = new int[][] {
 		new int[] {
 			1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 0

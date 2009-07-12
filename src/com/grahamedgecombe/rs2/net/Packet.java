@@ -72,4 +72,22 @@ public class Packet {
 		return payload.getLong();
 	}
 
+	public byte getByteC() {
+		return (byte) (-get());
+	}
+	
+	public short getLEShortA() {
+		int i = (payload.get() - 128 & 0xFF) | ((payload.get() & 0xFF) << 8);
+		if(i > 32767)
+			i -= 0x10000;
+		return (short) i;
+	}
+
+	public short getLEShort() {
+		int i = (payload.get() & 0xFF) | ((payload.get() & 0xFF) << 8);
+		if(i > 32767)
+			i -= 0x10000;
+		return (short) i;
+	}
+
 }
