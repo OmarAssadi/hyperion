@@ -2,7 +2,6 @@ package com.grahamedgecombe.rs2.task;
 
 import java.util.Iterator;
 
-import com.grahamedgecombe.rs2.Constants;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
@@ -144,17 +143,16 @@ public class UpdateTask implements Task {
 					packet.putBits(1, 0);
 				}
 			} else {
-				System.out.println("movement");
 				if(player.getSprites().getSecondarySprite() == -1) {
 					packet.putBits(1, 1);
 					packet.putBits(2, 1);
-					packet.putBits(3, Constants.SERVER_DIRECTION_TO_CLIENT[player.getSprites().getPrimarySprite()]);
+					packet.putBits(3, player.getSprites().getPrimarySprite());
 					packet.putBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 				} else {
 					packet.putBits(1, 1);
 					packet.putBits(2, 2);
-					packet.putBits(3, Constants.SERVER_DIRECTION_TO_CLIENT[player.getSprites().getPrimarySprite()]);
-					packet.putBits(3, Constants.SERVER_DIRECTION_TO_CLIENT[player.getSprites().getSecondarySprite()]);
+					packet.putBits(3, player.getSprites().getPrimarySprite());
+					packet.putBits(3, player.getSprites().getSecondarySprite());
 					packet.putBits(1, player.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 				}
 			}

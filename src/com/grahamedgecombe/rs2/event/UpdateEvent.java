@@ -7,6 +7,7 @@ import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.task.ConsecutiveTask;
 import com.grahamedgecombe.rs2.task.ParallelTask;
+import com.grahamedgecombe.rs2.task.ResetTask;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.task.UpdateTask;
 import com.grahamedgecombe.rs2.task.WalkingTask;
@@ -28,7 +29,7 @@ public class UpdateEvent extends Event {
 		for(Player player : World.getWorld().getPlayers()) {
 			walkingTasks.add(new WalkingTask(player));
 			updateTasks.add(new UpdateTask(player));
-			resetTasks.add(new UpdateTask(player));
+			resetTasks.add(new ResetTask(player));
 		}
 		
 		Task walkingTask = new ParallelTask(walkingTasks.toArray(new Task[0]));
