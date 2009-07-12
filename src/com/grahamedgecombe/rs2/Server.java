@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.service.IoAcceptor;
+import org.apache.mina.filter.firewall.ConnectionThrottleFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import com.grahamedgecombe.rs2.model.World;
@@ -29,6 +30,7 @@ public class Server {
 		logger.info("Starting...");
 		World.getWorld().init(engine);
 		acceptor.setHandler(new ConnectionHandler());
+		acceptor.getFilterChain().addFirst("throttleFilter", new ConnectionThrottleFilter());
 	}
 	
 	public Server bind(int port) throws IOException {

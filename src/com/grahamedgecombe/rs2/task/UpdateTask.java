@@ -3,6 +3,7 @@ package com.grahamedgecombe.rs2.task;
 import java.util.Iterator;
 
 import com.grahamedgecombe.rs2.GameEngine;
+import com.grahamedgecombe.rs2.model.Appearance;
 import com.grahamedgecombe.rs2.model.ChatMessage;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
@@ -99,11 +100,11 @@ public class UpdateTask implements Task {
 		packet.putBits(1, 1);
 		int yPos = otherPlayer.getLocation().getY() - player.getLocation().getY();
 		int xPos = otherPlayer.getLocation().getX() - player.getLocation().getX();
-		if(xPos < 0) {
-			xPos += 32;
+		if(xPos > 15) {
+			xPos -= 32;
 		}
-		if(yPos < 0) {
-			yPos += 32;
+		if(yPos > 15) {
+			yPos -= 32;
 		}
 		packet.putBits(5, yPos);
 		packet.putBits(5, xPos);
@@ -152,6 +153,8 @@ public class UpdateTask implements Task {
 	}
 
 	public void appendPlayerAppearance(PacketBuilder packet, Player otherPlayer) {
+		Appearance app = otherPlayer.getAppearance();
+		
 		PacketBuilder playerProps = new PacketBuilder();
 		playerProps.put((byte) 0); // gender
 		playerProps.put((byte) 0); // skull icon
@@ -160,20 +163,20 @@ public class UpdateTask implements Task {
 		playerProps.put((byte) 0); // cape
 		playerProps.put((byte) 0); // amulet
 		playerProps.put((byte) 0); // weapon
-		playerProps.putShort((short) 0x100 + 19); // chest
-		playerProps.putShort((short) 0x100 + 29); // shield
-		playerProps.put((byte) 0); // chest
-		playerProps.putShort((short) 0x100 + 39); // legs
-		playerProps.putShort((short) 0x100 + 3); // head
-		playerProps.putShort((short) 0x100 + 35); // hands
-		playerProps.putShort((short) 0x100 + 44); // feet
-		playerProps.putShort((short) 0x100 + 0); // beard
+		playerProps.putShort((short) 0x100 + app.getChest()); // chest
+		playerProps.put((byte) 0); // shield
+		playerProps.putShort((short) 0x100 + app.getArms()); // arms
+		playerProps.putShort((short) 0x100 + app.getLegs()); // legs
+		playerProps.putShort((short) 0x100 + app.getHead()); // head
+		playerProps.putShort((short) 0x100 + app.getHands()); // hands
+		playerProps.putShort((short) 0x100 + app.getFeet()); // feet
+		playerProps.putShort((short) 0x100 + app.getBeard()); // beard
 		
-		playerProps.put((byte) 7); // hairc
-		playerProps.put((byte) 8); // torsoc
-		playerProps.put((byte) 9); // legc
-		playerProps.put((byte) 5); // feetc
-		playerProps.put((byte) 0); // skinc
+		playerProps.put((byte) app.getHairColour()); // hairc
+		playerProps.put((byte) app.getTorsoColour()); // torsoc
+		playerProps.put((byte) app.getLegColour()); // legc
+		playerProps.put((byte) app.getFeetColour()); // feetc
+		playerProps.put((byte) app.getSkinColour()); // skinc
 		
 		playerProps.putShort((short) 0x328); // stand
 		playerProps.putShort((short) 0x337); // stand turn

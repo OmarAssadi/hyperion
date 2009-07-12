@@ -52,6 +52,10 @@ public class GenericWorldLoader implements WorldLoader {
 			os.writeShort(player.getLocation().getX());
 			os.writeShort(player.getLocation().getY());
 			os.writeByte(player.getLocation().getZ());
+			int[] look = player.getAppearance().getLook();
+			for(int i = 0; i < 13; i++) {
+				os.writeByte((byte) look[i]);
+			}
 			os.flush();
 			os.close();
 			return true;
@@ -69,6 +73,11 @@ public class GenericWorldLoader implements WorldLoader {
 			player.setRights(Player.Rights.getRights(is.readUnsignedByte()));
 			player.setMembers(is.readUnsignedByte() == 1 ? true : false);
 			player.setLocation(Location.create(is.readUnsignedShort(), is.readUnsignedShort(), is.readUnsignedByte()));
+			int[] look = new int[13];
+			for(int i = 0; i < 13; i++) {
+				look[i] = is.readByte();
+			}
+			player.getAppearance().setLook(look);
 			return true;
 		} catch(IOException ex) {
 			return false;
