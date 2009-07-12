@@ -1,5 +1,7 @@
 package com.grahamedgecombe.rs2.util;
 
+import com.grahamedgecombe.rs2.Constants;
+
 /**
  * Name utility class.
  * @author Graham
@@ -32,6 +34,22 @@ public class NameUtils {
 		}
 		while(l % 37L == 0L && l != 0L) l /= 37L;
 		return l;
+	}
+	
+	/**
+	 * Converts a long to a name.
+	 * @param l The long.
+	 * @return The name.
+	 */
+	public static String longToName(long l) {
+		int i = 0;
+		char ac[] = new char[12];
+		while (l != 0L) {
+			long l1 = l;
+			l /= 37L;
+			ac[11 - i++] = Constants.VALID_CHARS[(int) (l1 - l * 37L)];
+		}
+		return new String(ac, 12 - i, i);
 	}
 	
 	/**

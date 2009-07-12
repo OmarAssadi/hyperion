@@ -3,6 +3,7 @@ package com.grahamedgecombe.rs2.packet;
 import com.grahamedgecombe.rs2.model.ChatMessage;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.net.Packet;
+import com.grahamedgecombe.rs2.util.TextUtils;
 
 /**
  * Handles public chat messages.
@@ -27,7 +28,11 @@ public class ChatPacketHandler implements PacketHandler {
 		if(player.getChatMessageQueue().size() >= CHAT_QUEUE_SIZE) {
 			return;
 		}
-		player.getChatMessageQueue().add(new ChatMessage(effects, colour, chatData));
+		String unpacked = TextUtils.textUnpack(chatData, size);
+		unpacked = TextUtils.optimizeText(unpacked);
+		byte[] packed = new byte[size];
+		TextUtils.textPack(packed, unpacked);
+		player.getChatMessageQueue().add(new ChatMessage(effects, colour, packed));
 	}
 
 }
