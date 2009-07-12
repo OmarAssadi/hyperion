@@ -29,6 +29,7 @@ public class ChatPacketHandler implements PacketHandler {
 			return;
 		}
 		String unpacked = TextUtils.textUnpack(chatData, size);
+		unpacked = TextUtils.filterText(unpacked);
 		unpacked = TextUtils.optimizeText(unpacked);
 		byte[] packed = new byte[size];
 		TextUtils.textPack(packed, unpacked);

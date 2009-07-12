@@ -44,11 +44,11 @@ public class TextUtils {
 		boolean endMarker = true;
 		for(int i = 0; i < buf.length; i++) {
 			char c = buf[i];
-			if (endMarker && c >= 'a' && c <= 'z') {
+			if(endMarker && c >= 'a' && c <= 'z') {
 				buf[i] -= 0x20;
 				endMarker = false;
 			}
-			if (c == '.' || c == '!' || c == '?') {
+			if(c == '.' || c == '!' || c == '?') {
 				endMarker = true;
 			}
 		}
@@ -96,6 +96,27 @@ public class TextUtils {
 		if(carryOverNibble != -1) {
 			packedData[ofs++] = (byte) (carryOverNibble << 4);
 		}
+	}
+
+	/**
+	 * Filters invalid characters out of a string.
+	 * @param s The string.
+	 * @return The filtered string.
+	 */
+	public static String filterText(String s) {
+		StringBuilder bldr = new StringBuilder();
+		for(char c : s.toLowerCase().toCharArray()) {
+			boolean valid = false;
+			for(char validChar : Constants.XLATE_TABLE) {
+				if(validChar == c) {
+					valid = true;
+				}
+			}
+			if(valid) {
+				bldr.append((char) c);
+			}
+		}
+		return bldr.toString();
 	}
 
 }
