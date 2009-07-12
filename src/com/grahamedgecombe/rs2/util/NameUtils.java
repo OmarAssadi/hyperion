@@ -1,6 +1,10 @@
 package com.grahamedgecombe.rs2.util;
 
 public class NameUtils {
+	
+	public static boolean isValidName(String s) {
+		return formatNameForProtocol(s).matches("[a-z0-9_]+");
+	}
 
 	public static long nameToLong(String s) {
 		long l = 0L;
@@ -20,7 +24,28 @@ public class NameUtils {
 	}
 
 	public static String formatName(String s) {
-		return s;
+		return fixName(s.replace(" ", "_"));
+	}
+	
+	private static String fixName(final String s) {
+		if(s.length() > 0) {
+			final char ac[] = s.toCharArray();
+			for(int j = 0; j < ac.length; j++)
+				if(ac[j] == '_') {
+					ac[j] = ' ';
+					if((j + 1 < ac.length) && (ac[j + 1] >= 'a')
+							&& (ac[j + 1] <= 'z')) {
+						ac[j + 1] = (char) ((ac[j + 1] + 65) - 97);
+					}
+				}
+
+			if((ac[0] >= 'a') && (ac[0] <= 'z')) {
+				ac[0] = (char) ((ac[0] + 65) - 97);
+			}
+			return new String(ac);
+		} else {
+			return s;
+		}
 	}
 
 }

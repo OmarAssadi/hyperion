@@ -17,6 +17,7 @@ import com.grahamedgecombe.rs2.net.PacketBuilder;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.util.EntityList;
+import com.grahamedgecombe.rs2.util.NameUtils;
 
 public class World {
 	
@@ -66,9 +67,13 @@ public class World {
 		engine.getWorkService().submit(new Runnable() {
 			public void run() {
 				LoginResult lr = loader.checkLogin(pd);
-				if(lr.getReturnCode() != 2) {
+				int code = lr.getReturnCode();
+				if(!NameUtils.isValidName(pd.getName())) {
+					code = 11;
+				}
+				if(code != 2) {
 					PacketBuilder bldr = new PacketBuilder();
-					bldr.put((byte) lr.getReturnCode());
+					bldr.put((byte) code);
 					bldr.put((byte) 0);
 					bldr.put((byte) 0);
 					pd.getSession().write(bldr.toPacket()).addListener(new IoFutureListener<IoFuture>() {

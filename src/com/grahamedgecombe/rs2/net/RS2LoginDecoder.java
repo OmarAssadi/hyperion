@@ -12,6 +12,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import com.grahamedgecombe.rs2.model.PlayerDetails;
 import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.util.IoBufferUtils;
+import com.grahamedgecombe.rs2.util.NameUtils;
 
 public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 
@@ -135,7 +136,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 						return false;
 					}
 					int uid = in.getInt();
-					String name = IoBufferUtils.getRS2String(in);
+					String name = NameUtils.formatName(IoBufferUtils.getRS2String(in));
 					String pass = IoBufferUtils.getRS2String(in);
 					logger.info("Login request : username=" + name + " password=" + pass);
 					
