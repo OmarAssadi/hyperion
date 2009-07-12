@@ -43,7 +43,7 @@ public abstract class Entity {
 		this.teleporting = teleporting;
 	}
 	
-	public List<Player> getLocalEntities() {
+	public List<Player> getLocalPlayers() {
 		return localPlayers;
 	}
 	

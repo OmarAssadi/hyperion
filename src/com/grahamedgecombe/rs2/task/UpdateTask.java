@@ -30,24 +30,31 @@ public class UpdateTask implements Task {
 		packet.startBitAccess();
 		
 		updateThisPlayerMovement(packet);
-		updatePlayer(updateBlock, player);
+		updatePlayer(updateBlock, player, false);
 		
-		packet.putBits(8, player.getLocalEntities().size());
+		packet.putBits(8, player.getLocalPlayers().size());
 		
-		for(Iterator<Player> it$ = player.getLocalEntities().iterator(); it$.hasNext();) {
+		for(Iterator<Player> it$ = player.getLocalPlayers().iterator(); it$.hasNext();) {
 			Player otherPlayer = it$.next();
-			if(otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
-				
+			if(!otherPlayer.isTeleporting() && otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
+				updatePlayerMovement(packet, otherPlayer);
+				if(otherPlayer.getUpdateFlags().isUpdateRequired()) {
+					updatePlayer(updateBlock, otherPlayer, false);
+				}
 			} else {
 				it$.remove();
+				packet.putBits(1, 1);
+				packet.putBits(2, 3);
 			}
 		}
 		for(Player otherPlayer : World.getWorld().getPlayers()) {
-			if(otherPlayer == player || otherPlayer.getLocalEntities().contains(player)) {
+			if(otherPlayer == player || player.getLocalPlayers().contains(otherPlayer)) {
 				continue;
 			}
 			if(otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
-				
+				player.getLocalPlayers().add(otherPlayer);
+				addNewPlayer(packet, otherPlayer);
+				updatePlayer(updateBlock, otherPlayer, true);
 			}
 		}
 		if(!updateBlock.isEmpty()) {
@@ -60,13 +67,51 @@ public class UpdateTask implements Task {
 		player.getSession().write(packet.toPacket());
 	}
 
-	public void updatePlayer(PacketBuilder packet, Player otherPlayer) {
-		if(!otherPlayer.getUpdateFlags().isUpdateRequired()) {
+	public void updatePlayerMovement(PacketBuilder packet, Player otherPlayer) {
+		if(otherPlayer.getSprites().getPrimarySprite() == -1) {
+			if(otherPlayer.getUpdateFlags().isUpdateRequired()) {
+				packet.putBits(1, 1);
+				packet.putBits(2, 0);
+			} else {
+				packet.putBits(1, 0);
+			}
+		} else if(otherPlayer.getSprites().getSecondarySprite() == -1) {
+			packet.putBits(1, 1);
+			packet.putBits(2, 1);
+			packet.putBits(3, otherPlayer.getSprites().getPrimarySprite());
+			packet.putBits(1, otherPlayer.getUpdateFlags().isUpdateRequired() ? 1 : 0);
+		} else {
+			packet.putBits(1, 1);
+			packet.putBits(2, 2);
+			packet.putBits(3, otherPlayer.getSprites().getPrimarySprite());
+			packet.putBits(3, otherPlayer.getSprites().getSecondarySprite());
+			packet.putBits(1, otherPlayer.getUpdateFlags().isUpdateRequired() ? 1 : 0);
+		}
+	}
+
+	public void addNewPlayer(PacketBuilder packet, Player otherPlayer) {
+		packet.putBits(11, otherPlayer.getIndex());
+		packet.putBits(1, 1);
+		packet.putBits(1, 1);
+		int yPos = otherPlayer.getLocation().getY() - player.getLocation().getY();
+		int xPos = otherPlayer.getLocation().getX() - player.getLocation().getX();
+		if(xPos < 0) {
+			xPos += 32;
+		}
+		if(yPos < 0) {
+			yPos += 32;
+		}
+		packet.putBits(5, yPos);
+		packet.putBits(5, xPos);
+	}
+
+	public void updatePlayer(PacketBuilder packet, Player otherPlayer, boolean forceAppearance) {
+		if(!otherPlayer.getUpdateFlags().isUpdateRequired() && !forceAppearance) {
 			return;
 		}
 		int mask = 0;
 		
-		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE)) {
+		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			mask |= 0x10;
 		}
 		
@@ -78,7 +123,7 @@ public class UpdateTask implements Task {
 			packet.put((byte) (mask));
 		}
 		
-		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE)) {
+		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			appendPlayerAppearance(packet, otherPlayer);
 		}
 	}
