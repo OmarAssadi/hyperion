@@ -29,7 +29,7 @@ public class WalkingPacketHandler implements PacketHandler {
 		for (int i = 0; i < steps; i++) {
 		    path[i][0] += firstX;
 		    path[i][1] += firstY;
-		    player.getWalkingQueue().addStep(firstX + path[i][0], firstY + path[i][1]);
+		    player.getWalkingQueue().addStep(path[i][0], path[i][1]);
 		}
 	}
 

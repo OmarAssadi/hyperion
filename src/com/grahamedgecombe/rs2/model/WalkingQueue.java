@@ -195,14 +195,20 @@ public class WalkingQueue {
 		int dir = DirectionUtils.direction(diffX, diffY);
 		
 		/*
-		 * We now have the information to add a point to the queue! We create
-		 * the actual point object and add it.
+		 * Check if we actually move anywhere.
 		 */
-		Point p = new Point();
-		p.x = x;
-		p.y = y;
-		p.dir = dir;
-		waypoints.add(p);
+		if(dir > -1) {
+			/*
+			 * We now have the information to add a point to the queue! We create
+			 * the actual point object and add it.
+			 */
+			Point p = new Point();
+			p.x = x;
+			p.y = y;
+			p.dir = dir;
+			waypoints.add(p);
+			
+		}
 	}
 	
 	/**
