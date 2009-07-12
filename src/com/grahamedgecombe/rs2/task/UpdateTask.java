@@ -123,38 +123,44 @@ public class UpdateTask implements Task {
 		/*
 		 * Loop through every player.
 		 */
-		if(player.getLocalPlayers().size() < 256) {
+		for(Player otherPlayer : World.getWorld().getPlayers()) {
 			/*
-			 * We have room in the list (the list can only store 255 players
-			 * maximum as the size is sent in 8 bits).
+			 * Check if there is room left in the local list.
 			 */
-			for(Player otherPlayer : World.getWorld().getPlayers()) {
+			if(player.getLocalPlayers().size() >= 255) {
 				/*
-				 * If they should not be added ignore them.
+				 * There is no more room left in the local list. We cannot add
+				 * more players, so we just ignore the extra ones. They will be
+				 * added as other players get removed.
 				 */
-				if(otherPlayer == player || player.getLocalPlayers().contains(otherPlayer)) {
-					continue;
-				}
+				break;
+			}
+			
+			/*
+			 * If they should not be added ignore them.
+			 */
+			if(otherPlayer == player || player.getLocalPlayers().contains(otherPlayer)) {
+				continue;
+			}
+			
+			/*
+			 * If the player could be added, check if it is within distance.
+			 */
+			if(otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
+				/*
+				 * Add the player to the local list if it is within distance.
+				 */
+				player.getLocalPlayers().add(otherPlayer);
 				
 				/*
-				 * If the player could be added, check if it is within distance.
+				 * Add the player in the packet.
 				 */
-				if(otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
-					/*
-					 * Add the player to the local list if it is within distance.
-					 */
-					player.getLocalPlayers().add(otherPlayer);
-					
-					/*
-					 * Add the player in the packet.
-					 */
-					addNewPlayer(packet, otherPlayer);
-					
-					/*
-					 * Update the player, forcing the appearance flag.
-					 */
-					updatePlayer(updateBlock, otherPlayer, true);
-				}
+				addNewPlayer(packet, otherPlayer);
+				
+				/*
+				 * Update the player, forcing the appearance flag.
+				 */
+				updatePlayer(updateBlock, otherPlayer, true);
 			}
 		}
 		
