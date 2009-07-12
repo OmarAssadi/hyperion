@@ -1,5 +1,7 @@
 package com.grahamedgecombe.rs2.net;
 
+import java.util.logging.Logger;
+
 import org.apache.mina.core.session.IoSession;
 
 import com.grahamedgecombe.rs2.model.Player;
@@ -7,10 +9,11 @@ import com.grahamedgecombe.rs2.packet.*;
 
 public class PacketManager {
 	
-	private static PacketManager manager = new PacketManager();
+	private static final Logger logger = Logger.getLogger(PacketManager.class.getName());
+	private static final PacketManager INSTANCE = new PacketManager();
 	
 	public static PacketManager getPacketManager() {
-		return manager;
+		return INSTANCE;
 	}
 	
 	private PacketHandler[] packetHandlers = new PacketHandler[256];
@@ -44,7 +47,12 @@ public class PacketManager {
 	}
 
 	public void handle(IoSession session, Packet packet) {
-		packetHandlers[packet.getOpcode()].handle((Player) session.getAttribute("player"), packet);
+		try {
+			packetHandlers[packet.getOpcode()].handle((Player) session.getAttribute("player"), packet);
+		} catch(Exception ex) {
+			logger.severe("Exception handling packet : " + ex.getMessage());
+			session.close(false);
+		}
 	}
 
 }
