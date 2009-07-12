@@ -122,6 +122,14 @@ public class WalkingQueue {
 	}
 	
 	/**
+	 * Removes the first waypoint which is only used for calculating
+	 * directions. This means walking begins at the correct time.
+	 */
+	public void finish() {
+		waypoints.removeFirst();
+	}
+	
+	/**
 	 * Adds a single step to the walking queue, filling in the points to the
 	 * previous point in the queue if necessary.
 	 * @param x The local x coordinate.
@@ -375,6 +383,7 @@ public class WalkingQueue {
 		 * Take the next point from the queue.
 		 */
 		Point p = waypoints.poll();
+			
 		/*
 		 * Checks if there are no more points.
 		 */

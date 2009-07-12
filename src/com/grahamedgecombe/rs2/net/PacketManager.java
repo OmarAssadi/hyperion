@@ -36,6 +36,8 @@ public class PacketManager {
 		packetHandlers[248] = new WalkingPacketHandler();
 		packetHandlers[164] = new WalkingPacketHandler();
 		packetHandlers[98] = new WalkingPacketHandler();
+		// public chat
+		packetHandlers[4] = new ChatPacketHandler();
 		
 		/*
 		 * Set default handlers.

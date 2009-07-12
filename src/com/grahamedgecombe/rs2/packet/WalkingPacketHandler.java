@@ -31,6 +31,7 @@ public class WalkingPacketHandler implements PacketHandler {
 		    path[i][1] += firstY;
 		    player.getWalkingQueue().addStep(path[i][0], path[i][1]);
 		}
+		player.getWalkingQueue().finish();
 	}
 
 }

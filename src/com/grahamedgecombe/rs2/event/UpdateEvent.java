@@ -10,7 +10,7 @@ import com.grahamedgecombe.rs2.task.ParallelTask;
 import com.grahamedgecombe.rs2.task.ResetTask;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.task.UpdateTask;
-import com.grahamedgecombe.rs2.task.WalkingTask;
+import com.grahamedgecombe.rs2.task.TickTask;
 
 public class UpdateEvent extends Event {
 
@@ -22,21 +22,21 @@ public class UpdateEvent extends Event {
 
 	@Override
 	public void execute() {
-		List<Task> walkingTasks = new ArrayList<Task>();
+		List<Task> tickTasks = new ArrayList<Task>();
 		List<Task> updateTasks = new ArrayList<Task>();
 		List<Task> resetTasks = new ArrayList<Task>();
 		
 		for(Player player : World.getWorld().getPlayers()) {
-			walkingTasks.add(new WalkingTask(player));
+			tickTasks.add(new TickTask(player));
 			updateTasks.add(new UpdateTask(player));
 			resetTasks.add(new ResetTask(player));
 		}
 		
-		Task walkingTask = new ParallelTask(walkingTasks.toArray(new Task[0]));
+		Task tickTask = new ParallelTask(tickTasks.toArray(new Task[0]));
 		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
 		Task resetTask = new ParallelTask(resetTasks.toArray(new Task[0]));
 		
-		World.getWorld().submit(new ConsecutiveTask(walkingTask, updateTask, resetTask));
+		World.getWorld().submit(new ConsecutiveTask(tickTask, updateTask, resetTask));
 	}
 
 }

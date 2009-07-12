@@ -7,7 +7,7 @@ public class UpdateFlags {
 	private BitSet flags = new BitSet();
 	
 	public enum UpdateFlag {
-		APPEARANCE(0);
+		APPEARANCE(0), CHAT(1);
 		
 		private int index;
 		

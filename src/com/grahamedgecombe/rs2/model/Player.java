@@ -1,5 +1,8 @@
 package com.grahamedgecombe.rs2.model;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.apache.mina.core.session.IoSession;
 
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
@@ -32,6 +35,8 @@ public class Player extends Entity {
 	private final ISAACCipher outCipher;
 	private final ActionSender actionSender = new ActionSender(this);
 	private final WalkingQueue walkingQueue = new WalkingQueue(this);
+	private final Queue<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
+	private ChatMessage currentChatMessage;
 	private Location lastKnownRegion = this.getLocation();
 	private boolean mapRegionChanging = false;
 	
@@ -59,6 +64,18 @@ public class Player extends Entity {
 		this.uid = details.getUID();
 		
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
+	
+	public ChatMessage getCurrentChatMessage() {
+		return currentChatMessage;
+	}
+	
+	public void setCurrentChatMessage(ChatMessage currentChatMessage) {
+		this.currentChatMessage = currentChatMessage;
+	}
+	
+	public Queue<ChatMessage> getChatMessageQueue() {
+		return chatMessages;
 	}
 	
 	public boolean isMapRegionChanging() {

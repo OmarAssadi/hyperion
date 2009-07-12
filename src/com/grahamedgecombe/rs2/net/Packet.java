@@ -90,4 +90,8 @@ public class Packet {
 		return (short) i;
 	}
 
+	public byte getByteA() {
+		return (byte) (128 - get());
+	}
+
 }

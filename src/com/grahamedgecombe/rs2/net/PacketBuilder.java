@@ -140,4 +140,10 @@ public class PacketBuilder {
 		return this;
 	}
 
+	public PacketBuilder putLEShort(int val) {
+		payload.put((byte) (val));
+		payload.put((byte) (val >> 8));
+		return this;
+	}
+
 }

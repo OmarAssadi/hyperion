@@ -3,6 +3,7 @@ package com.grahamedgecombe.rs2.task;
 import java.util.Iterator;
 
 import com.grahamedgecombe.rs2.GameEngine;
+import com.grahamedgecombe.rs2.model.ChatMessage;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
@@ -29,8 +30,11 @@ public class UpdateTask implements Task {
 		PacketBuilder packet = new PacketBuilder(81, Packet.Type.VARIABLE_SHORT);
 		packet.startBitAccess();
 		
+		boolean chat = player.getUpdateFlags().get(UpdateFlag.CHAT);
+		player.getUpdateFlags().set(UpdateFlag.CHAT, false);
 		updateThisPlayerMovement(packet);
 		updatePlayer(updateBlock, player, false);
+		player.getUpdateFlags().set(UpdateFlag.CHAT, chat);
 		
 		packet.putBits(8, player.getLocalPlayers().size());
 		
@@ -111,6 +115,9 @@ public class UpdateTask implements Task {
 		}
 		int mask = 0;
 		
+		if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
+			mask |= 0x80;
+		}
 		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			mask |= 0x10;
 		}
@@ -123,11 +130,27 @@ public class UpdateTask implements Task {
 			packet.put((byte) (mask));
 		}
 		
+		if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
+			appendChatUpdate(packet, otherPlayer);
+		}
 		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 			appendPlayerAppearance(packet, otherPlayer);
 		}
 	}
 	
+	public void appendChatUpdate(PacketBuilder packet, Player otherPlayer) {
+		ChatMessage cm = otherPlayer.getCurrentChatMessage();
+		
+		byte[] bytes = cm.getText();
+		
+		packet.putLEShort(((cm.getColour() & 0xFF) << 8) | (cm.getEffects() & 0xFF));
+		packet.put((byte) otherPlayer.getRights().toInteger());
+		packet.putByteC(bytes.length);
+		for(int ptr = bytes.length -1; ptr >= 0; ptr--) {
+			packet.put(bytes[ptr]);
+		}
+	}
+
 	public void appendPlayerAppearance(PacketBuilder packet, Player otherPlayer) {
 		PacketBuilder playerProps = new PacketBuilder();
 		playerProps.put((byte) 0); // gender
