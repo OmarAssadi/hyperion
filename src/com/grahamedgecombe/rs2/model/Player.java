@@ -137,4 +137,9 @@ public class Player extends Entity {
 		this.members = members;
 	}
 	
+	@Override
+	public String toString() {
+		return Player.class.getName() + " [name=" + name + " rights=" + rights + " members=" + members + " index=" + this.getIndex() + "]";
+	}
+	
 }

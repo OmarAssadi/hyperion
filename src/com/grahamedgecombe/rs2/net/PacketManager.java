@@ -26,6 +26,8 @@ public class PacketManager {
 		packetHandlers[0] = new QuietPacketHandler();
 		// region load
 		packetHandlers[121] = new QuietPacketHandler();
+		// camera move
+		packetHandlers[86] = new QuietPacketHandler();
 		// click
 		packetHandlers[241] = new QuietPacketHandler();
 		// action button
