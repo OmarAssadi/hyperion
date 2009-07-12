@@ -314,70 +314,72 @@ public class UpdateTask implements Task {
 		/*
 		 * We can used the cached update block!
 		 */
-		if(otherPlayer.hasCachedUpdateBlock() && otherPlayer != player && !forceAppearance) {
-			packet.put(otherPlayer.getCachedUpdateBlock().getPayload().flip());
-			return;
-		}
-		
-		/*
-		 * We have to construct and cache our own block.
-		 */
-		PacketBuilder block = new PacketBuilder();
-		
-		/*
-		 * Calculate the bitmask.
-		 */
-		int mask = 0;
-		if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
-			mask |= 0x80;
-		}
-		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
-			mask |= 0x10;
-		}
-		
-		/*
-		 * Check if the bitmask would overflow a byte.
-		 */
-		if(mask >= 0x100) {
+		synchronized(otherPlayer) {
+			if(otherPlayer.hasCachedUpdateBlock() && otherPlayer != player && !forceAppearance) {
+				packet.put(otherPlayer.getCachedUpdateBlock().getPayload().flip());
+				return;
+			}
+			
 			/*
-			 * Write it as a short.
+			 * We have to construct and cache our own block.
 			 */
-			mask |= 0x40;
-			block.put((byte) (mask & 0xFF));
-			block.put((byte) (mask >> 8));
-		} else {
+			PacketBuilder block = new PacketBuilder();
+			
 			/*
-			 * Write it as a byte.
+			 * Calculate the bitmask.
 			 */
-			block.put((byte) (mask));
-		}
+			int mask = 0;
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
+				mask |= 0x80;
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
+				mask |= 0x10;
+			}
+			
+			/*
+			 * Check if the bitmask would overflow a byte.
+			 */
+			if(mask >= 0x100) {
+				/*
+				 * Write it as a short.
+				 */
+				mask |= 0x40;
+				block.put((byte) (mask & 0xFF));
+				block.put((byte) (mask >> 8));
+			} else {
+				/*
+				 * Write it as a byte.
+				 */
+				block.put((byte) (mask));
+			}
+			
+			/*
+			 * Append the appropriate updates.
+			 */
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
+				appendChatUpdate(block, otherPlayer);
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
+				appendPlayerAppearanceUpdate(block, otherPlayer);
+			}
+			
+			/*
+			 * Convert the block builder to a packet.
+			 */
+			Packet blockPacket = block.toPacket();
+			
+			/*
+			 * Now it is over, cache the block if we can.
+			 */
+			if(otherPlayer != player && !forceAppearance) {
+				otherPlayer.setCachedUpdateBlock(blockPacket);
+			}
 		
-		/*
-		 * Append the appropriate updates.
-		 */
-		if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
-			appendChatUpdate(block, otherPlayer);
+			/*
+			 * And finally append the block at the end.
+			 */
+			packet.put(blockPacket.getPayload());
 		}
-		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
-			appendPlayerAppearanceUpdate(block, otherPlayer);
-		}
-		
-		/*
-		 * Convert the block builder to a packet.
-		 */
-		Packet blockPacket = block.toPacket();
-		
-		/*
-		 * Now it is over, cache the block if we can.
-		 */
-		if(otherPlayer != player && !forceAppearance) {
-			otherPlayer.setCachedUpdateBlock(blockPacket);
-		}
-		
-		/*
-		 * And finally append the block at the end.
-		 */
-		packet.put(blockPacket.getPayload());
 	}
 	
 	/**
