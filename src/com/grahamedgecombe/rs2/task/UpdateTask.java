@@ -5,6 +5,8 @@ import java.util.Iterator;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.Appearance;
 import com.grahamedgecombe.rs2.model.ChatMessage;
+import com.grahamedgecombe.rs2.model.Equipment;
+import com.grahamedgecombe.rs2.model.Item;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
@@ -154,23 +156,73 @@ public class UpdateTask implements Task {
 
 	public void appendPlayerAppearance(PacketBuilder packet, Player otherPlayer) {
 		Appearance app = otherPlayer.getAppearance();
+		Equipment eq = otherPlayer.getEquipment();
 		
 		PacketBuilder playerProps = new PacketBuilder();
 		playerProps.put((byte) 0); // gender
 		playerProps.put((byte) 0); // skull icon
 		
-		playerProps.put((byte) 0); // hat
-		playerProps.put((byte) 0); // cape
-		playerProps.put((byte) 0); // amulet
-		playerProps.put((byte) 0); // weapon
-		playerProps.putShort((short) 0x100 + app.getChest()); // chest
-		playerProps.put((byte) 0); // shield
-		playerProps.putShort((short) 0x100 + app.getArms()); // arms
-		playerProps.putShort((short) 0x100 + app.getLegs()); // legs
-		playerProps.putShort((short) 0x100 + app.getHead()); // head
-		playerProps.putShort((short) 0x100 + app.getHands()); // hands
-		playerProps.putShort((short) 0x100 + app.getFeet()); // feet
-		playerProps.putShort((short) 0x100 + app.getBeard()); // beard
+		for(int i = 0; i < 4; i++) {
+			if(eq.isEquipped(i)) {
+				playerProps.putShort((short) 0x200 + eq.getEquipment(i).getId());
+			} else {
+				playerProps.put((byte) 0);
+			}
+		}
+		if(eq.isEquipped(Equipment.SLOT_CHEST)) {
+			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_CHEST).getId());
+		} else {
+			playerProps.putShort((short) 0x100 + app.getChest()); // chest
+		}
+		if(eq.isEquipped(Equipment.SLOT_SHIELD)){
+			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_SHIELD).getId());
+		} else {
+			playerProps.put((byte) 0);
+		}
+		Item chest = eq.getEquipment(Equipment.SLOT_CHEST);
+		if(chest != null) {
+			if(!Equipment.is(Equipment.PLATEBODY, chest)) {
+				playerProps.putShort((short) 0x100 + app.getArms());
+			} else {
+				playerProps.putShort((short) 0x200 + chest.getId());
+			}
+		} else {
+			playerProps.putShort((short) 0x100 + app.getArms());
+		}
+		if(eq.isEquipped(Equipment.SLOT_BOTTOMS)) {
+			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_BOTTOMS).getId());
+		} else {
+			playerProps.putShort((short) 0x100 + app.getLegs());
+		}
+		Item helm = eq.getEquipment(Equipment.SLOT_HELM);
+		if(helm != null) {
+			if(!Equipment.is(Equipment.FULL_HELM, helm) && !Equipment.is(Equipment.FULL_MASK, helm)) {
+				playerProps.putShort((short) 0x100 + app.getHead());
+			} else {
+				playerProps.put((byte) 0);
+			}
+		} else {
+			playerProps.putShort((short) 0x100 + app.getHead());
+		}
+		if(eq.isEquipped(Equipment.SLOT_GLOVES)) {
+			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_GLOVES).getId());
+		} else {
+			playerProps.putShort((short) 0x100 + app.getHands());
+		}
+		if(eq.isEquipped(Equipment.SLOT_BOOTS)) {
+			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_BOOTS).getId());
+		} else {
+			playerProps.putShort((short) 0x100 + app.getFeet());
+		}
+		boolean fullHelm = false;
+		if(helm != null) {
+			fullHelm = !Equipment.is(Equipment.FULL_HELM, helm);
+		}
+		if(fullHelm || app.getSex() == 1) {
+			playerProps.put((byte) 0);
+		} else {
+			playerProps.putShort((short) 0x100 + app.getBeard());
+		}
 		
 		playerProps.put((byte) app.getHairColour()); // hairc
 		playerProps.put((byte) app.getTorsoColour()); // torsoc
