@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import com.grahamedgecombe.rs2.model.Equipment;
 import com.grahamedgecombe.rs2.model.Item;
 import com.grahamedgecombe.rs2.model.Location;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.PlayerDetails;
+import com.grahamedgecombe.rs2.model.Skills;
 import com.grahamedgecombe.rs2.util.NameUtils;
 import com.grahamedgecombe.util.Streams;
 
@@ -24,7 +27,7 @@ public class GenericWorldLoader implements WorldLoader {
 		File f = new File("data/savedGames/" + NameUtils.formatNameForProtocol(pd.getName()) + ".dat");
 		if(f.exists()) {
 			try {
-				DataInputStream is = new DataInputStream(new FileInputStream(f));
+				DataInputStream is = new DataInputStream(new GZIPInputStream(new FileInputStream(f)));
 				String name = Streams.readString(is);
 				String pass = Streams.readString(is);
 				if(!name.equals(NameUtils.formatName(pd.getName()))) {
@@ -46,7 +49,7 @@ public class GenericWorldLoader implements WorldLoader {
 	@Override
 	public boolean savePlayer(Player player) {
 		try {
-			DataOutputStream os = new DataOutputStream(new FileOutputStream("data/savedGames/" + NameUtils.formatNameForProtocol(player.getName()) + ".dat"));
+			DataOutputStream os = new DataOutputStream(new GZIPOutputStream(new FileOutputStream("data/savedGames/" + NameUtils.formatNameForProtocol(player.getName()) + ".dat")));
 			Streams.writeString(os, NameUtils.formatName(player.getName()));
 			Streams.writeString(os, player.getPassword());
 			os.writeByte(player.getRights().toInteger());
@@ -67,6 +70,10 @@ public class GenericWorldLoader implements WorldLoader {
 					os.writeInt(item.getCount());
 				}
 			}
+			for(int i = 0; i < Skills.SKILL_COUNT; i++) {
+				os.writeByte((byte) player.getSkills().getLevel(i));
+				os.writeDouble((double) player.getSkills().getExperience(i));
+			}
 			os.flush();
 			os.close();
 			return true;
@@ -78,7 +85,7 @@ public class GenericWorldLoader implements WorldLoader {
 	@Override
 	public boolean loadPlayer(Player player) {
 		try {
-			DataInputStream is = new DataInputStream(new FileInputStream("data/savedGames/" + NameUtils.formatNameForProtocol(player.getName()) + ".dat"));
+			DataInputStream is = new DataInputStream(new GZIPInputStream(new FileInputStream("data/savedGames/" + NameUtils.formatNameForProtocol(player.getName()) + ".dat")));
 			Streams.readString(is);
 			Streams.readString(is);
 			player.setRights(Player.Rights.getRights(is.readUnsignedByte()));
@@ -96,6 +103,10 @@ public class GenericWorldLoader implements WorldLoader {
 					Item item = new Item(id, amt);
 					player.getEquipment().setEquipment(i, item);
 				}
+			}
+			for(int i = 0; i < Skills.SKILL_COUNT; i++) {
+				player.getSkills().setLevel(i, is.readByte());
+				player.getSkills().setExperience(i, is.readDouble());
 			}
 			return true;
 		} catch(IOException ex) {

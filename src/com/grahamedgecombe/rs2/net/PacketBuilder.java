@@ -144,4 +144,12 @@ public class PacketBuilder {
 		return this;
 	}
 
+	public PacketBuilder putInt1(int val) {
+		payload.put((byte) (val >> 8));
+		payload.put((byte) val);
+		payload.put((byte) (val >> 24));
+		payload.put((byte) (val >> 16));
+		return this;
+	}
+
 }

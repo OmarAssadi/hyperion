@@ -1,5 +1,7 @@
 package com.grahamedgecombe.rs2.model;
 
+import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
+
 public class Equipment {
 	
 	public static int CAPES[] = { 3781, 3783, 3785, 3787, 3789, 3777, 3779,
@@ -148,6 +150,11 @@ public class Equipment {
 	}
 	
 	private Container<Item> equipment = new Container<Item>(SIZE);
+	private Player player;
+	
+	public Equipment(Player player) {
+		this.player = player;
+	}
 	
 	public boolean isEquipped(int slot) {
 		return equipment.get(slot) != null;
@@ -159,6 +166,9 @@ public class Equipment {
 	
 	public void setEquipment(int slot, Item item) {
 		equipment.set(slot, item);
+		if(player.isActive()) {
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		}
 	}
 
 }

@@ -5,6 +5,7 @@ import org.apache.mina.core.future.IoFutureListener;
 
 import com.grahamedgecombe.rs2.Constants;
 import com.grahamedgecombe.rs2.model.Player;
+import com.grahamedgecombe.rs2.model.Skills;
 import com.grahamedgecombe.rs2.net.Packet.Type;
 
 public class ActionSender {
@@ -16,8 +17,10 @@ public class ActionSender {
 	}
 	
 	public ActionSender sendLogin() {
+		player.setActive(true);
 		sendDetails();
 		sendSidebarInterfaces();
+		sendSkills();
 		sendMessage("Welcome to RuneScape.");
 		sendMapRegion();
 		return this;
@@ -29,6 +32,22 @@ public class ActionSender {
 		return this;
 	}
 	
+	public ActionSender sendSkills() {
+		for(int i = 0; i < Skills.SKILL_COUNT; i++) {
+			sendSkill(i);
+		}
+		return this;
+	}
+	
+	public ActionSender sendSkill(int skill) {
+		PacketBuilder bldr = new PacketBuilder(134);
+		bldr.put((byte) skill);
+		bldr.putInt1((int) player.getSkills().getExperience(skill));
+		bldr.put((byte) player.getSkills().getLevel(skill));
+		player.getSession().write(bldr.toPacket());
+		return this;
+	}
+
 	public ActionSender sendSidebarInterfaces() {
 		final int[] icons = Constants.SIDEBAR_INTERFACES[0];
 		final int[] interfaces = Constants.SIDEBAR_INTERFACES[1];

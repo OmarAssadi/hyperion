@@ -49,6 +49,7 @@ public class Player extends Entity {
 	private ChatMessage currentChatMessage;
 	private Location lastKnownRegion = this.getLocation();
 	private boolean mapRegionChanging = false;
+	private boolean active = false;
 	
 	/*
 	 * Core login details.
@@ -62,8 +63,9 @@ public class Player extends Entity {
 	/*
 	 * Attributes.
 	 */
-	private Appearance appearance = new Appearance();
-	private Equipment equipment = new Equipment();
+	private final Appearance appearance = new Appearance();
+	private final Equipment equipment = new Equipment(this);
+	private final Skills skills = new Skills(this);
 	
 	public Player(PlayerDetails details) {
 		this.session = details.getSession();
@@ -106,6 +108,10 @@ public class Player extends Entity {
 	
 	public Equipment getEquipment() {
 		return equipment;
+	}
+	
+	public Skills getSkills() {
+		return skills;
 	}
 	
 	public void setLastKnownRegion(Location lastKnownRegion) {
@@ -167,6 +173,14 @@ public class Player extends Entity {
 	@Override
 	public String toString() {
 		return Player.class.getName() + " [name=" + name + " rights=" + rights + " members=" + members + " index=" + this.getIndex() + "]";
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 	
 }
