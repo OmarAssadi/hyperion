@@ -105,9 +105,7 @@ public class PacketBuilder {
 		}
 		
 		int bytes = (int) Math.ceil((double) numBits / 8D) + 1;
-		if(payload.remaining() < bytes) {
-			payload.expand(payload.capacity() + bytes);
-		}
+		payload.expand((bitPosition + 7) / 8 + bytes);
 		
 		byte[] buffer = payload.array();
 		
