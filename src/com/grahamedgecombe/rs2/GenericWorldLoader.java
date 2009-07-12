@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.grahamedgecombe.rs2.model.Equipment;
+import com.grahamedgecombe.rs2.model.Item;
 import com.grahamedgecombe.rs2.model.Location;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.PlayerDetails;
@@ -56,6 +58,15 @@ public class GenericWorldLoader implements WorldLoader {
 			for(int i = 0; i < 13; i++) {
 				os.writeByte((byte) look[i]);
 			}
+			for(int i = 0; i < Equipment.SIZE; i++) {
+				Item item = player.getEquipment().getEquipment(i);
+				if(item == null) {
+					os.writeShort((short) -1);
+				} else {
+					os.writeShort((short) item.getId());
+					os.writeInt(item.getCount());
+				}
+			}
 			os.flush();
 			os.close();
 			return true;
@@ -78,6 +89,14 @@ public class GenericWorldLoader implements WorldLoader {
 				look[i] = is.readByte();
 			}
 			player.getAppearance().setLook(look);
+			for(int i = 0; i < Equipment.SIZE; i++) {
+				int id = is.readUnsignedShort();
+				if(id != 65535) {
+					int amt = is.readInt();
+					Item item = new Item(id, amt);
+					player.getEquipment().setEquipment(i, item);
+				}
+			}
 			return true;
 		} catch(IOException ex) {
 			return false;
