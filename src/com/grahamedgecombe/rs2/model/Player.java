@@ -8,6 +8,7 @@ import org.apache.mina.core.session.IoSession;
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
 import com.grahamedgecombe.rs2.net.ActionSender;
 import com.grahamedgecombe.rs2.net.ISAACCipher;
+import com.grahamedgecombe.rs2.net.Packet;
 
 /**
  * Represents a player-controller character.
@@ -178,6 +179,14 @@ public class Player extends Entity {
 	 */
 	private final Skills skills = new Skills(this);
 	
+	/*
+	 * Cached details.
+	 */
+	/**
+	 * The cached update block.
+	 */
+	private Packet cachedUpdateBlock;
+	
 	/**
 	 * Creates a player based on the details object.
 	 * @param details The details object.
@@ -191,6 +200,37 @@ public class Player extends Entity {
 		this.uid = details.getUID();
 		
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
+	
+	/**
+	 * Checks if there is a cached update block for this cycle.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean hasCachedUpdateBlock() {
+		return cachedUpdateBlock != null;
+	}
+	
+	/**
+	 * Sets the cached update block for this cycle.
+	 * @param cachedUpdateBlock The cached update block.
+	 */
+	public void setCachedUpdateBlock(Packet cachedUpdateBlock) {
+		this.cachedUpdateBlock = cachedUpdateBlock;
+	}
+	
+	/**
+	 * Gets the cached update block.
+	 * @return The cached update block.
+	 */
+	public Packet getCachedUpdateBlock() {
+		return cachedUpdateBlock;
+	}
+	
+	/**
+	 * Resets the cached update block.
+	 */
+	public void resetCachedUpdateBlock() {
+		cachedUpdateBlock = null;
 	}
 	
 	/**

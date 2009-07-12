@@ -29,6 +29,7 @@ public class ResetTask implements Task {
 		player.setTeleporting(false);
 		player.setMapRegionChanging(false);
 		player.resetTeleportTarget();
+		player.resetCachedUpdateBlock();
 	}
 
 }

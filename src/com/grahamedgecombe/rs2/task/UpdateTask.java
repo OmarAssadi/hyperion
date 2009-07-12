@@ -312,6 +312,19 @@ public class UpdateTask implements Task {
 		}
 		
 		/*
+		 * We can used the cached update block!
+		 */
+		if(otherPlayer.hasCachedUpdateBlock() && otherPlayer != player && !forceAppearance) {
+			packet.put(otherPlayer.getCachedUpdateBlock().getPayload().flip());
+			return;
+		}
+		
+		/*
+		 * We have to construct and cache our own block.
+		 */
+		PacketBuilder block = new PacketBuilder();
+		
+		/*
 		 * Calculate the bitmask.
 		 */
 		int mask = 0;
@@ -330,24 +343,41 @@ public class UpdateTask implements Task {
 			 * Write it as a short.
 			 */
 			mask |= 0x40;
-			packet.put((byte) (mask & 0xFF));
-			packet.put((byte) (mask >> 8));
+			block.put((byte) (mask & 0xFF));
+			block.put((byte) (mask >> 8));
 		} else {
 			/*
 			 * Write it as a byte.
 			 */
-			packet.put((byte) (mask));
+			block.put((byte) (mask));
 		}
 		
 		/*
 		 * Append the appropriate updates.
 		 */
 		if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
-			appendChatUpdate(packet, otherPlayer);
+			appendChatUpdate(block, otherPlayer);
 		}
 		if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
-			appendPlayerAppearanceUpdate(packet, otherPlayer);
+			appendPlayerAppearanceUpdate(block, otherPlayer);
 		}
+		
+		/*
+		 * Convert the block builder to a packet.
+		 */
+		Packet blockPacket = block.toPacket();
+		
+		/*
+		 * Now it is over, cache the block if we can.
+		 */
+		if(otherPlayer != player && !forceAppearance) {
+			otherPlayer.setCachedUpdateBlock(blockPacket);
+		}
+		
+		/*
+		 * And finally append the block at the end.
+		 */
+		packet.put(blockPacket.getPayload());
 	}
 	
 	/**
