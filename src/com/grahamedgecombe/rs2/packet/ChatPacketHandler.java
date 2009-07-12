@@ -11,6 +11,8 @@ import com.grahamedgecombe.rs2.net.Packet;
  */
 public class ChatPacketHandler implements PacketHandler {
 
+	private static final int CHAT_QUEUE_SIZE = 4;
+	
 	@Override
 	public void handle(Player player, Packet packet) {
 		int effects = packet.getByteA() & 0xFF;
@@ -21,6 +23,9 @@ public class ChatPacketHandler implements PacketHandler {
 		byte[] chatData = new byte[size];
 		for(int i = 0; i < size; i++) {
 			chatData[i] = (byte) (rawChatData[size - i - 1] - 128);
+		}
+		if(player.getChatMessageQueue().size() >= CHAT_QUEUE_SIZE) {
+			return;
 		}
 		player.getChatMessageQueue().add(new ChatMessage(effects, colour, chatData));
 	}
