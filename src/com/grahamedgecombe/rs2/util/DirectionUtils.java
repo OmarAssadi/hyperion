@@ -3,27 +3,30 @@ package com.grahamedgecombe.rs2.util;
 public class DirectionUtils {
 
 	public static int direction(int dx, int dy) {
-		if (dx < 0) {
-			if (dy < 0)
+		if(dx < 0) {
+			if(dy < 0) {
 				return 5;
-			else if (dy > 0)
+			} else if(dy > 0) {
 				return 0;
-			else
+			} else {
 				return 3;
-		} else if (dx > 0) {
-			if (dy < 0)
+			}
+		} else if(dx > 0) {
+			if(dy < 0) {
 				return 7;
-			else if (dy > 0)
+			} else if(dy > 0) {
 				return 2;
-			else
+			} else {
 				return 4;
+			}
 		} else {
-			if (dy < 0)
+			if(dy < 0) {
 				return 6;
-			else if (dy > 0)
+			} else if(dy > 0) {
 				return 1;
-			else
+			} else {
 				return -1;
+			}
 		}
 	}
 
