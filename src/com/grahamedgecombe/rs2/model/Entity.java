@@ -89,8 +89,10 @@ public abstract class Entity {
 	 * Removes this entity from its region and resets the region.
 	 */
 	public void unsetRegion() {
-		region.remove(this);
-		region = null;
+		if(region != null) {
+			region.remove(this);
+			region = null;
+		}
 	}
 	
 	/**

@@ -283,6 +283,7 @@ public class World {
 	 */
 	public void unregister(final Player player) {
 		player.getSession().close(false);
+		player.unsetRegion();
 		players.remove(player);
 		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
 		engine.submitWork(new Runnable() {
