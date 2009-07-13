@@ -14,7 +14,6 @@ import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.GenericWorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader.LoginResult;
-import com.grahamedgecombe.rs2.event.CleanupEvent;
 import com.grahamedgecombe.rs2.event.Event;
 import com.grahamedgecombe.rs2.event.EventManager;
 import com.grahamedgecombe.rs2.event.UpdateEvent;
@@ -66,11 +65,6 @@ public class World {
 	 * The current loader implementation.
 	 */
 	private WorldLoader loader;
-	
-	/**
-	 * The region manager.
-	 */
-	private RegionManager regionManager = new RegionManager();
 	
 	/**
 	 * A list of connected players.
@@ -145,7 +139,6 @@ public class World {
 	 */
 	private void registerEvents() {
 		submit(new UpdateEvent());
-		submit(new CleanupEvent());
 	}
 	
 	/**
@@ -178,14 +171,6 @@ public class World {
 	 */
 	public GameEngine getEngine() {
 		return engine;
-	}
-	
-	/**
-	 * Gets the region manager.
-	 * @return The region manager.
-	 */
-	public RegionManager getRegionManager() {
-		return regionManager;
 	}
 	
 	/**
@@ -283,7 +268,6 @@ public class World {
 	 */
 	public void unregister(final Player player) {
 		player.getSession().close(false);
-		player.unsetRegion();
 		players.remove(player);
 		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
 		engine.submitWork(new Runnable() {

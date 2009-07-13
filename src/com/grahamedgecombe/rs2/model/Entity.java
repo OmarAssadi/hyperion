@@ -24,7 +24,7 @@ public abstract class Entity {
 	/**
 	 * The current location.
 	 */
-	private Location location;
+	private Location location = DEFAULT_LOCATION;
 	
 	/**
 	 * The teleportation target.
@@ -50,50 +50,6 @@ public abstract class Entity {
 	 * The sprites i.e. walk directions.
 	 */
 	private final Sprites sprites = new Sprites();
-	
-	/**
-	 * The current region.
-	 */
-	private Region region;
-	
-	/**
-	 * Creates the entity and sets the default attributes.
-	 */
-	public Entity() {
-		setLocation(DEFAULT_LOCATION);
-	}
-	
-	/**
-	 * Sets the current region.
-	 * @param region The current region.
-	 */
-	public void setRegion(Region region) {
-		if(this.region != region) {
-			if(this.region != null) {
-				unsetRegion();
-			}
-			this.region = region;
-			this.region.add(this);
-		}
-	}
-	
-	/**
-	 * Gets the current region.
-	 * @return The current region.
-	 */
-	public Region getRegion() {
-		return region;
-	}
-	
-	/**
-	 * Removes this entity from its region and resets the region.
-	 */
-	public void unsetRegion() {
-		if(region != null) {
-			region.remove(this);
-			region = null;
-		}
-	}
 	
 	/**
 	 * Checks if this entity has a target to teleport to.
@@ -179,7 +135,6 @@ public abstract class Entity {
 	 * @param location The current location.
 	 */
 	public void setLocation(Location location) {
-		setRegion(World.getWorld().getRegionManager().getRegionFor(location));
 		this.location = location;
 	}
 	
