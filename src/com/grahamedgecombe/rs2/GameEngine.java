@@ -6,7 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.util.BlockingExecutorService;
 
@@ -50,30 +52,6 @@ public class GameEngine implements Runnable {
 	private Thread thread;
 	
 	/**
-	 * Gets the logic <code>ScheduledExecutorService</code>.
-	 * @return The logic service.
-	 */
-	public ScheduledExecutorService getLogicService() {
-		return logicService;
-	}
-	
-	/**
-	 * Gets the work <code>ExecutorService</code>.
-	 * @return The work service.
-	 */
-	public ExecutorService getWorkService() {
-		return workService;
-	}
-	
-	/**
-	 * Gets the task <code>BlockingExecutorService</code>.
-	 * @return The task service.
-	 */
-	public BlockingExecutorService getTaskService() {
-		return taskService;
-	}
-	
-	/**
 	 * Submits a new task which is processed on the logic thread as soon as
 	 * possible.
 	 * @param task The task to submit.
@@ -115,23 +93,99 @@ public class GameEngine implements Runnable {
 	
 	@Override
 	public void run() {
-		while(running) {
-			try {
-				final Task task = tasks.take();
+		try {
+			while(running) {
 				try {
-					logicService.submit(new Runnable() {
+					final Task task = tasks.take();
+					submitLogic(new Runnable() {
 						@Override
 						public void run() {
 							task.execute(GameEngine.this);
 						}
-					}).get();
-				} catch(ExecutionException e) {
-					throw new RuntimeException(e);
+					});
+				} catch(InterruptedException e) {
+					continue;
 				}
-			} catch(InterruptedException e) {
-				continue;
 			}
+		} finally {
+			logicService.shutdown();
+			taskService.shutdown();
+			workService.shutdown();
 		}
+	}
+
+	/**
+	 * Schedules a task to run in the logic service.
+	 * @param runnable The runnable.
+	 * @param delay The delay.
+	 * @param milliseconds The time unit.
+	 */
+	public void scheduleLogic(final Runnable runnable, long delay, TimeUnit unit) {
+		logicService.schedule(new Runnable() {
+			public void run() {
+				try {
+					runnable.run();
+				} catch(Throwable t) {
+					World.getWorld().handleError(t);
+				}
+			}
+		}, delay, unit);
+	}
+
+	/**
+	 * Submits a task to run in the parallel task service.
+	 * @param runnable The runnable.
+	 */
+	public void submitTask(final Runnable runnable) {
+		taskService.submit(new Runnable() {
+			public void run() {
+				try {
+					runnable.run();
+				} catch(Throwable t) {
+					World.getWorld().handleError(t);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Submits a task to run in the work service.
+	 * @param runnable The runnable.
+	 */
+	public void submitWork(final Runnable runnable) {
+		workService.submit(new Runnable() {
+			public void run() {
+				try {
+					runnable.run();
+				} catch(Throwable t) {
+					World.getWorld().handleError(t);
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Submits a task to run in the logic service.
+	 * @param runnable The runnable.
+	 */
+	public void submitLogic(final Runnable runnable) {
+		logicService.submit(new Runnable() {
+			public void run() {
+				try {
+					runnable.run();
+				} catch(Throwable t) {
+					World.getWorld().handleError(t);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Waits for pending parallel tasks.
+	 * @throws ExecutionException If an error occurred during a task.
+	 */
+	public void waitForPendingParallelTasks() throws ExecutionException {
+		taskService.waitForPendingTasks();
 	}
 
 }

@@ -31,7 +31,7 @@ public class EventManager {
 	 * @param event The event to submit.
 	 */
 	public void submit(final Event event) {
-		engine.getLogicService().schedule(new Runnable() {
+		engine.scheduleLogic(new Runnable() {
 			@Override
 			public void run() {
 				if(event.isRunning()) {

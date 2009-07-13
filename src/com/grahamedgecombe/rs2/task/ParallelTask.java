@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.grahamedgecombe.rs2.GameEngine;
-import com.grahamedgecombe.util.BlockingExecutorService;
 
 /**
  * A task which can execute multiple child tasks simultaneously.
@@ -35,9 +34,8 @@ public class ParallelTask implements Task {
 	
 	@Override
 	public void execute(final GameEngine context) {
-		BlockingExecutorService svc = context.getTaskService();
 		for(final Task task : tasks) {
-			context.getTaskService().submit(new Runnable() {
+			context.submitTask(new Runnable() {
 				@Override
 				public void run() {
 					task.execute(context);
@@ -45,7 +43,7 @@ public class ParallelTask implements Task {
 			});
 		}
 		try {
-			svc.waitForPendingTasks();
+			context.waitForPendingParallelTasks();
 		} catch(ExecutionException e) {
 			throw new RuntimeException(e);
 		}

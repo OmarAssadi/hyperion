@@ -178,7 +178,7 @@ public class World {
 	 * @param pd The player's details.
 	 */
 	public void load(final PlayerDetails pd) {
-		engine.getWorkService().submit(new Runnable() {
+		engine.submitWork(new Runnable() {
 			public void run() {
 				LoginResult lr = loader.checkLogin(pd);
 				int code = lr.getReturnCode();
@@ -270,11 +270,21 @@ public class World {
 		player.getSession().close(false);
 		players.remove(player);
 		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
-		engine.getWorkService().submit(new Runnable() {
+		engine.submitWork(new Runnable() {
 			public void run() {
 				loader.savePlayer(player);
 			}
 		});
+	}
+
+	/**
+	 * Handles an exception in any of the pools.
+	 * @param t The exception.
+	 */
+	public void handleError(Throwable t) {
+		logger.severe("An error occurred in an executor service! The server will be halted immediately.");
+		t.printStackTrace();
+		System.exit(1);
 	}
 	
 }
