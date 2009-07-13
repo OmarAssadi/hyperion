@@ -28,9 +28,14 @@ public class Location {
 	 * @param y The y coordinate.
 	 * @param z The z coordinate.
 	 * @return The location.
+	 * @throws RuntimeException if the region is invalid.
 	 */
 	public static Location create(int x, int y, int z) {
-		return new Location(x, y, z);
+		if(x >= 0 && y >= 0 && x < Short.MAX_VALUE && y < Short.MAX_VALUE && z >= 0 && z < 4) {
+			return new Location(x, y, z);
+		} else {
+			throw new RuntimeException("Invalid location: " + x + "," + y + "," + z + ".");
+		}
 	}
 	
 	/**
@@ -129,7 +134,7 @@ public class Location {
 			return false;
 		}
 		int deltaX = other.x - x, deltaY = other.y - y;
-		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+		return deltaX < 15 && deltaX >= -15 && deltaY < 15 && deltaY >= -15;
 	}
 	
 	@Override

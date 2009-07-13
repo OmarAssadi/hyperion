@@ -5,7 +5,8 @@ import java.util.logging.Logger;
 import org.apache.mina.core.session.IoSession;
 
 import com.grahamedgecombe.rs2.model.Player;
-import com.grahamedgecombe.rs2.packet.*;
+import com.grahamedgecombe.rs2.packet.DefaultPacketHandler;
+import com.grahamedgecombe.rs2.packet.PacketHandler;
 
 /**
  * Managers <code>PacketHandler</code>s.
