@@ -29,7 +29,7 @@ public class Server {
 	public static void main(String[] args) {
 		try {
 			new Server().bind(PORT).start();
-		} catch(IOException e) {
+		} catch(Exception e) {
 			logger.severe("Error while starting server : " + e.getMessage());
 		}
 	}
@@ -52,9 +52,13 @@ public class Server {
 	/**
 	 * Cretaes the server and the <code>GameEngine</code> and initializes the
 	 * <code>World</code>.
+	 * @throws IOException if an I/O error occurs loading the world.
+	 * @throws ClassNotFoundException if a class the world loads was not found.
+	 * @throws IllegalAccessException if a class loaded by the world was not accessible.
+	 * @throws InstantiationException if a class loaded by the world was not created.
 	 */
-	public Server() {
-		logger.info("Starting...");
+	public Server() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		logger.info("Starting rs2 framework...");
 		World.getWorld().init(engine);
 		acceptor.setHandler(new ConnectionHandler());
 		acceptor.getFilterChain().addFirst("throttleFilter", new ConnectionThrottleFilter());
@@ -67,7 +71,7 @@ public class Server {
 	 * @throws IOException
 	 */
 	public Server bind(int port) throws IOException {
-		logger.info("Binding to port : " + port);
+		logger.info("Binding to port : " + port + "...");
 		acceptor.bind(new InetSocketAddress(port));
 		return this;
 	}

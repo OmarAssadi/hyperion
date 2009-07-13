@@ -37,7 +37,7 @@ public class SessionClosedTask implements Task {
 	@Override
 	public void execute(GameEngine context) {
 		SocketAddress address = (SocketAddress) session.getAttribute("remote");
-		logger.info("Session closed : " + address);
+		logger.fine("Session closed : " + address);
 		if(session.containsAttribute("player")) {
 			Player p = (Player) session.getAttribute("player");
 			World.getWorld().unregister(p);

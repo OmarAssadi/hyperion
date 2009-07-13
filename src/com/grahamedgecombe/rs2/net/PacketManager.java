@@ -42,28 +42,6 @@ public class PacketManager {
 	 */
 	public PacketManager() {
 		/*
-		 * Set handlers.
-		 */
-		// keep alive
-		packetHandlers[0] = new QuietPacketHandler();
-		// region load
-		packetHandlers[121] = new QuietPacketHandler();
-		// camera move
-		packetHandlers[86] = new QuietPacketHandler();
-		// click
-		packetHandlers[241] = new QuietPacketHandler();
-		// action button
-		packetHandlers[185] = new ActionButtonPacketHandler();
-		// walking
-		packetHandlers[248] = new WalkingPacketHandler();
-		packetHandlers[164] = new WalkingPacketHandler();
-		packetHandlers[98] = new WalkingPacketHandler();
-		// public chat
-		packetHandlers[4] = new ChatPacketHandler();
-		// commands
-		packetHandlers[103] = new CommandPacketHandler();
-		
-		/*
 		 * Set default handlers.
 		 */
 		final PacketHandler defaultHandler = new DefaultPacketHandler();
@@ -72,6 +50,15 @@ public class PacketManager {
 				packetHandlers[i] = defaultHandler;
 			}
 		}
+	}
+	
+	/**
+	 * Binds an opcode to a handler.
+	 * @param id The opcode.
+	 * @param handler The handler.
+	 */
+	public void bind(int id, PacketHandler handler) {
+		packetHandlers[id] = handler;
 	}
 
 	/**

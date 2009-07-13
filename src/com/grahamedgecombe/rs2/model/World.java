@@ -1,5 +1,9 @@
 package com.grahamedgecombe.rs2.model;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.future.IoFuture;
@@ -14,8 +18,11 @@ import com.grahamedgecombe.rs2.event.Event;
 import com.grahamedgecombe.rs2.event.EventManager;
 import com.grahamedgecombe.rs2.event.UpdateEvent;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
+import com.grahamedgecombe.rs2.net.PacketManager;
+import com.grahamedgecombe.rs2.packet.PacketHandler;
 import com.grahamedgecombe.rs2.task.SessionLoginTask;
 import com.grahamedgecombe.rs2.task.Task;
+import com.grahamedgecombe.rs2.util.ConfigurationParser;
 import com.grahamedgecombe.rs2.util.EntityList;
 import com.grahamedgecombe.rs2.util.NameUtils;
 
@@ -57,7 +64,7 @@ public class World {
 	/**
 	 * The current loader implementation.
 	 */
-	private WorldLoader loader = new GenericWorldLoader();
+	private WorldLoader loader;
 	
 	/**
 	 * A list of connected players.
@@ -65,24 +72,72 @@ public class World {
 	private EntityList<Player> players = new EntityList<Player>(Constants.MAX_PLAYERS);
 	
 	/**
-	 * Initialises the world.
+	 * Initialises the world: loading configuration and registering global
+	 * events.
 	 * @param engine The engine processing this world's tasks.
+	 * @throws IOException if an I/O error occurs loading configuration.
+	 * @throws ClassNotFoundException if a class loaded through reflection was not found.
+	 * @throws IllegalAccessException if a class could not be accessed.
+	 * @throws InstantiationException if a class could not be created.
 	 * @throws IllegalStateException if the world is already initialised.
 	 */
-	public void init(GameEngine engine) {
+	public void init(GameEngine engine) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if(this.engine != null) {
 			throw new IllegalStateException("The world has already been initialised.");
 		} else {
 			this.engine = engine;
 			this.eventManager = new EventManager(engine);
 			this.registerEvents();
+			this.loadConfiguration();
+		}
+	}
+	
+	/**
+	 * Loads server configuration.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws ClassNotFoundException if a class loaded through reflection was not found.
+	 * @throws IllegalAccessException if a class could not be accessed.
+	 * @throws InstantiationException if a class could not be created.
+	 */
+	private void loadConfiguration() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		FileInputStream fis = new FileInputStream("data/configuration.cfg");
+		try {
+			ConfigurationParser p = new ConfigurationParser(fis);
+			Map<String, String> mappings = p.getMappings();
+			if(mappings.containsKey("worldLoader")) {
+				String worldLoaderClass = mappings.get("worldLoader");
+				Class<?> loader = Class.forName(worldLoaderClass);
+				this.loader = (WorldLoader) loader.newInstance();
+				logger.fine("WorldLoader set to : " + worldLoaderClass);
+			} else {
+				this.loader = new GenericWorldLoader();
+				logger.fine("WorldLoader set to default");
+			}
+			Map<String, Map<String, String>> complexMappings = p.getComplexMappings();
+			if(complexMappings.containsKey("packetHandlers")) {
+				Map<Class<?>, Object> loadedHandlers = new HashMap<Class<?>, Object>();
+				for(Map.Entry<String, String> handler : complexMappings.get("packetHandlers").entrySet()) {
+					int id = Integer.parseInt(handler.getKey());
+					Class<?> handlerClass = Class.forName(handler.getValue());
+					Object handlerInstance;
+					if(loadedHandlers.containsKey(handlerClass)) {
+						handlerInstance = loadedHandlers.get(loadedHandlers.get(handlerClass));
+					} else {
+						handlerInstance = handlerClass.newInstance();
+					}
+					PacketManager.getPacketManager().bind(id, (PacketHandler) handlerInstance);
+					logger.fine("Bound " + handler.getValue() + " to opcode : " + id);
+				}
+			}
+		} finally {
+			fis.close();
 		}
 	}
 	
 	/**
 	 * Registers global events such as updating.
 	 */
-	public void registerEvents() {
+	private void registerEvents() {
 		submit(new UpdateEvent());
 	}
 	

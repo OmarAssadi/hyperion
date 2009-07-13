@@ -33,7 +33,7 @@ public class SessionOpenedTask implements Task {
 
 	@Override
 	public void execute(GameEngine context) {
-		logger.info("Session opened : " + session.getRemoteAddress());
+		logger.fine("Session opened : " + session.getRemoteAddress());
 	}
 
 }
