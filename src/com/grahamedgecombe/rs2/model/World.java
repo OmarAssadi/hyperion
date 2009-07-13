@@ -14,6 +14,7 @@ import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.GenericWorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader;
 import com.grahamedgecombe.rs2.WorldLoader.LoginResult;
+import com.grahamedgecombe.rs2.event.CleanupEvent;
 import com.grahamedgecombe.rs2.event.Event;
 import com.grahamedgecombe.rs2.event.EventManager;
 import com.grahamedgecombe.rs2.event.UpdateEvent;
@@ -139,6 +140,7 @@ public class World {
 	 */
 	private void registerEvents() {
 		submit(new UpdateEvent());
+		submit(new CleanupEvent());
 	}
 	
 	/**

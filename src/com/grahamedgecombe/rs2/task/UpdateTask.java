@@ -60,22 +60,10 @@ public class UpdateTask implements Task {
 		packet.startBitAccess();
 		
 		/*
-		 * Resets the chat flag so no chat gets sent back to the original
-		 * player.
-		 */
-		boolean chat = player.getUpdateFlags().get(UpdateFlag.CHAT);
-		player.getUpdateFlags().set(UpdateFlag.CHAT, false);
-		
-		/*
 		 * Updates this player.
 		 */
 		updateThisPlayerMovement(packet);
-		updatePlayer(updateBlock, player, false);
-		
-		/*
-		 * Sets the chat flag to its previous value.
-		 */
-		player.getUpdateFlags().set(UpdateFlag.CHAT, chat);
+		updatePlayer(updateBlock, player, false, true);
 		
 		/*
 		 * Write the current size of the player list.
@@ -104,7 +92,7 @@ public class UpdateTask implements Task {
 				 * Check if an update is required, and if so, send the update.
 				 */
 				if(otherPlayer.getUpdateFlags().isUpdateRequired()) {
-					updatePlayer(updateBlock, otherPlayer, false);
+					updatePlayer(updateBlock, otherPlayer, false, false);
 				}
 			} else {
 				/*
@@ -160,7 +148,7 @@ public class UpdateTask implements Task {
 				/*
 				 * Update the player, forcing the appearance flag.
 				 */
-				updatePlayer(updateBlock, otherPlayer, true);
+				updatePlayer(updateBlock, otherPlayer, true, false);
 			}
 		}
 		
@@ -313,8 +301,9 @@ public class UpdateTask implements Task {
 	 * @param packet The packet.
 	 * @param otherPlayer The other player.
 	 * @param forceAppearance The force appearance flag.
+	 * @param noChat Indicates chat should not be relayed to this player.
 	 */
-	public void updatePlayer(PacketBuilder packet, Player otherPlayer, boolean forceAppearance) {
+	public void updatePlayer(PacketBuilder packet, Player otherPlayer, boolean forceAppearance, boolean noChat) {
 		/*
 		 * If no update is required and we don't have to force an appearance
 		 * update, don't write anything.
@@ -327,7 +316,7 @@ public class UpdateTask implements Task {
 		 * We can used the cached update block!
 		 */
 		synchronized(otherPlayer) {
-			if(otherPlayer.hasCachedUpdateBlock() && otherPlayer != player && !forceAppearance) {
+			if(otherPlayer.hasCachedUpdateBlock() && otherPlayer != player && !forceAppearance && !noChat) {
 				packet.put(otherPlayer.getCachedUpdateBlock().getPayload().flip());
 				return;
 			}
@@ -341,7 +330,7 @@ public class UpdateTask implements Task {
 			 * Calculate the bitmask.
 			 */
 			int mask = 0;
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT) && !noChat) {
 				mask |= 0x80;
 			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
@@ -368,7 +357,7 @@ public class UpdateTask implements Task {
 			/*
 			 * Append the appropriate updates.
 			 */
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT)) {
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT) && !noChat) {
 				appendChatUpdate(block, otherPlayer);
 			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
@@ -383,7 +372,7 @@ public class UpdateTask implements Task {
 			/*
 			 * Now it is over, cache the block if we can.
 			 */
-			if(otherPlayer != player && !forceAppearance) {
+			if(otherPlayer != player && !forceAppearance && !noChat) {
 				otherPlayer.setCachedUpdateBlock(blockPacket);
 			}
 		
