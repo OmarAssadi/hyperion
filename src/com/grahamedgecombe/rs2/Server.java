@@ -61,7 +61,7 @@ public class Server {
 		logger.info("Starting rs2 framework...");
 		World.getWorld().init(engine);
 		acceptor.setHandler(new ConnectionHandler());
-		acceptor.getFilterChain().addFirst("throttleFilter", new ConnectionThrottleFilter());
+		//acceptor.getFilterChain().addFirst("throttleFilter", new ConnectionThrottleFilter());
 	}
 	
 	/**

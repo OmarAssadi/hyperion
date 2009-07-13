@@ -43,7 +43,7 @@ public class Region {
 	 * @return <code>true</code> if there are no entities in the region,
 	 * <code>false</code> if not.
 	 */
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return entities.isEmpty();
 	}
 	
@@ -67,7 +67,7 @@ public class Region {
 	 * Gets the collection of entities within this region.
 	 * @return The collection of entities within this region.
 	 */
-	public Collection<Entity> getEntities() {
+	public synchronized Collection<Entity> getEntities() {
 		return Collections.unmodifiableCollection(entities);
 	}
 
@@ -75,7 +75,7 @@ public class Region {
 	 * Adds an entity to the region.
 	 * @param entity The entity to add.
 	 */
-	public void add(Entity entity) {
+	public synchronized void add(Entity entity) {
 		entities.add(entity);
 	}
 	
@@ -83,7 +83,7 @@ public class Region {
 	 * Removes an entity from the region.
 	 * @param entity The entity to remove.
 	 */
-	public void remove(Entity entity) {
+	public synchronized void remove(Entity entity) {
 		entities.remove(entity);
 	}
 

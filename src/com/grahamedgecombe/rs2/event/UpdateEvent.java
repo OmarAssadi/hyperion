@@ -43,7 +43,7 @@ public class UpdateEvent extends Event {
 			resetTasks.add(new ResetTask(player));
 		}
 		
-		Task tickTask = new ParallelTask(tickTasks.toArray(new Task[0]));
+		Task tickTask = new ConsecutiveTask(tickTasks.toArray(new Task[0]));
 		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
 		Task resetTask = new ParallelTask(resetTasks.toArray(new Task[0]));
 		
