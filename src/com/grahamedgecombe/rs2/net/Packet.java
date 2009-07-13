@@ -113,7 +113,7 @@ public class Packet {
 	
 	/**
 	 * Reads several bytes.
-	 * @param The target array.
+	 * @param b The target array.
 	 */
 	public void get(byte[] b) {
 		payload.get(b);

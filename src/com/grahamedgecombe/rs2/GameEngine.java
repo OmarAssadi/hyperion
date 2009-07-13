@@ -118,7 +118,7 @@ public class GameEngine implements Runnable {
 	 * Schedules a task to run in the logic service.
 	 * @param runnable The runnable.
 	 * @param delay The delay.
-	 * @param milliseconds The time unit.
+	 * @param unit The time unit.
 	 */
 	public void scheduleLogic(final Runnable runnable, long delay, TimeUnit unit) {
 		logicService.schedule(new Runnable() {

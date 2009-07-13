@@ -2,7 +2,8 @@ package com.grahamedgecombe.rs2.net;
 
 /**
  * An implementation of an ISAAC cipher.
- * @see http://en.wikipedia.org/wiki/ISAAC_(cipher)
+ * See <a href="http://en.wikipedia.org/wiki/ISAAC_(cipher)">
+ * http://en.wikipedia.org/wiki/ISAAC_(cipher)</a> for more information.
  * @author Graham
  *
  */
