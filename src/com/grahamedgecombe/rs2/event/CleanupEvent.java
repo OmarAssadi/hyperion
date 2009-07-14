@@ -1,7 +1,7 @@
 package com.grahamedgecombe.rs2.event;
 
 import com.grahamedgecombe.rs2.model.World;
-import com.grahamedgecombe.rs2.task.CleanupTask;
+import com.grahamedgecombe.rs2.task.impl.CleanupTask;
 
 /**
  * An event which runs periodically and performs tasks such as garbage

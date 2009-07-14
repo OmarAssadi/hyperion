@@ -1,4 +1,4 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import java.util.Queue;
 
@@ -6,6 +6,7 @@ import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.ChatMessage;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
+import com.grahamedgecombe.rs2.task.Task;
 
 /**
  * A task which is executed before an <code>UpdateTask</code>. It is similar to

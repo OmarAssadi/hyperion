@@ -7,10 +7,10 @@ import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.task.ConsecutiveTask;
 import com.grahamedgecombe.rs2.task.ParallelTask;
-import com.grahamedgecombe.rs2.task.ResetTask;
 import com.grahamedgecombe.rs2.task.Task;
-import com.grahamedgecombe.rs2.task.UpdateTask;
-import com.grahamedgecombe.rs2.task.TickTask;
+import com.grahamedgecombe.rs2.task.impl.ResetTask;
+import com.grahamedgecombe.rs2.task.impl.TickTask;
+import com.grahamedgecombe.rs2.task.impl.UpdateTask;
 
 /**
  * An event which starts player update tasks.

@@ -1,4 +1,4 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import java.util.Iterator;
 
@@ -12,6 +12,7 @@ import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
 import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.PacketBuilder;
+import com.grahamedgecombe.rs2.task.Task;
 import com.grahamedgecombe.rs2.util.NameUtils;
 
 /**

@@ -1,6 +1,7 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import com.grahamedgecombe.rs2.GameEngine;
+import com.grahamedgecombe.rs2.task.Task;
 
 /**
  * Performs garbage collection and finalization.

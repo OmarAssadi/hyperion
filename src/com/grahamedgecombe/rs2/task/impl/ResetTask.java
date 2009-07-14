@@ -1,7 +1,8 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.Player;
+import com.grahamedgecombe.rs2.task.Task;
 
 /**
  * A task which resets a player after an update cycle.

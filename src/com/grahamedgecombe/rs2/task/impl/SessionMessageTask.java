@@ -1,10 +1,11 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import org.apache.mina.core.session.IoSession;
 
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.PacketManager;
+import com.grahamedgecombe.rs2.task.Task;
 
 /**
  * A task that is executed when a session receives a message.

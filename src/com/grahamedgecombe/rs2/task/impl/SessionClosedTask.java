@@ -1,4 +1,4 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import java.net.SocketAddress;
 import java.util.logging.Logger;
@@ -8,6 +8,7 @@ import org.apache.mina.core.session.IoSession;
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
+import com.grahamedgecombe.rs2.task.Task;
 
 /**
  * A task that is executed when a session is closed.

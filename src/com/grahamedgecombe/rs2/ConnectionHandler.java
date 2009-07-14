@@ -8,9 +8,9 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import com.grahamedgecombe.rs2.model.World;
 import com.grahamedgecombe.rs2.net.Packet;
 import com.grahamedgecombe.rs2.net.RS2CodecFactory;
-import com.grahamedgecombe.rs2.task.SessionClosedTask;
-import com.grahamedgecombe.rs2.task.SessionMessageTask;
-import com.grahamedgecombe.rs2.task.SessionOpenedTask;
+import com.grahamedgecombe.rs2.task.impl.SessionClosedTask;
+import com.grahamedgecombe.rs2.task.impl.SessionMessageTask;
+import com.grahamedgecombe.rs2.task.impl.SessionOpenedTask;
 
 /**
  * The <code>ConnectionHandler</code> processes incoming events from MINA,

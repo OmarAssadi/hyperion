@@ -1,8 +1,9 @@
-package com.grahamedgecombe.rs2.task;
+package com.grahamedgecombe.rs2.task.impl;
 
 import com.grahamedgecombe.rs2.GameEngine;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.model.World;
+import com.grahamedgecombe.rs2.task.Task;
 
 /**
  * A task that is executed when a player has logged in.
