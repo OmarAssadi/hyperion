@@ -145,7 +145,7 @@ public class ScriptManager {
 		if (dir.exists() && dir.isDirectory()) {
 			File[] children = dir.listFiles();
 			for (File child : children) {
-				if (child.isFile() && child.getName().endsWith(".js")) {
+				if (child.isFile() && child.getName().endsWith(".js"))
 					try {
 						jsEngine.eval(new InputStreamReader(
 								new FileInputStream(child)));
@@ -154,7 +154,7 @@ public class ScriptManager {
 					} catch (FileNotFoundException ex) {
 						logger.log(Level.SEVERE, "Unable to find script!", ex);
 					}
-				} else if (child.isDirectory())
+				else if (child.isDirectory())
 					loadJS(child.getPath());
 			}
 		}
@@ -172,7 +172,7 @@ public class ScriptManager {
 		if (dir.exists() && dir.isDirectory()) {
 			File[] children = dir.listFiles();
 			for (File child : children) {
-				if (child.isFile() && child.getName().endsWith(".py")) {
+				if (child.isFile() && child.getName().endsWith(".py"))
 					try {
 						pyEngine.eval(new InputStreamReader(
 								new FileInputStream(child)));
@@ -181,8 +181,8 @@ public class ScriptManager {
 					} catch (FileNotFoundException ex) {
 						logger.log(Level.SEVERE, "Unable to find script!", ex);
 					}
-				} else if (child.isDirectory())
-					loadJS(child.getPath());
+				else if (child.isDirectory())
+					loadPy(child.getPath());
 			}
 		}
 	}
@@ -198,7 +198,7 @@ public class ScriptManager {
 		if (dir.exists() && dir.isDirectory()) {
 			File[] children = dir.listFiles();
 			for (File child : children) {
-				if (child.isFile() && child.getName().endsWith(".rb")) {
+				if (child.isFile() && child.getName().endsWith(".rb"))
 					try {
 						rubyEngine.eval(new InputStreamReader(
 								new FileInputStream(child)));
@@ -207,8 +207,8 @@ public class ScriptManager {
 					} catch (FileNotFoundException ex) {
 						logger.log(Level.SEVERE, "Unable to find script!", ex);
 					}
-				} else if (child.isDirectory())
-					loadJS(child.getPath());
+				else if (child.isDirectory())
+					loadRuby(child.getPath());
 			}
 		}
 	}
