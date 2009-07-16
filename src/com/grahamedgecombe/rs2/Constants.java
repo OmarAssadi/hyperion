@@ -8,6 +8,11 @@ package com.grahamedgecombe.rs2;
 public class Constants {
 	
 	/**
+	 * The directory for the engine scripts.
+	 */
+	public static final String scriptsDirectory = "./data/scripts/";
+	
+	/**
 	 * Difference in X coordinates for directions array.
 	 */
 	public static final byte[] DIRECTION_DELTA_X = new byte[] {-1, 0, 1, -1, 1, -1, 0, 1};

@@ -23,8 +23,6 @@ public class Server {
 	 */
 	private static final int PORT = 43594;
 
-	private static ScriptManager scriptManager;
-
 	/**
 	 * The entry point of the application.
 	 * 
@@ -33,9 +31,7 @@ public class Server {
 	 */
 	public static void main(String[] args) {
 		logger.info("Starting rs2 framework...");
-		scriptManager = new ScriptManager();
 		try {
-			scriptManager.loadAllScripts();
 			new Server().bind(PORT).start();
 		} catch (Exception e) {
 			logger.severe("Error while starting server : " + e.getMessage());
@@ -97,6 +93,7 @@ public class Server {
 	 * Starts the <code>GameEngine</code>.
 	 */
 	public void start() {
+		ScriptManager.getScriptManager().loadScripts(Constants.scriptsDirectory);
 		engine.start();
 		logger.info("Ready");
 	}

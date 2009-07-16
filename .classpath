@@ -10,10 +10,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-nop-1.5.8.jar"/>
-	<classpathentry kind="lib" path="data/scripts/engines/Python/build/jython-engine.jar"/>
-	<classpathentry kind="lib" path="data/scripts/engines/Python/lib/jython.jar"/>
-	<classpathentry kind="lib" path="data/scripts/engines/Ruby/build/jruby-engine.jar"/>
-	<classpathentry kind="lib" path="data/scripts/engines/Ruby/lib/jruby.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

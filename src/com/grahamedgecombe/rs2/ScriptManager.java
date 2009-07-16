@@ -30,49 +30,18 @@ public class ScriptManager {
 	private ScriptEngine jsEngine;
 
 	/**
-	 * The Python Engine.
-	 */
-	private ScriptEngine pyEngine;
-
-	/**
-	 * The Ruby Engine.
-	 */
-	private ScriptEngine rubyEngine;
-
-	/**
-	 * The directory for the JavaScript Engine scripts.
-	 */
-	private final String jsScriptsDir = System.getProperty("$SCRIPTING_SRC")
-			+ "/engines/JavaScript/src/";
-
-	/**
-	 * The directory for the Python Engine scripts.
-	 */
-	private final String pyScriptsDir = System.getProperty("$SCRIPTING_SRC")
-			+ "/engines/Python/src/";
-
-	/**
-	 * The directory for the Ruby Engine scripts.
-	 */
-	private final String rubyScriptsDir = System.getProperty("$SCRIPTING_SRC")
-			+ "/engines/Ruby/src/";
-
-	/**
 	 * The logger for this manager.
 	 */
 	private final Logger logger = Logger.getLogger(this.toString());
 
+	/**
+	 * The singleton of this class.
+	 */
+	private static ScriptManager scriptManager;
+
 	{
 		mgr = new ScriptEngineManager();
 		jsEngine = mgr.getEngineByName("JavaScript");
-		pyEngine = mgr.getEngineByName("jython");
-		rubyEngine = mgr.getEngineByName("jruby");
-	}
-
-	public void loadAllScripts() {
-		loadJS(jsScriptsDir);
-		loadPy(pyScriptsDir);
-		loadRuby(rubyScriptsDir);
 	}
 
 	/**
@@ -83,46 +52,8 @@ public class ScriptManager {
 	 * @param args
 	 *            The function arguments.
 	 */
-	public void callJSFunc(String identifier, Object... args) {
+	public void func(String identifier, Object... args) {
 		Invocable invEngine = (Invocable) jsEngine;
-		try {
-			invEngine.invokeFunction(identifier, args);
-		} catch (NoSuchMethodException ex) {
-			logger.log(Level.WARNING, "No such method: " + identifier, ex);
-		} catch (ScriptException ex) {
-			logger.log(Level.WARNING, "ScriptException thrown!", ex);
-		}
-	}
-
-	/**
-	 * Calls a Python function.
-	 * 
-	 * @param identifier
-	 *            The identifier of the function.
-	 * @param args
-	 *            The function arguments.
-	 */
-	public void callPyFunc(String identifier, Object... args) {
-		Invocable invEngine = (Invocable) pyEngine;
-		try {
-			invEngine.invokeFunction(identifier, args);
-		} catch (NoSuchMethodException ex) {
-			logger.log(Level.WARNING, "No such method: " + identifier, ex);
-		} catch (ScriptException ex) {
-			logger.log(Level.WARNING, "ScriptException thrown!", ex);
-		}
-	}
-
-	/**
-	 * Calls a Ruby function.
-	 * 
-	 * @param identifier
-	 *            The identifier of the function.
-	 * @param args
-	 *            The function arguments.
-	 */
-	public void callRubyFunc(String identifier, Object... args) {
-		Invocable invEngine = (Invocable) rubyEngine;
 		try {
 			invEngine.invokeFunction(identifier, args);
 		} catch (NoSuchMethodException ex) {
@@ -140,7 +71,8 @@ public class ScriptManager {
 	 *            The path of the directory to load the JavaScript source files
 	 *            from.
 	 */
-	private void loadJS(String dirPath) {
+	public void loadScripts(String dirPath) {
+		logger.info("Loading scripts...");
 		File dir = new File(dirPath);
 		if (dir.exists() && dir.isDirectory()) {
 			File[] children = dir.listFiles();
@@ -155,62 +87,20 @@ public class ScriptManager {
 						logger.log(Level.SEVERE, "Unable to find script!", ex);
 					}
 				else if (child.isDirectory())
-					loadJS(child.getPath());
+					loadScripts(child.getPath());
 			}
 		}
 	}
 
 	/**
-	 * Loads Python files into the Python ScriptEngine from the argued path.
+	 * Gets the ScriptManager singleton.
 	 * 
-	 * @param dirPath
-	 *            The path of the directory to load the Python source files
-	 *            from.
+	 * @return The ScriptManager singleton.
 	 */
-	private void loadPy(String dirPath) {
-		File dir = new File(dirPath);
-		if (dir.exists() && dir.isDirectory()) {
-			File[] children = dir.listFiles();
-			for (File child : children) {
-				if (child.isFile() && child.getName().endsWith(".py"))
-					try {
-						pyEngine.eval(new InputStreamReader(
-								new FileInputStream(child)));
-					} catch (ScriptException ex) {
-						logger.log(Level.SEVERE, "Unable to load script!", ex);
-					} catch (FileNotFoundException ex) {
-						logger.log(Level.SEVERE, "Unable to find script!", ex);
-					}
-				else if (child.isDirectory())
-					loadPy(child.getPath());
-			}
-		}
-	}
-
-	/**
-	 * Loads Ruby files into the Ruby ScriptEngine from the argued path.
-	 * 
-	 * @param dirPath
-	 *            The path of the directory to load the Ruby source files from.
-	 */
-	private void loadRuby(String dirPath) {
-		File dir = new File(dirPath);
-		if (dir.exists() && dir.isDirectory()) {
-			File[] children = dir.listFiles();
-			for (File child : children) {
-				if (child.isFile() && child.getName().endsWith(".rb"))
-					try {
-						rubyEngine.eval(new InputStreamReader(
-								new FileInputStream(child)));
-					} catch (ScriptException ex) {
-						logger.log(Level.SEVERE, "Unable to load script!", ex);
-					} catch (FileNotFoundException ex) {
-						logger.log(Level.SEVERE, "Unable to find script!", ex);
-					}
-				else if (child.isDirectory())
-					loadRuby(child.getPath());
-			}
-		}
+	public static ScriptManager getScriptManager() {
+		if (scriptManager == null)
+			scriptManager = new ScriptManager();
+		return scriptManager;
 	}
 
 }
