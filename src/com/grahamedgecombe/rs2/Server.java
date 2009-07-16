@@ -52,7 +52,7 @@ public class Server {
 	/**
 	 * The <code>GameEngine</code> instance.
 	 */
-	private final GameEngine engine = new GameEngine();
+	private static final GameEngine engine = new GameEngine();
 
 	/**
 	 * Cretaes the server and the <code>GameEngine</code> and initializes the
@@ -98,4 +98,12 @@ public class Server {
 		logger.info("Ready");
 	}
 
+	/**
+	 * Gets the <code>GameEngine</code.
+	 * @return
+	 */
+	public static GameEngine getEngine() {
+		return engine;
+	}
+	
 }

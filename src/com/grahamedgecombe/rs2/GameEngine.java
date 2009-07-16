@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.grahamedgecombe.rs2.model.World;
@@ -119,9 +120,10 @@ public class GameEngine implements Runnable {
 	 * @param runnable The runnable.
 	 * @param delay The delay.
 	 * @param unit The time unit.
+	 * @return The <code>ScheduledFuture</code> of the scheduled logic.
 	 */
-	public void scheduleLogic(final Runnable runnable, long delay, TimeUnit unit) {
-		logicService.schedule(new Runnable() {
+	public ScheduledFuture<?> scheduleLogic(final Runnable runnable, long delay, TimeUnit unit) {
+		return logicService.schedule(new Runnable() {
 			public void run() {
 				try {
 					runnable.run();
