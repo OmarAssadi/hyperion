@@ -5,7 +5,7 @@ import java.util.Queue;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.grahamedgecombe.rs2.event.ActionEvent;
+import com.grahamedgecombe.rs2.action.ActionQueue;
 import com.grahamedgecombe.rs2.model.UpdateFlags.UpdateFlag;
 import com.grahamedgecombe.rs2.net.ActionSender;
 import com.grahamedgecombe.rs2.net.ISAACCipher;
@@ -112,9 +112,9 @@ public class Player extends Entity {
 	private final Queue<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
 	
 	/**
-	 * A queue of <code>ActionEvent</code> objects.
+	 * A queue of actions.
 	 */
-	private final Queue<ActionEvent> queuedActionEvents = new LinkedList<ActionEvent>();
+	private final ActionQueue actionQueue = new ActionQueue();
 	
 	/**
 	 * The current chat message.
@@ -445,22 +445,11 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Cancels all queued action events.
+	 * Gets the action queue.
+	 * @return The action queue.
 	 */
-	public void cancelQueuedActionEvents() {
-		for (ActionEvent actionEvent : queuedActionEvents) {
-			actionEvent.stop();
-		}
-		queuedActionEvents.clear();
-	}
-	
-	/**
-	 * Adds an <code>ActionEvent</code> to the world event manager.
-	 * @param actionEvent
-	 */
-	public void addActionEvent(ActionEvent actionEvent) {
-		World.getWorld().submit(actionEvent);
-		queuedActionEvents.add(actionEvent);
+	public ActionQueue getActionQueue() {
+		return actionQueue;
 	}
 	
 }
