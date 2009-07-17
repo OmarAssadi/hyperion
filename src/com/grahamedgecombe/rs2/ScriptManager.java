@@ -18,6 +18,20 @@ import javax.script.ScriptException;
  * @author blakeman8192
  */
 public class ScriptManager {
+	
+	/**
+	 * The singleton of this class.
+	 */
+	private static ScriptManager scriptManager = new ScriptManager();
+	
+	/**
+	 * Gets the ScriptManager singleton.
+	 * 
+	 * @return The ScriptManager singleton.
+	 */
+	public static ScriptManager getScriptManager() {
+		return scriptManager;
+	}
 
 	/**
 	 * The ScriptEngineManager.
@@ -35,11 +49,9 @@ public class ScriptManager {
 	private final Logger logger = Logger.getLogger(this.toString());
 
 	/**
-	 * The singleton of this class.
+	 * Creates the script manager.
 	 */
-	private static ScriptManager scriptManager;
-
-	{
+	private ScriptManager() {
 		mgr = new ScriptEngineManager();
 		jsEngine = mgr.getEngineByName("JavaScript");
 	}
@@ -90,17 +102,6 @@ public class ScriptManager {
 					loadScripts(child.getPath());
 			}
 		}
-	}
-
-	/**
-	 * Gets the ScriptManager singleton.
-	 * 
-	 * @return The ScriptManager singleton.
-	 */
-	public static ScriptManager getScriptManager() {
-		if (scriptManager == null)
-			scriptManager = new ScriptManager();
-		return scriptManager;
 	}
 
 }
