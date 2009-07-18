@@ -7,7 +7,7 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestContainer {
+public class TestContainer implements ContainerListener {
 	
 	public static final int CAP = 28;
 	
@@ -16,6 +16,9 @@ public class TestContainer {
 	@Before
 	public void setUp() throws Exception {
 		container = new Container<Item>(CAP);
+		itemChangedFired = false;
+		itemsChangedFired = false;
+		slot = -1;
 	}
 
 	@Test
@@ -88,6 +91,7 @@ public class TestContainer {
 
 	@Test
 	public void testShift() {
+		container.addListener(this);
 		Item item1 = new Item(995, 999999999);
 		Item item2 = new Item(995, 999999999);
 		Item item3 = new Item(995, 999999999);
@@ -95,6 +99,7 @@ public class TestContainer {
 		container.set(5, item2);
 		container.set(10, item3);
 		container.shift();
+		assertTrue(itemsChangedFired);
 		assertEquals(item1, container.get(0));
 		assertEquals(item2, container.get(1));
 		assertEquals(item3, container.get(2));
@@ -117,8 +122,13 @@ public class TestContainer {
 	@Test
 	public void testAdd() {
 		Item item = new Item(995);
+		container.addListener(this);
 		for(int i = 0; i < CAP; i++) {
 			assertTrue(container.add(item));
+			assertTrue(itemChangedFired);
+			assertEquals(i, slot);
+			this.itemChangedFired = false;
+			this.slot = -1;
 		}
 		assertFalse(container.add(item));
 	}
@@ -155,10 +165,29 @@ public class TestContainer {
 
 	@Test
 	public void testClear() {
+		container.addListener(this);
 		container.set(0, new Item(995));
 		container.set(1, new Item(995));
 		container.clear();
 		assertEquals(0, container.size());
+		assertTrue(itemsChangedFired);
+	}
+	
+	private boolean itemChangedFired = false;
+	private boolean itemsChangedFired = false;
+	private int slot = -1;
+
+	@Override
+	public void itemChanged(Container<?> container, int slot) {
+		assertEquals(this.container, container);
+		this.itemChangedFired = true;
+		this.slot = slot;
+	}
+
+	@Override
+	public void itemsChanged(Container<?> container) {
+		assertEquals(this.container, container);
+		this.itemsChangedFired = true;
 	}
 
 }
