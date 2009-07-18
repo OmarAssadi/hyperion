@@ -3,6 +3,7 @@ package com.grahamedgecombe.rs2.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.grahamedgecombe.rs2.action.Action.QueuePolicy;
 import com.grahamedgecombe.rs2.model.World;
 
 /**
@@ -22,7 +23,7 @@ public class ActionQueue {
 	/**
 	 * A queue of <code>Action</code> objects.
 	 */
-	private final Queue<Action> queuedActionEvents = new LinkedList<Action>();
+	private final Queue<Action> queuedActions = new LinkedList<Action>();
 	
 	/**
 	 * The current action.
@@ -33,23 +34,26 @@ public class ActionQueue {
 	 * Cancels all queued action events.
 	 */
 	public void cancelQueuedActions() {
-		for(Action actionEvent : queuedActionEvents) {
+		for(Action actionEvent : queuedActions) {
 			actionEvent.stop();
 		}
-		queuedActionEvents.clear();
+		queuedActions.clear();
 		currentAction.stop();
 		currentAction = null;
 	}
 	
 	/**
 	 * Adds an <code>Action</code> to the queue.
-	 * @param actionEvent
+	 * @param action The action.
 	 */
-	public void addAction(Action actionEvent) {
-		if(queuedActionEvents.size() >= MAXIMUM_SIZE) {
+	public void addAction(Action action) {
+		if(queuedActions.size() >= MAXIMUM_SIZE) {
 			return;
 		}
-		queuedActionEvents.add(actionEvent);
+		if(action.getQueuePolicy() == QueuePolicy.NEVER && queuedActions.size() > 0) {
+			return;
+		}
+		queuedActions.add(action);
 		processNextAction();
 	}
 
@@ -62,8 +66,8 @@ public class ActionQueue {
 				return;
 			}
 		}
-		if(queuedActionEvents.size() > 0) {
-			currentAction = queuedActionEvents.poll();
+		if(queuedActions.size() > 0) {
+			currentAction = queuedActions.poll();
 			World.getWorld().submit(currentAction);
 		}
 	}
