@@ -54,8 +54,8 @@ public abstract class Action extends Event {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the queue policy of this action.
+	 * @return The queue policy of this action.
 	 */
 	public abstract QueuePolicy getQueuePolicy();
 	
