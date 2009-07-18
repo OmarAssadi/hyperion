@@ -9,7 +9,6 @@ import org.apache.mina.filter.firewall.ConnectionThrottleFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.hyperion.rs2.model.World;
 
-
 /**
  * Starts everything else including MINA and the <code>GameEngine</code>.
  * @author Graham

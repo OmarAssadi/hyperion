@@ -26,7 +26,7 @@ public class RS2Decoder extends CumulativeProtocolDecoder {
 			if(opcode == -1) {
 				if(in.remaining() >= 1) {
 					opcode = in.get() & 0xFF;
-					opcode = (opcode - inCipher.getNextKey()) & 0xFF;
+					opcode = (opcode - inCipher.getNextValue()) & 0xFF;
 					size = Constants.PACKET_SIZES[opcode];
 					session.setAttribute("opcode", opcode);
 					session.setAttribute("size", size);

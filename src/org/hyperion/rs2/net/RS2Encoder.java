@@ -27,7 +27,7 @@ public class RS2Encoder implements ProtocolEncoder {
 				Packet.Type type = p.getType();
 				int length = p.getLength();
 				
-				opcode += outCipher.getNextKey();
+				opcode += outCipher.getNextValue();
 				
 				int finalLength = length + 1;
 				switch(type) {
