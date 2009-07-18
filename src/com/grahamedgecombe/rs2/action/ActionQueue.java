@@ -3,7 +3,6 @@ package com.grahamedgecombe.rs2.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.grahamedgecombe.rs2.action.Action.QueuePolicy;
 import com.grahamedgecombe.rs2.model.World;
 
 /**
