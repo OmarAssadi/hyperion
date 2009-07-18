@@ -2,10 +2,22 @@ package org.hyperion.rs2.trigger.impl.cond;
 
 import org.hyperion.rs2.trigger.TriggerCondition;
 
+/**
+ * A condition which is triggered upon a command.
+ * @author Graham
+ *
+ */
 public class CommandCondition implements TriggerCondition {
 	
+	/**
+	 * The command.
+	 */
 	private String command;
 	
+	/**
+	 * Creates the condition.
+	 * @param command The command.
+	 */
 	public CommandCondition(String command) {
 		this.command = command;
 	}
