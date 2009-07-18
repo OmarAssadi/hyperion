@@ -8,10 +8,8 @@ import java.util.List;
 
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.util.EntityList;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 
 public class TestEntityList {
 	
