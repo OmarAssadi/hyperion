@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hyperion.rs2.model.Player;
-import org.hyperion.rs2.trigger.impl.cond.CommandCondition;
-import org.hyperion.rs2.trigger.impl.trigger.TestCommandTrigger;
-
 
 /**
  * The <code>TriggerManager</code> manages the relationship between a
@@ -40,7 +37,7 @@ public class TriggerManager {
 	 * Creates the <code>TriggerManager</code> and adds a few test triggers.
 	 */
 	public TriggerManager() {
-		create(new CommandCondition("test"), new TestCommandTrigger());
+		
 	}
 	
 	/**
