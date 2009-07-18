@@ -8,7 +8,6 @@ import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.task.Task;
 
-
 /**
  * A task which is executed before an <code>UpdateTask</code>. It is similar to
  * the call to <code>process()</code> but you should use <code>Event</code>s

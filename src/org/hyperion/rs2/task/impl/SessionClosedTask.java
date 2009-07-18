@@ -9,7 +9,6 @@ import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.task.Task;
 
-
 /**
  * A task that is executed when a session is closed.
  * @author Graham

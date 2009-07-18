@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.util.DirectionUtils;
 
-
 /**
  * <p>A <code>WalkingQueue</code> stores steps the client needs to walk and
  * allows this queue of steps to be modified.</p>

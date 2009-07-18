@@ -6,7 +6,6 @@ import org.apache.mina.core.session.IoSession;
 import org.hyperion.rs2.GameEngine;
 import org.hyperion.rs2.task.Task;
 
-
 /**
  * A task that is executed when a session is opened.
  * @author Graham

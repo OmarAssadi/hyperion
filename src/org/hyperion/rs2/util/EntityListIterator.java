@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 
 import org.hyperion.rs2.model.Entity;
 
-
 /**
  * An implementation of an iterator for an entity list.
  * @author Graham

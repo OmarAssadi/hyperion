@@ -26,7 +26,6 @@ import org.hyperion.rs2.util.ConfigurationParser;
 import org.hyperion.rs2.util.EntityList;
 import org.hyperion.rs2.util.NameUtils;
 
-
 /**
  * Holds data global to the game world.
  * @author Graham

@@ -10,7 +10,6 @@ import org.hyperion.rs2.net.ActionSender;
 import org.hyperion.rs2.net.ISAACCipher;
 import org.hyperion.rs2.net.Packet;
 
-
 /**
  * Represents a player-controller character.
  * @author Graham

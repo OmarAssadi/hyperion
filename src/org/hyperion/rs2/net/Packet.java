@@ -3,7 +3,6 @@ package org.hyperion.rs2.net;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.hyperion.rs2.util.IoBufferUtils;
 
-
 /**
  * Represents a single packet.
  * @author Graham

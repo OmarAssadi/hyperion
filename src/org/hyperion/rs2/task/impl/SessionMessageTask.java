@@ -6,7 +6,6 @@ import org.hyperion.rs2.net.Packet;
 import org.hyperion.rs2.net.PacketManager;
 import org.hyperion.rs2.task.Task;
 
-
 /**
  * A task that is executed when a session receives a message.
  * @author Graham

@@ -7,7 +7,6 @@ import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
 import org.hyperion.rs2.net.Packet.Type;
 
-
 /**
  * A utility class for sending packets.
  * @author Graham

@@ -8,7 +8,6 @@ import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.net.Packet.Type;
 
-
 /**
  * Game protocol decoding class.
  * @author Graham

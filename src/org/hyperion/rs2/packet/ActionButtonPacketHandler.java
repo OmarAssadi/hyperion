@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.net.Packet;
 
-
 /**
  * Handles clicking on most buttons in the interface.
  * @author Graham

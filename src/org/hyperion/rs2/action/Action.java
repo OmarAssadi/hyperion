@@ -5,9 +5,9 @@ import org.hyperion.rs2.model.Player;
 
 /**
  * An <code>Event</code> used for handling game actions.
- * 
  * @author blakeman8192
  * @author Graham
+ * 
  */
 public abstract class Action extends Event {
 	
@@ -37,11 +37,8 @@ public abstract class Action extends Event {
 
 	/**
 	 * Creates a new ActionEvent.
-	 * 
-	 * @param player
-	 *            The player.
-	 * @param delay
-	 *            The initial delay.
+	 * @param player The player.
+	 * @param delay The initial delay.
 	 */
 	public Action(Player player, long delay) {
 		super(delay);
@@ -50,13 +47,16 @@ public abstract class Action extends Event {
 
 	/**
 	 * Gets the player.
-	 * 
-	 * @return
+	 * @return The player.
 	 */
 	public Player getPlayer() {
 		return player;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public abstract QueuePolicy getQueuePolicy();
 	
 	@Override

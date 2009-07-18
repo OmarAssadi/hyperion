@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.hyperion.rs2.GameEngine;
 
-
 /**
  * A task which executes a group of tasks in a guaranteed sequence.
  * @author Graham

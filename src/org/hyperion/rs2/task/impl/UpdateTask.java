@@ -15,7 +15,6 @@ import org.hyperion.rs2.net.PacketBuilder;
 import org.hyperion.rs2.task.Task;
 import org.hyperion.rs2.util.NameUtils;
 
-
 /**
  * A task which creates and sends the update block.
  * @author Graham

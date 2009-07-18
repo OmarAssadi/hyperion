@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import org.hyperion.rs2.model.Entity;
 
-
 /**
  * A class which represents a list of entities.
  * @author Graham

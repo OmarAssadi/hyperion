@@ -14,23 +14,22 @@ import javax.script.ScriptException;
 
 /**
  * Manages server scripts.
- * 
  * @author blakeman8192
+ * 
  */
 public class ScriptManager {
 	
 	/**
 	 * The singleton of this class.
 	 */
-	private static ScriptManager scriptManager = new ScriptManager();
+	private static final ScriptManager INSTANCE = new ScriptManager();
 	
 	/**
 	 * Gets the ScriptManager singleton.
-	 * 
 	 * @return The ScriptManager singleton.
 	 */
 	public static ScriptManager getScriptManager() {
-		return scriptManager;
+		return INSTANCE;
 	}
 
 	/**
@@ -54,17 +53,15 @@ public class ScriptManager {
 	private ScriptManager() {
 		mgr = new ScriptEngineManager();
 		jsEngine = mgr.getEngineByName("JavaScript");
+		logger.info("Loading scripts...");
 	}
 
 	/**
-	 * Calls a JavaScript function.
-	 * 
-	 * @param identifier
-	 *            The identifier of the function.
-	 * @param args
-	 *            The function arguments.
+	 * Invokes a JavaScript function.
+	 * @param identifier The identifier of the function.
+	 * @param args The function arguments.
 	 */
-	public void func(String identifier, Object... args) {
+	public void invoke(String identifier, Object... args) {
 		Invocable invEngine = (Invocable) jsEngine;
 		try {
 			invEngine.invokeFunction(identifier, args);
@@ -78,13 +75,10 @@ public class ScriptManager {
 	/**
 	 * Loads JavaScript files into the JavaScript ScriptEngine from the argued
 	 * path.
-	 * 
-	 * @param dirPath
-	 *            The path of the directory to load the JavaScript source files
-	 *            from.
+	 * @param dirPath The path of the directory to load the JavaScript source files
+	 * from.
 	 */
 	public void loadScripts(String dirPath) {
-		logger.info("Loading scripts...");
 		File dir = new File(dirPath);
 		if (dir.exists() && dir.isDirectory()) {
 			File[] children = dir.listFiles();

@@ -6,7 +6,6 @@ import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.hyperion.rs2.model.Player;
 
-
 /**
  * Game protocol encoding class.
  * @author Graham

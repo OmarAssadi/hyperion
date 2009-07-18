@@ -13,7 +13,6 @@ import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.util.IoBufferUtils;
 import org.hyperion.rs2.util.NameUtils;
 
-
 /**
  * Login protocol decoding class.
  * @author Graham

@@ -3,7 +3,6 @@ package org.hyperion.rs2.model;
 import org.apache.mina.core.session.IoSession;
 import org.hyperion.rs2.net.ISAACCipher;
 
-
 /**
  * Contains details about a player (but not the actual <code>Player</code>
  * object itself) that has not logged in yet.
