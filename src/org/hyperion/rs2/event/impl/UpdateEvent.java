@@ -13,7 +13,6 @@ import org.hyperion.rs2.task.impl.ResetTask;
 import org.hyperion.rs2.task.impl.TickTask;
 import org.hyperion.rs2.task.impl.UpdateTask;
 
-
 /**
  * An event which starts player update tasks.
  * @author Graham

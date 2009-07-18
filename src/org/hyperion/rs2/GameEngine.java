@@ -13,7 +13,6 @@ import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.task.Task;
 import org.hyperion.util.BlockingExecutorService;
 
-
 /**
  * The 'core' class of the server which processes all the logic tasks in one
  * single logic <code>ExecutorService</code>. This service is scheduled which

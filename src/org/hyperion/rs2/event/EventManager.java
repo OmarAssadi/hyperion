@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.hyperion.rs2.GameEngine;
 
-
 /**
  * A class that manages <code>Event</code>s for a specific
  * <code>GameEngine</code>.

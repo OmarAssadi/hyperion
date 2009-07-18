@@ -13,7 +13,8 @@ public interface Trigger {
 	/**
 	 * Fires the appropriate <code>Action</code>.
 	 * @param player The player who triggered the trigger.
+	 * @param arguments The arguments passed to this trigger.
 	 */
-	public void fire(Player player);
+	public void fire(Player player, Object... arguments);
 
 }

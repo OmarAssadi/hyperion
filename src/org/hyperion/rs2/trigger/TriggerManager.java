@@ -40,17 +40,27 @@ public class TriggerManager {
 	 * Creates the <code>TriggerManager</code> and adds a few test triggers.
 	 */
 	public TriggerManager() {
-		triggers.put(new CommandCondition("test"), new TestCommandTrigger());
+		create(new CommandCondition("test"), new TestCommandTrigger());
+	}
+	
+	/**
+	 * Creates the relationship between a condition and trigger.
+	 * @param condition
+	 * @param trigger
+	 */
+	public void create(TriggerCondition condition, Trigger trigger) {
+		triggers.put(condition, trigger);
 	}
 	
 	/**
 	 * Fires a trigger for a player.
 	 * @param player The player.
 	 * @param trigger The trigger condition.
+	 * @param arguments The optional arguments to pass to the trigger.
 	 */
-	public void fire(Player player, TriggerCondition trigger) {
+	public void fire(Player player, TriggerCondition trigger, Object... arguments) {
 		if(triggers.containsKey(trigger)) {
-			triggers.get(trigger).fire(player);
+			triggers.get(trigger).fire(player, arguments);
 		}
 	}
 

@@ -11,7 +11,6 @@ import org.hyperion.rs2.task.impl.SessionClosedTask;
 import org.hyperion.rs2.task.impl.SessionMessageTask;
 import org.hyperion.rs2.task.impl.SessionOpenedTask;
 
-
 /**
  * The <code>ConnectionHandler</code> processes incoming events from MINA,
  * submitting appropriate tasks to the <code>GameEngine</code>.

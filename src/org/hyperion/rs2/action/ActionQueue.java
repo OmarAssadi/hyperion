@@ -5,7 +5,6 @@ import java.util.Queue;
 
 import org.hyperion.rs2.model.World;
 
-
 /**
  * Stores a queue of pending actions.
  * @author blakeman8192
