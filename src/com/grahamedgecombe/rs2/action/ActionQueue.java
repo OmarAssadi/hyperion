@@ -32,7 +32,7 @@ public class ActionQueue {
 	/**
 	 * Cancels all queued action events.
 	 */
-	public void cancelQueuedActionEvents() {
+	public void cancelQueuedActions() {
 		for(Action actionEvent : queuedActionEvents) {
 			actionEvent.stop();
 		}
@@ -45,7 +45,7 @@ public class ActionQueue {
 	 * Adds an <code>Action</code> to the queue.
 	 * @param actionEvent
 	 */
-	public void addActionEvent(Action actionEvent) {
+	public void addAction(Action actionEvent) {
 		if(queuedActionEvents.size() >= MAXIMUM_SIZE) {
 			return;
 		}

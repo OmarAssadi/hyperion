@@ -3,6 +3,8 @@ package com.grahamedgecombe.rs2.packet;
 import com.grahamedgecombe.rs2.model.Location;
 import com.grahamedgecombe.rs2.model.Player;
 import com.grahamedgecombe.rs2.net.Packet;
+import com.grahamedgecombe.rs2.trigger.TriggerManager;
+import com.grahamedgecombe.rs2.trigger.impl.cond.CommandCondition;
 
 /**
  * Handles player commands (the ::words).
@@ -29,6 +31,8 @@ public class CommandPacketHandler implements PacketHandler {
 				} else {
 					player.getActionSender().sendMessage("Syntax is ::tele [x] [y] [z].");
 				}
+			} else {
+				TriggerManager.getTriggerManager().fire(player, new CommandCondition(command));
 			}
 		} catch(Exception ex) {
 			player.getActionSender().sendMessage("Error while processing command.");
