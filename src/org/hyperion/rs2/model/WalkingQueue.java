@@ -57,8 +57,14 @@ public class WalkingQueue {
 	 */
 	private Deque<Point> waypoints = new LinkedList<Point>();
 	
+	/**
+	 * Run toggle (button in client).
+	 */
 	private boolean runToggled = false;
 	
+	/**
+	 * Run for this queue (CTRL-CLICK) toggle.
+	 */
 	private boolean runQueue = false;
 	
 	/**
