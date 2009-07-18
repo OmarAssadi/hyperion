@@ -24,12 +24,12 @@ public class ISAACCipher {
 	public static final int SIZE = 1 << SIZE_LOG;
 
 	/**
-	 * "for pseudorandom lookup"
+	 * For pseudorandom lookup.
 	 */
 	public static final int MASK = (SIZE - 1) << 2;
 
 	/**
-	 * THe count through the results.
+	 * The count through the results.
 	 */
 	private int count = 0;
 
