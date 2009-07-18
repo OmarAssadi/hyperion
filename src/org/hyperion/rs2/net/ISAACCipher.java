@@ -12,6 +12,11 @@ package org.hyperion.rs2.net;
  * 
  */
 public class ISAACCipher {
+	
+	/**
+	 * The golden ratio.
+	 */
+	public static final int RATIO = 0x9e3779b9;
 
 	/**
 	 * The log of the size of the results and memory arrays.
@@ -146,7 +151,7 @@ public class ISAACCipher {
 	public void init(boolean flag) {
 		int i;
 		int a, b, c, d, e, f, g, h;
-		a = b = c = d = e = f = g = h = 0x9e3779b9; /* the golden ratio */
+		a = b = c = d = e = f = g = h = RATIO;
 		for(i = 0; i < 4; ++i) {
 			a ^= b << 11;
 			d += a;
