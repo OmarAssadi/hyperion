@@ -17,8 +17,17 @@ public abstract class Action extends Event {
 	 *
 	 */
 	public enum QueuePolicy {
+		
+		/**
+		 * This indicates actions will always be queued.
+		 */
 		ALWAYS,
+		
+		/**
+		 * This indicates actions will never be queued.
+		 */
 		NEVER,
+		
 	}
 
 	/**

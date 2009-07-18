@@ -1,0 +1,164 @@
+package org.hyperion.rs2.model;
+
+import static org.junit.Assert.*;
+
+import java.util.Collection;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class TestContainer {
+	
+	public static final int CAP = 28;
+	
+	private Container<Item> container;
+
+	@Before
+	public void setUp() throws Exception {
+		container = new Container<Item>(CAP);
+	}
+
+	@Test
+	public void testGetListeners() {
+		ContainerListener listener1 = new ContainerListener() {
+			@Override
+			public void itemChanged(Container<?> container, int slot) {}
+			@Override
+			public void itemsChanged(Container<?> container) {}
+		};
+		ContainerListener listener2 = new ContainerListener() {
+			@Override
+			public void itemChanged(Container<?> container, int slot) {}
+			@Override
+			public void itemsChanged(Container<?> container) {}
+		};
+		container.addListener(listener1);
+		container.addListener(listener2);
+		Collection<ContainerListener> listeners = container.getListeners();
+		assertEquals(2, listeners.size());
+		assertTrue(listeners.contains(listener1));
+		assertTrue(listeners.contains(listener2));
+	}
+
+	@Test
+	public void testAddListener() {
+		assertEquals(0, container.getListeners().size());
+		ContainerListener listener = new ContainerListener() {
+			@Override
+			public void itemChanged(Container<?> container, int slot) {}
+			@Override
+			public void itemsChanged(Container<?> container) {}
+		};
+		container.addListener(listener);
+		assertEquals(1, container.getListeners().size());
+	}
+
+	@Test
+	public void testRemoveListener() {
+		ContainerListener listener = new ContainerListener() {
+			@Override
+			public void itemChanged(Container<?> container, int slot) {}
+			@Override
+			public void itemsChanged(Container<?> container) {}
+		};
+		container.addListener(listener);
+		container.removeListener(listener);
+		assertEquals(0, container.getListeners().size());
+	}
+
+	@Test
+	public void testRemoveAllListeners() {
+		ContainerListener listener1 = new ContainerListener() {
+			@Override
+			public void itemChanged(Container<?> container, int slot) {}
+			@Override
+			public void itemsChanged(Container<?> container) {}
+		};
+		ContainerListener listener2 = new ContainerListener() {
+			@Override
+			public void itemChanged(Container<?> container, int slot) {}
+			@Override
+			public void itemsChanged(Container<?> container) {}
+		};
+		container.addListener(listener1);
+		container.addListener(listener2);
+		container.removeAllListeners();
+		assertEquals(0, container.getListeners().size());	
+	}
+
+	@Test
+	public void testShift() {
+		Item item1 = new Item(995, 999999999);
+		Item item2 = new Item(995, 999999999);
+		Item item3 = new Item(995, 999999999);
+		container.set(0, item1);
+		container.set(5, item2);
+		container.set(10, item3);
+		container.shift();
+		assertEquals(item1, container.get(0));
+		assertEquals(item2, container.get(1));
+		assertEquals(item3, container.get(2));
+		assertNull(container.get(5));
+		assertNull(container.get(10));
+		assertEquals(3, container.size());
+	}
+
+	@Test
+	public void testFreeSlot() {
+		assertEquals(0, container.freeSlot());
+		container.set(0, new Item(995));
+		assertEquals(1, container.freeSlot());
+		container.set(1, new Item(995));
+		assertEquals(2, container.freeSlot());
+		container.set(0, null);
+		assertEquals(0, container.freeSlot());
+	}
+	
+	@Test
+	public void testAdd() {
+		Item item = new Item(995);
+		for(int i = 0; i < CAP; i++) {
+			assertTrue(container.add(item));
+		}
+		assertFalse(container.add(item));
+	}
+
+	@Test
+	public void testGet() {
+		Item item = new Item(995);
+		container.set(0, item);
+		assertEquals(item, container.get(0));
+	}
+
+	@Test
+	public void testSet() {
+		Item item = new Item(995);
+		container.set(0, item);
+		assertEquals(item, container.get(0));
+	}
+
+	@Test
+	public void testCapacity() {
+		assertEquals(CAP, container.capacity());
+	}
+
+	@Test
+	public void testSize() {
+		assertEquals(0, container.size());
+		container.set(0, new Item(995));
+		assertEquals(1, container.size());
+		container.set(1, new Item(995));
+		assertEquals(2, container.size());
+		container.clear();
+		assertEquals(0, container.size());
+	}
+
+	@Test
+	public void testClear() {
+		container.set(0, new Item(995));
+		container.set(1, new Item(995));
+		container.clear();
+		assertEquals(0, container.size());
+	}
+
+}

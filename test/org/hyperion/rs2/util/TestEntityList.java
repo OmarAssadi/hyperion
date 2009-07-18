@@ -26,11 +26,6 @@ public class TestEntityList {
 		list = new EntityList<EntityStub>(10);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		list = null;
-	}
-
 	@Test
 	public void testAdd() {
 		list.add(new EntityStub());
