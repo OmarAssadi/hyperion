@@ -50,8 +50,15 @@ public class ActionQueue {
 		if(queuedActions.size() >= MAXIMUM_SIZE) {
 			return;
 		}
-		if(action.getQueuePolicy() == QueuePolicy.NEVER && queuedActions.size() > 0) {
-			return;
+		int queueSize = queuedActions.size() + (currentAction == null ? 0 : 1);
+		switch(action.getQueuePolicy()) {
+		case ALWAYS:
+			break;
+		case NEVER:
+			if(queueSize > 0) {
+				return;
+			}
+			break;
 		}
 		queuedActions.add(action);
 		processNextAction();
