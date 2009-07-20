@@ -16,11 +16,11 @@ import org.hyperion.rs2.task.Task;
 import org.hyperion.rs2.util.NameUtils;
 
 /**
- * A task which creates and sends the update block.
+ * A task which creates and sends the player update block.
  * @author Graham
  *
  */
-public class UpdateTask implements Task {
+public class PlayerUpdateTask implements Task {
 	
 	/**
 	 * The player.
@@ -31,7 +31,7 @@ public class UpdateTask implements Task {
 	 * Creates an update task.
 	 * @param player The player.
 	 */
-	public UpdateTask(Player player) {
+	public PlayerUpdateTask(Player player) {
 		this.player = player;
 	}
 

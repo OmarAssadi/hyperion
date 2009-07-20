@@ -15,7 +15,7 @@ import org.hyperion.rs2.task.Task;
  * @author Graham
  *
  */
-public class TickTask implements Task {
+public class PlayerTickTask implements Task {
 	
 	/**
 	 * The player.
@@ -26,7 +26,7 @@ public class TickTask implements Task {
 	 * Creates a tick task for a player.
 	 * @param player The player to create the tick task for.
 	 */
-	public TickTask(Player player) {
+	public PlayerTickTask(Player player) {
 		this.player = player;
 	}
 

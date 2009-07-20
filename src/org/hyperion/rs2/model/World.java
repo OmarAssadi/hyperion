@@ -72,6 +72,11 @@ public class World {
 	private EntityList<Player> players = new EntityList<Player>(Constants.MAX_PLAYERS);
 	
 	/**
+	 * A list of active NPCs.
+	 */
+	private EntityList<NPC> npcs = new EntityList<NPC>(Constants.MAX_NPCS);
+	
+	/**
 	 * Initialises the world: loading configuration and registering global
 	 * events.
 	 * @param engine The engine processing this world's tasks.
@@ -205,6 +210,22 @@ public class World {
 			}
 		});
 	}
+	
+	/**
+	 * Registers a new npc.
+	 * @param npc The npc to register.
+	 */
+	public void register(NPC npc) {
+		npcs.add(npc);
+	}
+	
+	/**
+	 * Unregisters an old npc.
+	 * @param npc The npc to unregister.
+	 */
+	public void unregister(NPC npc) {
+		npcs.remove(npc);
+	}
 
 	/**
 	 * Registers a new player.
@@ -246,6 +267,14 @@ public class World {
 	 */
 	public EntityList<Player> getPlayers() {
 		return players;
+	}
+	
+	/**
+	 * Gets the npc list.
+	 * @return The npc list.
+	 */
+	public EntityList<NPC> getNPCs() {
+		return npcs;
 	}
 	
 	/**

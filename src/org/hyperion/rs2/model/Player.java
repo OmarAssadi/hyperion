@@ -205,6 +205,7 @@ public class Player extends Entity {
 		this.uid = details.getUID();
 		
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		this.setTeleporting(true);
 	}
 	
 	/**

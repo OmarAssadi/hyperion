@@ -9,7 +9,7 @@ import org.hyperion.rs2.task.Task;
  * @author Graham
  *
  */
-public class ResetTask implements Task {
+public class PlayerResetTask implements Task {
 	
 	/**
 	 * The player to reset.
@@ -20,7 +20,7 @@ public class ResetTask implements Task {
 	 * Creates a reset task.
 	 * @param player The player to reset.
 	 */
-	public ResetTask(Player player) {
+	public PlayerResetTask(Player player) {
 		this.player = player;
 	}
 

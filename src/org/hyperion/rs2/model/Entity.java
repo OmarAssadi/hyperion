@@ -42,9 +42,14 @@ public abstract class Entity {
 	private final List<Player> localPlayers = new LinkedList<Player>();
 	
 	/**
+	 * The list of local npcs.
+	 */
+	private final List<NPC> localNpcs = new LinkedList<NPC>();
+	
+	/**
 	 * The teleporting flag.
 	 */
-	private boolean teleporting = true;
+	private boolean teleporting = false;
 	
 	/**
 	 * The sprites i.e. walk directions.
@@ -112,6 +117,14 @@ public abstract class Entity {
 	 */
 	public List<Player> getLocalPlayers() {
 		return localPlayers;
+	}
+	
+	/**
+	 * Gets the list of local npcs.
+	 * @return The list of local npcs.
+	 */
+	public List<NPC> getLocalNPCs() {
+		return localNpcs;
 	}
 	
 	/**
