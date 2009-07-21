@@ -159,7 +159,7 @@ public class Location {
 	 * @return The new location.
 	 */
 	public Location transform(int diffX, int diffY, int diffZ) {
-		return new Location(x + diffX, y + diffY, z + diffZ);
+		return Location.create(x + diffX, y + diffY, z + diffZ);
 	}
 
 }
