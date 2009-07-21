@@ -412,7 +412,7 @@ public class PlayerUpdateTask implements Task {
 		Equipment eq = otherPlayer.getEquipment();
 		
 		PacketBuilder playerProps = new PacketBuilder();
-		playerProps.put((byte) 0); // gender
+		playerProps.put((byte) app.getGender()); // gender
 		playerProps.put((byte) 0); // skull icon
 		
 		for(int i = 0; i < 4; i++) {

@@ -277,4 +277,14 @@ public class PacketBuilder {
 		return this;
 	}
 
+	/**
+	 * Puts a sequence of bytes in the buffer.
+	 * @param data The bytes.
+	 * @param offset The offset.
+	 * @param length The length.
+	 */
+	public void put(byte[] data, int offset, int length) {
+		payload.put(data, offset, length);
+	}
+
 }

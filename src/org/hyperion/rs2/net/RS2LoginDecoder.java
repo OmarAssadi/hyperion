@@ -1,6 +1,8 @@
 package org.hyperion.rs2.net;
 
+import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -8,6 +10,8 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
+import org.hyperion.Server;
+import org.hyperion.cache.Cache;
 import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.util.IoBufferUtils;
@@ -46,9 +50,19 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 	public static final int STATE_CRYPTED = 3;
 	
 	/**
+	 * Update stage.
+	 */
+	public static final int STATE_UPDATE = -1;
+	
+	/**
 	 * Game opcode.
 	 */
 	public static final int OPCODE_GAME = 14;
+	
+	/**
+	 * Update opcode.
+	 */
+	public static final int OPCODE_UPDATE = 15;
 	
 	/**
 	 * Secure random number generator.
@@ -61,12 +75,23 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 	private static final byte[] INITIAL_RESPONSE = new byte[] {
 		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	};
-	
+		
 	@Override
 	protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 		synchronized(session) {
 			int state = (Integer) session.getAttribute("state", STATE_OPCODE);
 			switch(state) {
+			case STATE_UPDATE:
+				if(in.remaining() >= 4) {
+					int cacheId = in.get() & 0xFF;
+					int fileId = ((in.get() & 0xFF) << 8) + (in.get() & 0xFF);
+					int type = in.get() & 0xFF;
+					serve(session, cacheId, fileId, type);
+					return true;
+				} else {
+					in.rewind();
+					return false;
+				}
 			case STATE_OPCODE:
 				if(in.remaining() >= 1) {
 					/*
@@ -83,6 +108,10 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 					switch(opcode) {
 					case OPCODE_GAME:
 						session.setAttribute("state", STATE_LOGIN);
+						return true;
+					case OPCODE_UPDATE:
+						session.setAttribute("state", STATE_UPDATE);
+						session.write(new PacketBuilder().put(INITIAL_RESPONSE).toPacket());
 						return true;
 					default:
 						logger.info("Invalid opcode : " + opcode);
@@ -182,7 +211,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 					 * check if it equals 317.
 					 */
 					int version = in.getShort() & 0xFFFF;
-					if(version != 317) {
+					if(version != Server.VERSION) {
 						logger.info("Incorrect version : " + version);
 						session.close(false);
 						in.rewind();
@@ -305,6 +334,44 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 			}
 			in.rewind();
 			return false;
+		}
+	}
+
+	/**
+	 * Serves an ondemand data request.
+	 * @param session The session.
+	 * @param cacheId The cache id.
+	 * @param fileId The file id.
+	 * @param status The client status.
+	 */
+	private void serve(IoSession session, int cacheId, int fileId, int status) {
+		try {
+			Cache cache = Cache.getCache();
+			byte[] data = cache.read(cacheId + 1, fileId);
+			int totalSize = data.length;
+			int roundedSize = totalSize;
+			while(roundedSize % 500 != 0) roundedSize++;
+			int blocks = roundedSize / 500;
+			int sentBytes = 0;
+			for(int i = 0; i < blocks; i++) {
+				int blockSize = totalSize - sentBytes;
+				PacketBuilder bldr = new PacketBuilder();
+				bldr.put((byte) cacheId);
+				bldr.put((byte) (fileId >> 8));
+				bldr.put((byte) fileId);
+				bldr.put((byte) (totalSize >> 8));
+				bldr.put((byte) totalSize);
+				bldr.put((byte) i);
+				if(blockSize > 500) {
+					blockSize = 500;
+				}
+				bldr.put(data, sentBytes, blockSize);
+				sentBytes += blockSize;
+				session.write(bldr.toPacket());
+			}
+		} catch(IOException ex) {
+			logger.log(Level.SEVERE, "Error serving ondemand data", ex);
+			session.close(false);
 		}
 	}
 
