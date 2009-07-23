@@ -21,7 +21,7 @@ public class Response {
 	
 	/**
 	 * Creates the response.
-	 * @param fileData The file data.
+	 * @param bytes The data.
 	 * @param mimeType The MIME type.
 	 */
 	public Response(byte[] bytes, String mimeType) {

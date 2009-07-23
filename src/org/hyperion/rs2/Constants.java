@@ -10,7 +10,7 @@ public class Constants {
 	/**
 	 * The directory for the engine scripts.
 	 */
-	public static final String scriptsDirectory = "./data/scripts/";
+	public static final String SCRIPTS_DIRECTORY = "./data/scripts/";
 	
 	/**
 	 * Difference in X coordinates for directions array.

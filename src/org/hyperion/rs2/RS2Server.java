@@ -66,14 +66,14 @@ public class RS2Server {
 	 * Starts the <code>GameEngine</code>.
 	 */
 	public void start() {
-		ScriptManager.getScriptManager().loadScripts(Constants.scriptsDirectory);
+		ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 		engine.start();
 		logger.info("Ready");
 	}
 
 	/**
-	 * Gets the <code>GameEngine</code.
-	 * @return
+	 * Gets the <code>GameEngine</code>.
+	 * @return The game engine.
 	 */
 	public static GameEngine getEngine() {
 		return engine;
