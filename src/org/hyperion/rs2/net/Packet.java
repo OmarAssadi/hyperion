@@ -175,6 +175,14 @@ public class Packet {
 	}
 	
 	/**
+	 * Gets a type S byte.
+	 * @return A type S byte.
+	 */
+	public byte getByteS() {
+		return (byte) (128 - get());
+	}
+	
+	/**
 	 * Reads a little-endian type A short.
 	 * @return A little-endian type A short.
 	 */
@@ -194,6 +202,30 @@ public class Packet {
 		if(i > 32767)
 			i -= 0x10000;
 		return (short) i;
+	}
+	
+	/**
+	 * Reads a V1 integer.
+	 * @return A V1 integer.
+	 */
+	public int getInt1() {
+		byte b1 = payload.get();
+		byte b2 = payload.get();
+		byte b3 = payload.get();
+		byte b4 = payload.get();
+		return ((b3 << 24) & 0xFF) | ((b4 << 16) & 0xFF) | ((b1 << 8) & 0xFF) | (b2 & 0xFF);
+	}
+	
+	/**
+	 * Reads a V2 integer.
+	 * @return A V2 integer.
+	 */
+	public int getInt2() {
+		int b1 = payload.get() & 0xFF;
+		int b2 = payload.get() & 0xFF;
+		int b3 = payload.get() & 0xFF;
+		int b4 = payload.get() & 0xFF;
+		return ((b2 << 24) & 0xFF) | ((b1 << 16) & 0xFF) | ((b4 << 8) & 0xFF) | (b3 & 0xFF);
 	}
 
 	/**
