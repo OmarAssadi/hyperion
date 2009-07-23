@@ -128,7 +128,7 @@ public class PacketBuilder {
 	public Packet toPacket() {
 		return new Packet(opcode, type, payload.flip().asReadOnlyBuffer());
 	}
-
+	
 	/**
 	 * Writes a RuneScape string.
 	 * @param string The string to write.
@@ -274,6 +274,19 @@ public class PacketBuilder {
 		payload.put((byte) val);
 		payload.put((byte) (val >> 24));
 		payload.put((byte) (val >> 16));
+		return this;
+	}
+	
+	/**
+	 * Writes a little-endian integer.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putLEInt(int val) {
+		payload.put((byte) (val));
+		payload.put((byte) (val >> 8));
+		payload.put((byte) (val >> 16));
+		payload.put((byte) (val >> 24));
 		return this;
 	}
 
