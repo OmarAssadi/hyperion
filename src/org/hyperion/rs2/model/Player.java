@@ -101,11 +101,6 @@ public class Player extends Entity {
 	private final ActionSender actionSender = new ActionSender(this);
 	
 	/**
-	 * The walking queue.
-	 */
-	private final WalkingQueue walkingQueue = new WalkingQueue(this);
-	
-	/**
 	 * A queue of pending chat messages.
 	 */
 	private final Queue<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
@@ -119,16 +114,6 @@ public class Player extends Entity {
 	 * The current chat message.
 	 */
 	private ChatMessage currentChatMessage;
-	
-	/**
-	 * The last known map region.
-	 */
-	private Location lastKnownRegion = this.getLocation();
-	
-	/**
-	 * Map region changing flag.
-	 */
-	private boolean mapRegionChanging = false;
 	
 	/**
 	 * Active flag: if the player is not active certain changes (e.g. items)
@@ -264,30 +249,6 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * Checks if the map region has changed in this cycle.
-	 * @return The map region changed flag.
-	 */
-	public boolean isMapRegionChanging() {
-		return mapRegionChanging;
-	}
-	
-	/**
-	 * Sets the map region changing flag.
-	 * @param mapRegionChanging The map region changing flag.
-	 */
-	public void setMapRegionChanging(boolean mapRegionChanging) {
-		this.mapRegionChanging = mapRegionChanging;
-	}
-	
-	/**
-	 * Gets the walking queue.
-	 * @return The walking queue.
-	 */
-	public WalkingQueue getWalkingQueue() {
-		return walkingQueue;
-	}
-	
-	/**
 	 * Gets the player's appearance.
 	 * @return The player's appearance.
 	 */
@@ -309,22 +270,6 @@ public class Player extends Entity {
 	 */
 	public Skills getSkills() {
 		return skills;
-	}
-	
-	/**
-	 * Sets the last known map region.
-	 * @param lastKnownRegion The last known map region.
-	 */
-	public void setLastKnownRegion(Location lastKnownRegion) {
-		this.lastKnownRegion = lastKnownRegion;
-	}
-	
-	/**
-	 * Gets the last known map region.
-	 * @return The last known map region.
-	 */
-	public Location getLastKnownRegion() {
-		return lastKnownRegion;
 	}
 	
 	/**

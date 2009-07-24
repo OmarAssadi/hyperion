@@ -94,6 +94,7 @@ public class World {
 			this.eventManager = new EventManager(engine);
 			this.registerEvents();
 			this.loadConfiguration();
+			register(new NPC(NPCDefinition.forId(1)));
 		}
 	}
 	

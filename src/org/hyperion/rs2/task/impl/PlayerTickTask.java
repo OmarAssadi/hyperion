@@ -40,7 +40,7 @@ public class PlayerTickTask implements Task {
 		} else {
 			player.setCurrentChatMessage(null);
 		}
-		player.getWalkingQueue().processNextPlayerMovement();
+		player.getWalkingQueue().processNextMovement();
 	}
 
 }

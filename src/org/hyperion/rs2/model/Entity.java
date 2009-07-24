@@ -52,9 +52,64 @@ public abstract class Entity {
 	private boolean teleporting = false;
 	
 	/**
+	 * The walking queue.
+	 */
+	private final WalkingQueue walkingQueue = new WalkingQueue(this);
+	
+	/**
 	 * The sprites i.e. walk directions.
 	 */
 	private final Sprites sprites = new Sprites();
+	
+	/**
+	 * The last known map region.
+	 */
+	private Location lastKnownRegion = this.getLocation();
+	
+	/**
+	 * Map region changing flag.
+	 */
+	private boolean mapRegionChanging = false;
+	
+	/**
+	 * Gets the walking queue.
+	 * @return The walking queue.
+	 */
+	public WalkingQueue getWalkingQueue() {
+		return walkingQueue;
+	}
+	
+	/**
+	 * Sets the last known map region.
+	 * @param lastKnownRegion The last known map region.
+	 */
+	public void setLastKnownRegion(Location lastKnownRegion) {
+		this.lastKnownRegion = lastKnownRegion;
+	}
+	
+	/**
+	 * Gets the last known map region.
+	 * @return The last known map region.
+	 */
+	public Location getLastKnownRegion() {
+		return lastKnownRegion;
+	}
+	
+	/**
+	 * Checks if the map region has changed in this cycle.
+	 * @return The map region changed flag.
+	 */
+	public boolean isMapRegionChanging() {
+		return mapRegionChanging;
+	}
+	
+	/**
+	 * Sets the map region changing flag.
+	 * @param mapRegionChanging The map region changing flag.
+	 */
+	public void setMapRegionChanging(boolean mapRegionChanging) {
+		this.mapRegionChanging = mapRegionChanging;
+	}
 	
 	/**
 	 * Checks if this entity has a target to teleport to.

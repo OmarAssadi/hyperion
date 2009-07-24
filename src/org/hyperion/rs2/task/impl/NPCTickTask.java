@@ -26,7 +26,17 @@ public class NPCTickTask implements Task {
 
 	@Override
 	public void execute(GameEngine context) {
-		// TODO implement
+		/*
+		 * If the map region changed set the last known region.
+		 */
+		if(npc.isMapRegionChanging()) {
+			npc.setLastKnownRegion(npc.getLocation());
+		}
+		
+		/*
+		 * Process the next movement in the NPC's walking queue.
+		 */
+		npc.getWalkingQueue().processNextMovement();
 	}
 
 }
