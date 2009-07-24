@@ -21,7 +21,7 @@ public class RequestHandler {
 	/**
 	 * The absolute path of the files directory.
 	 */
-	public static final String FILES_DIRECTORY = new File("data/files/").getAbsolutePath();
+	public static final String FILES_DIRECTORY = new File("data/htdocs/").getAbsolutePath();
 	
 	/**
 	 * The cached CRC table.

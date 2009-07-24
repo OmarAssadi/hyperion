@@ -2,6 +2,7 @@ package org.hyperion.rs2;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.service.IoAcceptor;
@@ -64,9 +65,15 @@ public class RS2Server {
 
 	/**
 	 * Starts the <code>GameEngine</code>.
+	 * @throws ExecutionException if an error occured during background loading.
 	 */
-	public void start() {
+	public void start() throws ExecutionException {
 		ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
+		if(World.getWorld().getBackgroundLoader().getPendingTaskAmount() > 0) {
+			logger.info("Waiting for pending background loading tasks...");
+			World.getWorld().getBackgroundLoader().waitForPendingTasks();
+		}
+		World.getWorld().getBackgroundLoader().shutdown();
 		engine.start();
 		logger.info("Ready");
 	}

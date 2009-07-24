@@ -53,6 +53,14 @@ public class BlockingExecutorService implements ExecutorService {
 			}
 		}
 	}
+	
+	/**
+	 * Gets the number of pending tasks.
+	 * @return The number of pending tasks.
+	 */
+	public int getPendingTaskAmount() {
+		return pendingTasks.size();
+	}
 
 	@Override
 	public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {

@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.future.IoFuture;
@@ -25,6 +27,7 @@ import org.hyperion.rs2.task.impl.SessionLoginTask;
 import org.hyperion.rs2.util.ConfigurationParser;
 import org.hyperion.rs2.util.EntityList;
 import org.hyperion.rs2.util.NameUtils;
+import org.hyperion.util.BlockingExecutorService;
 
 /**
  * Holds data global to the game world.
@@ -50,6 +53,11 @@ public class World {
 	public static World getWorld() {
 		return world;
 	}
+	
+	/**
+	 * An executor service which handles background loading tasks.
+	 */
+	private BlockingExecutorService backgroundLoader = new BlockingExecutorService(Executors.newSingleThreadExecutor());
 
 	/**
 	 * The game engine.
@@ -75,6 +83,32 @@ public class World {
 	 * A list of active NPCs.
 	 */
 	private EntityList<NPC> npcs = new EntityList<NPC>(Constants.MAX_NPCS);
+	
+	/**
+	 * The game object map.
+	 */
+	private ObjectMap objectMap;
+	
+	/**
+	 * Creates the world and begins background loading tasks.
+	 */
+	public World() {
+		backgroundLoader.submit(new Callable<Object>() {
+			public Object call() throws Exception {
+				objectMap = new ObjectMap();
+				objectMap.load();
+				return null;
+			}
+		});
+	}
+	
+	/**
+	 * Gets the background loader.
+	 * @return The background loader.
+	 */
+	public BlockingExecutorService getBackgroundLoader() {
+		return backgroundLoader;
+	}
 	
 	/**
 	 * Initialises the world: loading configuration and registering global
@@ -161,6 +195,14 @@ public class World {
 	 */
 	public void submit(Task task) {
 		this.engine.pushTask(task);
+	}
+	
+	/**
+	 * Gets the object map.
+	 * @return The object map.
+	 */
+	public ObjectMap getObjectMap() {
+		return objectMap;
 	}
 	
 	/**
