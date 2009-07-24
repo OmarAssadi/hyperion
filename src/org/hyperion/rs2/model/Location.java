@@ -129,7 +129,7 @@ public class Location {
 			return false;
 		}
 		int deltaX = other.x - x, deltaY = other.y - y;
-		return deltaX <= 15 && deltaX >= -16 && deltaY <= 15 && deltaY >= -16;
+		return deltaX <= 14 && deltaX >= -15 && deltaY <= 14 && deltaY >= -15;
 	}
 	
 	@Override

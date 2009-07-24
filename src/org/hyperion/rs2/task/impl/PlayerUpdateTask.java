@@ -283,12 +283,6 @@ public class PlayerUpdateTask implements Task {
 		 */
 		int yPos = otherPlayer.getLocation().getY() - player.getLocation().getY();
 		int xPos = otherPlayer.getLocation().getX() - player.getLocation().getX();
-		if(xPos > 15) {
-			xPos -= 32;
-		}
-		if(yPos > 15) {
-			yPos -= 32;
-		}
 		
 		/*
 		 * Write the x and y offsets.
