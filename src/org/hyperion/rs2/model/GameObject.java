@@ -37,6 +37,8 @@ public class GameObject {
 	public GameObject(GameObjectDefinition definition, Location location, int type, int face) {
 		this.definition = definition;
 		this.location = location;
+		this.type = type;
+		this.face = face;
 	}
 	
 	/**
