@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="rs2" default="build" basedir=".">
+<project name="hyperion" default="build" basedir=".">
 	<path id="libs">
 		<fileset dir="lib" includes="**.jar"/>
 	</path>
