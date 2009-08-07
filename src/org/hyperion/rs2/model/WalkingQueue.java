@@ -24,20 +24,34 @@ public class WalkingQueue {
 	 *
 	 */
 	private static class Point {
+		
 		/**
 		 * The x-coordinate.
 		 */
-		private int x = 0;
+		private final int x;
 		
 		/**
 		 * The y-coordinate.
 		 */
-		private int y = 0;
+		private final int y;
 		
 		/**
 		 * The direction to walk to this point.
 		 */
-		private int dir = -1;
+		private final int dir;
+		
+		/**
+		 * Creates a point.
+		 * @param x X coord.
+		 * @param y Y coord.
+		 * @param dir Direction to walk to this point.
+		 */
+		public Point(int x, int y, int dir) {
+			this.x = x;
+			this.y = y;
+			this.dir = dir;
+		}
+		
 	}
 	
 	/**
@@ -121,10 +135,7 @@ public class WalkingQueue {
 	public void reset() {
 		runQueue = false;
 		waypoints.clear();
-		Point p = new Point();
-		p.x = entity.getLocation().getX();
-		p.y = entity.getLocation().getY();
-		waypoints.add(p);
+		waypoints.add(new Point(entity.getLocation().getX(), entity.getLocation().getY(), -1));
 	}
 	
 	/**
@@ -197,6 +208,7 @@ public class WalkingQueue {
 		 */
 		int diffX = x - last.x;
 		int diffY = y - last.y;
+		
 		/*
 		 * And calculate the number of steps there is between the points.
 		 */
@@ -269,11 +281,7 @@ public class WalkingQueue {
 			 * We now have the information to add a point to the queue! We create
 			 * the actual point object and add it.
 			 */
-			Point p = new Point();
-			p.x = x;
-			p.y = y;
-			p.dir = dir;
-			waypoints.add(p);
+			waypoints.add(new Point(x, y, dir));
 			
 		}
 	}
@@ -282,12 +290,6 @@ public class WalkingQueue {
 	 * Processes the next player's movement.
 	 */
 	public void processNextMovement() {
-		/*
-		 * Store our current location for checking for a region change
-		 * later.
-		 */
-		Location currentLocation = entity.getLocation();
-		
 		/*
 		 * Store the teleporting flag.
 		 */
@@ -353,20 +355,15 @@ public class WalkingQueue {
 		int localDiffX = entity.getLocation().getLocalX() - entity.getLastKnownRegion().getLocalX(entity.getLocation());
 		int localDiffY = entity.getLocation().getLocalY() - entity.getLastKnownRegion().getLocalY(entity.getLocation());
 		boolean changed = false;
-		int diffX = 0, diffY = 0;
 		if(localDiffX <= -32) {
 			changed = true;
-			diffX -= 64;
 		} else if(localDiffX >= 32) {
 			changed = true;
-			diffX += 64;
 		}
 		if(localDiffY <= -32) {
 			changed = true;
-			diffY -= 64;
 		} else if(localDiffY >= 32) {
 			changed = true;
-			diffY += 64;
 		}
 		if(changed) {
 			/*
@@ -374,41 +371,6 @@ public class WalkingQueue {
 			 * sent upon the next update.
 			 */
 			entity.setMapRegionChanging(true);
-			
-			/*
-			 * If we were not already teleporting we need to put some points back onto the queue.
-			 * These will be processed after the teleport is complete as normal.
-			 */
-			if(!teleporting) {
-				/*
-				 * We are no longer walking throughout the map region change.
-				 */
-				entity.getSprites().setSprites(-1, -1);
-				
-				/*
-				 * We should switch our location back.
-				 */
-				entity.setLocation(currentLocation);
-				
-				/*
-				 * We should add the running and walking points back in reverse
-				 * order if necessary.
-				 */
-				if(runPoint != null) {
-					waypoints.addFirst(runPoint);
-				}
-				if(walkPoint != null) {
-					waypoints.addFirst(walkPoint);
-				}
-				
-				/*
-				 * Now adjust all of our waypoint's coordinates.
-				 */
-				for(Point p : waypoints) {
-					p.x += diffX;
-					p.y += diffY;
-				}
-			}
 		}
 		
 	}

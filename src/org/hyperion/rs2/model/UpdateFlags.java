@@ -29,7 +29,7 @@ public class UpdateFlags {
 		/**
 		 * Chat update.
 		 */
-		CHAT
+		CHAT,
 	}
 	
 	/**

@@ -10,6 +10,7 @@ import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.task.ConsecutiveTask;
 import org.hyperion.rs2.task.ParallelTask;
 import org.hyperion.rs2.task.Task;
+import org.hyperion.rs2.task.impl.NPCResetTask;
 import org.hyperion.rs2.task.impl.NPCTickTask;
 import org.hyperion.rs2.task.impl.NPCUpdateTask;
 import org.hyperion.rs2.task.impl.PlayerResetTask;
@@ -43,7 +44,7 @@ public class UpdateEvent extends Event {
 		
 		for(NPC npc : World.getWorld().getNPCs()) {
 			tickTasks.add(new NPCTickTask(npc));
-			resetTasks.add(new NPCTickTask(npc));
+			resetTasks.add(new NPCResetTask(npc));
 		}
 		
 		for(Player player : World.getWorld().getPlayers()) {
