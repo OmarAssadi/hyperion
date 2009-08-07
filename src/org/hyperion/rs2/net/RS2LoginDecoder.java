@@ -82,10 +82,17 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 			switch(state) {
 			case STATE_UPDATE:
 				if(in.remaining() >= 4) {
+					/*
+					 * Here we read the cache id (idx file), file id and priority.
+					 */
 					int cacheId = in.get() & 0xFF;
-					int fileId = ((in.get() & 0xFF) << 8) + (in.get() & 0xFF);
-					int type = in.get() & 0xFF;
-					serve(session, cacheId, fileId, type);
+					int fileId = ((in.get() & 0xFF) << 8) | (in.get() & 0xFF);
+					int priority = in.get() & 0xFF;
+
+					/*
+					 * We push the request into the ondemand pool so it can be served.
+					 */
+					OnDemandPool.getOnDemandPool().pushRequest(new OnDemandRequest(session, cacheId, fileId, priority));
 					return true;
 				} else {
 					in.rewind();
@@ -334,17 +341,6 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 			in.rewind();
 			return false;
 		}
-	}
-
-	/**
-	 * Serves an ondemand data request.
-	 * @param session The session.
-	 * @param cacheId The cache id.
-	 * @param fileId The file id.
-	 * @param status The client status.
-	 */
-	private void serve(IoSession session, int cacheId, int fileId, int status) {
-		OnDemandPool.getOnDemandPool().pushRequest(new OnDemandRequest(session, cacheId, fileId, status));
 	}
 
 }
