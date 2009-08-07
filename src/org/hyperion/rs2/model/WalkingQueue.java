@@ -69,10 +69,10 @@ public class WalkingQueue {
 	/**
 	 * Creates the <code>WalkingQueue</code> for the specified
 	 * <code>Entity</code>.
-	 * @param Entity The entity whose walking queue this is. 
+	 * @param entity The entity whose walking queue this is. 
 	 */
-	public WalkingQueue(Entity player) {
-		this.entity = player;
+	public WalkingQueue(Entity entity) {
+		this.entity = entity;
 	}
 	
 	/**
