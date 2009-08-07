@@ -24,33 +24,12 @@ public class UpdateFlags {
 		/**
 		 * Appearance update.
 		 */
-		APPEARANCE(0),
+		APPEARANCE,
 		
 		/**
 		 * Chat update.
 		 */
-		CHAT(1);
-		
-		/**
-		 * The index in the bitset.
-		 */
-		private int index;
-		
-		/**
-		 * Creates an update flag.
-		 * @param index The index in the bitset.
-		 */
-		private UpdateFlag(int index) {
-			this.index = index;
-		}
-		
-		/**
-		 * Gets an update flag.
-		 * @return The index in the bitset.
-		 */
-		public int getIndex() {
-			return index;
-		}
+		CHAT
 	}
 	
 	/**
@@ -67,7 +46,7 @@ public class UpdateFlags {
 	 * @param flag The flag to flag.
 	 */
 	public void flag(UpdateFlag flag) {
-		flags.set(flag.getIndex(), true);
+		flags.set(flag.ordinal(), true);
 	}
 	
 	/**
@@ -76,7 +55,7 @@ public class UpdateFlags {
 	 * @param value The value.
 	 */
 	public void set(UpdateFlag flag, boolean value) {
-		flags.set(flag.getIndex(), value);
+		flags.set(flag.ordinal(), value);
 	}
 	
 	/**
@@ -85,7 +64,7 @@ public class UpdateFlags {
 	 * @return The flag value.
 	 */
 	public boolean get(UpdateFlag flag) {
-		return flags.get(flag.getIndex());
+		return flags.get(flag.ordinal());
 	}
 	
 	/**

@@ -122,8 +122,8 @@ public class WalkingQueue {
 		runQueue = false;
 		waypoints.clear();
 		Point p = new Point();
-		p.x = entity.getLocation().getLocalX();
-		p.y = entity.getLocation().getLocalY();
+		p.x = entity.getLocation().getX();
+		p.y = entity.getLocation().getY();
 		waypoints.add(p);
 	}
 	
