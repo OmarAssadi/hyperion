@@ -1,4 +1,4 @@
-package org.hyperion.js5;
+package org.hyperion.fileserver;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,7 +7,7 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
-import org.hyperion.js5.UpdateSession.Type;
+import org.hyperion.fileserver.UpdateSession.Type;
 
 /**
  * Handles connection events.

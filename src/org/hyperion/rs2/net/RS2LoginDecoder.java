@@ -1,8 +1,6 @@
 package org.hyperion.rs2.net;
 
-import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -11,9 +9,10 @@ import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.hyperion.Server;
-import org.hyperion.cache.Cache;
 import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.World;
+import org.hyperion.rs2.net.ondemand.OnDemandPool;
+import org.hyperion.rs2.net.ondemand.OnDemandRequest;
 import org.hyperion.rs2.util.IoBufferUtils;
 import org.hyperion.rs2.util.NameUtils;
 
@@ -345,34 +344,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 	 * @param status The client status.
 	 */
 	private void serve(IoSession session, int cacheId, int fileId, int status) {
-		try {
-			Cache cache = Cache.getCache();
-			byte[] data = cache.read(cacheId + 1, fileId);
-			int totalSize = data.length;
-			int roundedSize = totalSize;
-			while(roundedSize % 500 != 0) roundedSize++;
-			int blocks = roundedSize / 500;
-			int sentBytes = 0;
-			for(int i = 0; i < blocks; i++) {
-				int blockSize = totalSize - sentBytes;
-				PacketBuilder bldr = new PacketBuilder();
-				bldr.put((byte) cacheId);
-				bldr.put((byte) (fileId >> 8));
-				bldr.put((byte) fileId);
-				bldr.put((byte) (totalSize >> 8));
-				bldr.put((byte) totalSize);
-				bldr.put((byte) i);
-				if(blockSize > 500) {
-					blockSize = 500;
-				}
-				bldr.put(data, sentBytes, blockSize);
-				sentBytes += blockSize;
-				session.write(bldr.toPacket());
-			}
-		} catch(IOException ex) {
-			logger.log(Level.SEVERE, "Error serving ondemand data", ex);
-			session.close(false);
-		}
+		OnDemandPool.getOnDemandPool().pushRequest(new OnDemandRequest(session, cacheId, fileId, status));
 	}
 
 }

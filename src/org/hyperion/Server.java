@@ -3,7 +3,7 @@ package org.hyperion;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.hyperion.js5.JS5Server;
+import org.hyperion.fileserver.FileServer;
 import org.hyperion.rs2.RS2Server;
 import org.hyperion.rs2.model.World;
 
@@ -32,10 +32,11 @@ public class Server {
 		logger.info("Starting Hyperion...");
 		World.getWorld(); // this starts off background loading
 		try {
-			new JS5Server().bind().start();
+			new FileServer().bind().start();
 			new RS2Server().bind(RS2Server.PORT).start();
 		} catch(Exception ex) {
 			logger.log(Level.SEVERE, "Error starting Hyperion.", ex);
+			System.exit(1);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package org.hyperion.js5;
+package org.hyperion.fileserver;
 
 import java.nio.ByteBuffer;
 import java.util.logging.Logger;

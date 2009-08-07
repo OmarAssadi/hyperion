@@ -1,4 +1,4 @@
-package org.hyperion.js5;
+package org.hyperion.fileserver;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -6,17 +6,17 @@ import java.util.logging.Logger;
 
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
-import org.hyperion.js5.UpdateSession.Type;
+import org.hyperion.fileserver.UpdateSession.Type;
 
 /**
- * <p>An implementation of the JS5 server.</p>
+ * <p>An implementation of the JAGGRAB and HTTP server.</p>
  * 
  * <p>A lot of the work in the JAGGRAB server is based on some code
- * Miss Silabsoft re-released, originally authored by winterLove.</p>
+ * Miss Silabsoft re-released, originally authored by Winterlove.</p>
  * @author Graham
  *
  */
-public class JS5Server {
+public class FileServer {
 	
 	/**
 	 * The HTTP port to listen on.
@@ -31,7 +31,7 @@ public class JS5Server {
 	/**
 	 * Logger instance.
 	 */
-	private static final Logger logger = Logger.getLogger(JS5Server.class.getName());
+	private static final Logger logger = Logger.getLogger(FileServer.class.getName());
 	
 	/**
 	 * The <code>IoAcceptor</code> instance.
@@ -46,7 +46,7 @@ public class JS5Server {
 	/**
 	 * Creates the jaggrab server.
 	 */
-	public JS5Server() {
+	public FileServer() {
 		jaggrabAcceptor.setHandler(new ConnectionHandler(Type.JAGGRAB));
 		httpAcceptor.setHandler(new ConnectionHandler(Type.HTTP));
 	}
@@ -56,7 +56,7 @@ public class JS5Server {
 	 * @return The server instance, for chaining.
 	 * @throws IOException 
 	 */
-	public JS5Server bind() throws IOException {
+	public FileServer bind() throws IOException {
 		logger.info("Binding to port : " + JAGGRAB_PORT + "...");
 		jaggrabAcceptor.bind(new InetSocketAddress(JAGGRAB_PORT));
 		logger.info("Binding to port : " + HTTP_PORT + "...");

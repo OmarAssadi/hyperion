@@ -1,4 +1,4 @@
-package org.hyperion.js5;
+package org.hyperion.fileserver;
 
 /**
  * Represents a single request for a file on either a JAGGRAB or HTTP server.

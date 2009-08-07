@@ -1,4 +1,4 @@
-package org.hyperion.js5;
+package org.hyperion.fileserver;
 
 import java.io.File;
 import java.io.IOException;
