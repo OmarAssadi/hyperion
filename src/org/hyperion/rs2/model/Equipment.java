@@ -1,10 +1,14 @@
 package org.hyperion.rs2.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 
 /**
  * Represents the player's equipment inventory.
  * @author Graham
+ * @author Lothy
  *
  */
 public class Equipment {
@@ -175,6 +179,8 @@ public class Equipment {
 	 */
 	public static final int SIZE = 14;
 	
+	// TODO incorporate slots into EquipmentType
+	
 	/**
 	 * The helmet slot.
 	 */
@@ -231,18 +237,110 @@ public class Equipment {
 	public static final int SLOT_ARROWS = 13;
 	
 	/**
-	 * Checks if an item is of a certain type.
-	 * @param array The type array.
-	 * @param item The item to check.
-	 * @return <code>true</code> if so, <code>false</code> if not.
+	 * Equipment type map.
 	 */
-	public static boolean is(int[] array, Item item) {
-		for(int i : array) {
-			if(i == item.getId()) {
-				return true;
-			}
+	private static final Map<Integer, EquipmentType> equipmentTypes = new HashMap<Integer, EquipmentType>();
+	
+	/**
+	 * Equipment type enum.
+	 * @author Lothy
+	 *
+	 */
+	public enum EquipmentType {
+		CAPE("Cape"),
+		BOOTS("Boots"),
+		GLOVES("Gloves"),
+		SHIELD("Shield"),
+		HAT("Hat"),
+		AMULET("Amulet"),
+		ARROWS("Arrows"),
+		RING("Ring"),
+		BODY("Body"),
+		LEGS("Legs"),
+		PLATEBODY("Plate body"),
+		FULL_HELM("Full helm"),
+		FULL_MASK("Full mask"),
+		WEAPON("Weapon");
+ 
+		private String description;
+ 
+		private EquipmentType(String description) {
+			this.description = description;
 		}
-		return false;
+ 
+		public String getDescription() {
+			return description;
+		}
+	}
+	
+	/**
+	 * Static initializer block to populate the type map.
+	 */
+	static {
+		for(int cape : CAPES) {
+			equipmentTypes.put(cape, EquipmentType.CAPE);
+		}
+		for(int boots : BOOTS) {
+			equipmentTypes.put(boots, EquipmentType.BOOTS);
+		}
+		for(int gloves : GLOVES) {
+			equipmentTypes.put(gloves, EquipmentType.GLOVES);
+		}
+		for(int shield : SHIELDS) {
+			equipmentTypes.put(shield, EquipmentType.SHIELD);
+		}
+		for(int hat : HATS) {
+			equipmentTypes.put(hat, EquipmentType.HAT);
+		}
+		for(int amulet : AMULETS) {
+			equipmentTypes.put(amulet, EquipmentType.AMULET);
+		}
+		for(int arrowType : ARROWS) {
+			equipmentTypes.put(arrowType, EquipmentType.ARROWS);
+		}		
+		for(int ring : RINGS) {
+			equipmentTypes.put(ring, EquipmentType.RING);
+		}
+		for(int body : BODY) {
+			equipmentTypes.put(body, EquipmentType.BODY);
+		}
+		for(int legs : LEGS) {
+			equipmentTypes.put(legs, EquipmentType.LEGS);
+		}
+		for(int plateBody : PLATEBODY) {
+			equipmentTypes.put(plateBody, EquipmentType.PLATEBODY);
+		}
+		for(int fullHelm : FULL_HELM) {
+			equipmentTypes.put(fullHelm, EquipmentType.FULL_HELM);
+		}
+		for(int fullMask : FULL_MASK) {
+			equipmentTypes.put(fullMask, EquipmentType.FULL_MASK);
+		}
+	}
+	
+	/**
+	 * Gets an equipment type.
+	 * @param item The item.
+	 * @return The equipment type.
+	 */
+	public static EquipmentType getType(Item item) {
+		int id = item.getId();
+		if(equipmentTypes.containsKey(id)) {
+			return equipmentTypes.get(id);
+		} else {
+			return equipmentTypes.get(EquipmentType.WEAPON);
+		}
+	}
+	
+	/**
+	 * Checks if an item is of a specific type.
+	 * @param type The type.
+	 * @param item The item.
+	 * @return <code>true</code> if the types are the same, <code>false</code>
+	 * if not.
+	 */
+	public static boolean is(EquipmentType type, Item item) {
+		return getType(item).equals(type);
 	}
 	
 	/**

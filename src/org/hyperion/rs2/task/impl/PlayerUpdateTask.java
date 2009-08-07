@@ -9,6 +9,7 @@ import org.hyperion.rs2.model.Equipment;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.World;
+import org.hyperion.rs2.model.Equipment.EquipmentType;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.net.Packet;
 import org.hyperion.rs2.net.PacketBuilder;
@@ -428,7 +429,7 @@ public class PlayerUpdateTask implements Task {
 		}
 		Item chest = eq.getEquipment(Equipment.SLOT_CHEST);
 		if(chest != null) {
-			if(!Equipment.is(Equipment.PLATEBODY, chest)) {
+			if(!Equipment.is(EquipmentType.PLATEBODY, chest)) {
 				playerProps.putShort((short) 0x100 + app.getArms());
 			} else {
 				playerProps.putShort((short) 0x200 + chest.getId());
@@ -443,7 +444,7 @@ public class PlayerUpdateTask implements Task {
 		}
 		Item helm = eq.getEquipment(Equipment.SLOT_HELM);
 		if(helm != null) {
-			if(!Equipment.is(Equipment.FULL_HELM, helm) && !Equipment.is(Equipment.FULL_MASK, helm)) {
+			if(!Equipment.is(EquipmentType.FULL_HELM, helm) && !Equipment.is(EquipmentType.FULL_MASK, helm)) {
 				playerProps.putShort((short) 0x100 + app.getHead());
 			} else {
 				playerProps.put((byte) 0);
@@ -463,7 +464,7 @@ public class PlayerUpdateTask implements Task {
 		}
 		boolean fullHelm = false;
 		if(helm != null) {
-			fullHelm = !Equipment.is(Equipment.FULL_HELM, helm);
+			fullHelm = !Equipment.is(EquipmentType.FULL_HELM, helm);
 		}
 		if(fullHelm || app.getGender() == 1) {
 			playerProps.put((byte) 0);
