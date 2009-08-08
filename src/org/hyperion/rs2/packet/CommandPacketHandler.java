@@ -1,5 +1,6 @@
 package org.hyperion.rs2.packet;
 
+import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.net.Packet;
@@ -30,6 +31,17 @@ public class CommandPacketHandler implements PacketHandler {
 					player.setTeleportTarget(Location.create(x, y, z));
 				} else {
 					player.getActionSender().sendMessage("Syntax is ::tele [x] [y] [z].");
+				}
+			} else if(command.equals("item")) {
+				if(args.length == 2 || args.length == 3) {
+					int id = Integer.parseInt(args[1]);
+					int count = 1;
+					if(args.length == 3) {
+						count = Integer.parseInt(args[2]);
+					}
+					player.getInventory().add(new Item(id, count));
+				} else {
+					player.getActionSender().sendMessage("Syntax is ::item [id] [count].");
 				}
 			} else {
 				TriggerManager.getTriggerManager().fire(player, new CommandCondition(command));
