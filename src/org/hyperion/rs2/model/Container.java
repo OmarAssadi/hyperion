@@ -9,9 +9,9 @@ import java.util.List;
  * A container holds a group of items.
  * @author Graham
  *
- * @param <E> The type of Item this container holds.
+ * @param <T> The type of Item this container holds.
  */
-public class Container<E extends Item> {
+public class Container<T extends Item> {
 
 	/**
 	 * The capacity of this container.
@@ -105,7 +105,7 @@ public class Container<E extends Item> {
 	 * @return <code>true</code> if the item was added,
 	 * <code>false</code> if not.
 	 */
-	public boolean add(E item) {
+	public boolean add(T item) {
 		int slot = freeSlot();
 		if(slot == -1) {
 			return false;
@@ -121,8 +121,8 @@ public class Container<E extends Item> {
 	 * @return The item.
 	 */
 	@SuppressWarnings("unchecked")
-	public E get(int index) {
-		return (E) items[index];
+	public T get(int index) {
+		return (T) items[index];
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class Container<E extends Item> {
 	 * @param index The position in the container.
 	 * @param item The item.
 	 */
-	public void set(int index, E item) {
+	public void set(int index, T item) {
 		items[index] = item;
 		for(ContainerListener listener : listeners) {
 			listener.itemChanged(this, index);
@@ -167,6 +167,26 @@ public class Container<E extends Item> {
 		for(ContainerListener listener : listeners) {
 			listener.itemsChanged(this);
 		}
+	}
+	
+	/**
+	 * Sets the item array.
+	 * @param items The item array.
+	 */
+	public void setGroup(T[] items) {
+		this.items = items;
+		this.capacity = items.length;
+		for(ContainerListener listener : listeners) {
+			listener.itemsChanged(this);
+		}
+	}
+
+	/**
+	 * Returns an array representing this container.
+	 * @return The array.
+	 */
+	public Item[] toArray() {
+		return items;
 	}
 
 }

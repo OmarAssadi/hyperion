@@ -278,6 +278,19 @@ public class PacketBuilder {
 	}
 	
 	/**
+	 * Writes a type-2 integer.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putInt2(int val) {
+		payload.put((byte) (val >> 16));
+		payload.put((byte) (val >> 24));
+		payload.put((byte) val);
+		payload.put((byte) (val >> 8));
+		return this;
+	}
+	
+	/**
 	 * Writes a little-endian integer.
 	 * @param val The value.
 	 * @return The PacketBuilder instance, for chaining.

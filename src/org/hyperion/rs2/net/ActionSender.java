@@ -3,6 +3,7 @@ package org.hyperion.rs2.net;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.hyperion.rs2.Constants;
+import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
 import org.hyperion.rs2.net.Packet.Type;
@@ -131,6 +132,62 @@ public class ActionSender {
 				future.getSession().close(false);
 			}
 		});
+		return this;
+	}
+	
+	/**
+	 * Sends a packet to update a group of items.
+	 * @param interfaceId The interface id.
+	 * @param items The items.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendUpdateItems(int interfaceId, Item[] items) {
+		PacketBuilder bldr = new PacketBuilder(53, Type.VARIABLE_SHORT);
+		bldr.putShort(interfaceId);
+		bldr.putShort(items.length);
+		for(Item item : items) {
+			if(item != null) {
+				int count = item.getCount();
+				if(count > 254) {
+					bldr.put((byte) 255);
+					bldr.putInt2(count);
+				} else {
+					bldr.put((byte) count);
+				}
+				bldr.putLEShortA(item.getId());
+			} else {
+				bldr.put((byte) 0);
+				bldr.putLEShortA(0);
+			}
+		}
+		player.getSession().write(bldr.toPacket());
+		return this;
+	}
+
+	/**
+	 * Sends a packet to update a single item.
+	 * @param interfaceId The interface id.
+	 * @param slot The slot.
+	 * @param item The item.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendUpdateItem(int interfaceId, int slot, Item item) {
+		PacketBuilder bldr = new PacketBuilder(34, Type.VARIABLE_SHORT);
+		bldr.putShort(interfaceId).put((byte) slot);
+		if(item != null) {
+			bldr.putShort(item.getId());
+			int count = item.getCount();
+			if(count > 254) {
+				bldr.put((byte) 255);
+				bldr.putInt(count);
+			} else {
+				bldr.put((byte) count);
+			}
+		} else {
+			bldr.putShort(0);
+			bldr.put((byte) 0);
+		}
+		player.getSession().write(bldr.toPacket());
 		return this;
 	}
 
