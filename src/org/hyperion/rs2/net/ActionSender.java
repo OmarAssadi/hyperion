@@ -3,6 +3,7 @@ package org.hyperion.rs2.net;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.hyperion.rs2.Constants;
+import org.hyperion.rs2.model.InterfaceContainerListener;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
@@ -39,6 +40,9 @@ public class ActionSender {
 		sendMapRegion();
 		sendSidebarInterfaces();
 		sendSkills();
+		InterfaceContainerListener inventoryListener = new InterfaceContainerListener(player, 3214);
+		player.getInventory().addListener(inventoryListener);
+		inventoryListener.itemsChanged(player.getInventory());
 		return this;
 	}
 
@@ -154,7 +158,7 @@ public class ActionSender {
 				} else {
 					bldr.put((byte) count);
 				}
-				bldr.putLEShortA(item.getId());
+				bldr.putLEShortA(item.getId() + 1);
 			} else {
 				bldr.put((byte) 0);
 				bldr.putLEShortA(0);
@@ -175,7 +179,7 @@ public class ActionSender {
 		PacketBuilder bldr = new PacketBuilder(34, Type.VARIABLE_SHORT);
 		bldr.putShort(interfaceId).put((byte) slot);
 		if(item != null) {
-			bldr.putShort(item.getId());
+			bldr.putShort(item.getId() + 1);
 			int count = item.getCount();
 			if(count > 254) {
 				bldr.put((byte) 255);

@@ -169,6 +169,11 @@ public class Player extends Entity {
 	 */
 	private final Skills skills = new Skills(this);
 	
+	/**
+	 * The player's inventory.
+	 */
+	private final Container<Item> inventory = new Container<Item>(28);
+	
 	/*
 	 * Cached details.
 	 */
@@ -188,7 +193,6 @@ public class Player extends Entity {
 		this.name = details.getName();
 		this.pass = details.getPassword();
 		this.uid = details.getUID();
-		
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		this.setTeleporting(true);
 	}
@@ -395,6 +399,14 @@ public class Player extends Entity {
 	 */
 	public ActionQueue getActionQueue() {
 		return actionQueue;
+	}
+
+	/**
+	 * Gets the inventory.
+	 * @return The inventory.
+	 */
+	public Container<Item> getInventory() {
+		return inventory;
 	}
 	
 }
