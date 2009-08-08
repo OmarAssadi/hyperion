@@ -170,18 +170,6 @@ public class Container<T extends Item> {
 			listener.itemsChanged(this);
 		}
 	}
-	
-	/**
-	 * Sets the item array.
-	 * @param items The item array.
-	 */
-	public void setGroup(T[] items) {
-		this.items = items;
-		this.capacity = items.length;
-		for(ContainerListener listener : listeners) {
-			listener.itemsChanged(this);
-		}
-	}
 
 	/**
 	 * Returns an array representing this container.
@@ -191,10 +179,20 @@ public class Container<T extends Item> {
 		return items;
 	}
 	
+	/**
+	 * Checks if a slot is used.
+	 * @param slot The slot.
+	 * @return <code>true</code> if an item is present, <code>false</code> otherwise.
+	 */
 	public boolean isSlotUsed(int slot) {
 		return items[slot] != null;
 	}
 	
+	/**
+	 * Checks if a slot is free.
+	 * @param slot The slot.
+	 * @return <code>true</code> if an item is not present, <code>false</code> otherwise.
+	 */
 	public boolean isSlotFree(int slot) {
 		return items[slot] == null;
 	}
