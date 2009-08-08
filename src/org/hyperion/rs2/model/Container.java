@@ -188,5 +188,13 @@ public class Container<T extends Item> {
 	public Item[] toArray() {
 		return items;
 	}
+	
+	public boolean isSlotUsed(int slot) {
+		return items[slot] != null;
+	}
+	
+	public boolean isSlotFree(int slot) {
+		return items[slot] == null;
+	}
 
 }

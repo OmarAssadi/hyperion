@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.hyperion.rs2.GameEngine;
 import org.hyperion.rs2.model.Appearance;
 import org.hyperion.rs2.model.ChatMessage;
+import org.hyperion.rs2.model.Container;
 import org.hyperion.rs2.model.Equipment;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
@@ -404,30 +405,30 @@ public class PlayerUpdateTask implements Task {
 	 */
 	public void appendPlayerAppearanceUpdate(PacketBuilder packet, Player otherPlayer) {
 		Appearance app = otherPlayer.getAppearance();
-		Equipment eq = otherPlayer.getEquipment();
+		Container<Item> eq = otherPlayer.getEquipment();
 		
 		PacketBuilder playerProps = new PacketBuilder();
 		playerProps.put((byte) app.getGender()); // gender
 		playerProps.put((byte) 0); // skull icon
 		
 		for(int i = 0; i < 4; i++) {
-			if(eq.isEquipped(i)) {
-				playerProps.putShort((short) 0x200 + eq.getEquipment(i).getId());
+			if(eq.isSlotUsed(i)) {
+				playerProps.putShort((short) 0x200 + eq.get(i).getId());
 			} else {
 				playerProps.put((byte) 0);
 			}
 		}
-		if(eq.isEquipped(Equipment.SLOT_CHEST)) {
-			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_CHEST).getId());
+		if(eq.isSlotUsed(Equipment.SLOT_CHEST)) {
+			playerProps.putShort((short) 0x200 + eq.get(Equipment.SLOT_CHEST).getId());
 		} else {
 			playerProps.putShort((short) 0x100 + app.getChest()); // chest
 		}
-		if(eq.isEquipped(Equipment.SLOT_SHIELD)){
-			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_SHIELD).getId());
+		if(eq.isSlotUsed(Equipment.SLOT_SHIELD)){
+			playerProps.putShort((short) 0x200 + eq.get(Equipment.SLOT_SHIELD).getId());
 		} else {
 			playerProps.put((byte) 0);
 		}
-		Item chest = eq.getEquipment(Equipment.SLOT_CHEST);
+		Item chest = eq.get(Equipment.SLOT_CHEST);
 		if(chest != null) {
 			if(!Equipment.is(EquipmentType.PLATEBODY, chest)) {
 				playerProps.putShort((short) 0x100 + app.getArms());
@@ -437,12 +438,12 @@ public class PlayerUpdateTask implements Task {
 		} else {
 			playerProps.putShort((short) 0x100 + app.getArms());
 		}
-		if(eq.isEquipped(Equipment.SLOT_BOTTOMS)) {
-			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_BOTTOMS).getId());
+		if(eq.isSlotUsed(Equipment.SLOT_BOTTOMS)) {
+			playerProps.putShort((short) 0x200 + eq.get(Equipment.SLOT_BOTTOMS).getId());
 		} else {
 			playerProps.putShort((short) 0x100 + app.getLegs());
 		}
-		Item helm = eq.getEquipment(Equipment.SLOT_HELM);
+		Item helm = eq.get(Equipment.SLOT_HELM);
 		if(helm != null) {
 			if(!Equipment.is(EquipmentType.FULL_HELM, helm) && !Equipment.is(EquipmentType.FULL_MASK, helm)) {
 				playerProps.putShort((short) 0x100 + app.getHead());
@@ -452,13 +453,13 @@ public class PlayerUpdateTask implements Task {
 		} else {
 			playerProps.putShort((short) 0x100 + app.getHead());
 		}
-		if(eq.isEquipped(Equipment.SLOT_GLOVES)) {
-			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_GLOVES).getId());
+		if(eq.isSlotUsed(Equipment.SLOT_GLOVES)) {
+			playerProps.putShort((short) 0x200 + eq.get(Equipment.SLOT_GLOVES).getId());
 		} else {
 			playerProps.putShort((short) 0x100 + app.getHands());
 		}
-		if(eq.isEquipped(Equipment.SLOT_BOOTS)) {
-			playerProps.putShort((short) 0x200 + eq.getEquipment(Equipment.SLOT_BOOTS).getId());
+		if(eq.isSlotUsed(Equipment.SLOT_BOOTS)) {
+			playerProps.putShort((short) 0x200 + eq.get(Equipment.SLOT_BOOTS).getId());
 		} else {
 			playerProps.putShort((short) 0x100 + app.getFeet());
 		}

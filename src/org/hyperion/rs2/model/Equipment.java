@@ -3,15 +3,18 @@ package org.hyperion.rs2.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
-
 /**
- * Represents the player's equipment inventory.
+ * Contains equipment utility methods.
  * @author Graham
  * @author Lothy
  *
  */
 public class Equipment {
+	
+	/**
+	 * The size of the equipment container.
+	 */
+	public static final int SIZE = 14;
 	
 	/**
 	 * Items which are classified as capes.
@@ -175,13 +178,6 @@ public class Equipment {
 		4056, 4071, 4724, 2665, 1053, 1055, 1057 };
 	
 	/**
-	 * The size of the equipment container.
-	 */
-	public static final int SIZE = 14;
-	
-	// TODO incorporate slots into EquipmentType
-	
-	/**
 	 * The helmet slot.
 	 */
 	public static final int SLOT_HELM = 0;
@@ -341,54 +337,6 @@ public class Equipment {
 	 */
 	public static boolean is(EquipmentType type, Item item) {
 		return getType(item).equals(type);
-	}
-	
-	/**
-	 * The internal container.
-	 */
-	private Container<Item> equipment = new Container<Item>(SIZE);
-	
-	/**
-	 * The player whose equipment this is.
-	 */
-	private Player player;
-	
-	/**
-	 * Creates the equipment class.
-	 * @param player The player whose equipment this class represents.
-	 */
-	public Equipment(Player player) {
-		this.player = player;
-	}
-	
-	/**
-	 * Checks if there is an item in a slot.
-	 * @param slot The slot to check.
-	 * @return <code>true</code> if so, <code>false</code> if not.
-	 */
-	public boolean isEquipped(int slot) {
-		return equipment.get(slot) != null;
-	}
-	
-	/**
-	 * Gets an equipment item from a specific slot.
-	 * @param slot The slot.
-	 * @return The item.
-	 */
-	public Item getEquipment(int slot) {
-		return equipment.get(slot);
-	}
-	
-	/**
-	 * Sets an equipment item.
-	 * @param slot The slot.
-	 * @param item The item to set.
-	 */
-	public void setEquipment(int slot, Item item) {
-		equipment.set(slot, item);
-		if(player.isActive()) {
-			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-		}
 	}
 
 }

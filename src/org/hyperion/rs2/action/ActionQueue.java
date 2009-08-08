@@ -3,6 +3,7 @@ package org.hyperion.rs2.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.hyperion.rs2.model.Inventory;
 import org.hyperion.rs2.model.World;
 
 /**
@@ -17,7 +18,7 @@ public class ActionQueue {
 	 * The maximum number of actions allowed to be queued at once, deliberately
 	 * set to the size of the player's inventory.
 	 */
-	public static final int MAXIMUM_SIZE = 28;
+	public static final int MAXIMUM_SIZE = Inventory.SIZE;
 	
 	/**
 	 * A queue of <code>Action</code> objects.

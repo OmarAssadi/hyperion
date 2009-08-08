@@ -3,6 +3,7 @@ package org.hyperion.rs2.net;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.hyperion.rs2.Constants;
+import org.hyperion.rs2.model.EquipmentContainerListener;
 import org.hyperion.rs2.model.InterfaceContainerListener;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
@@ -40,9 +41,16 @@ public class ActionSender {
 		sendMapRegion();
 		sendSidebarInterfaces();
 		sendSkills();
+		
 		InterfaceContainerListener inventoryListener = new InterfaceContainerListener(player, 3214);
 		player.getInventory().addListener(inventoryListener);
 		inventoryListener.itemsChanged(player.getInventory());
+		
+		InterfaceContainerListener equipmentListener = new InterfaceContainerListener(player, 1688);
+		player.getEquipment().addListener(equipmentListener);
+		player.getEquipment().addListener(new EquipmentContainerListener(player));
+		equipmentListener.itemsChanged(player.getEquipment());
+		
 		return this;
 	}
 

@@ -69,7 +69,7 @@ public class GenericWorldLoader implements WorldLoader {
 				os.writeByte((byte) look[i]);
 			}
 			for(int i = 0; i < Equipment.SIZE; i++) {
-				Item item = player.getEquipment().getEquipment(i);
+				Item item = player.getEquipment().get(i);
 				if(item == null) {
 					os.writeShort((short) -1);
 				} else {
@@ -108,7 +108,7 @@ public class GenericWorldLoader implements WorldLoader {
 				if(id != 65535) {
 					int amt = is.readInt();
 					Item item = new Item(id, amt);
-					player.getEquipment().setEquipment(i, item);
+					player.getEquipment().set(i, item);
 				}
 			}
 			for(int i = 0; i < Skills.SKILL_COUNT; i++) {
