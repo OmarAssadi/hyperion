@@ -19,6 +19,8 @@ import org.hyperion.rs2.event.Event;
 import org.hyperion.rs2.event.EventManager;
 import org.hyperion.rs2.event.impl.CleanupEvent;
 import org.hyperion.rs2.event.impl.UpdateEvent;
+import org.hyperion.rs2.login.LoginServerConnector;
+import org.hyperion.rs2.login.LoginServerWorldLoader;
 import org.hyperion.rs2.net.PacketBuilder;
 import org.hyperion.rs2.net.PacketManager;
 import org.hyperion.rs2.packet.PacketHandler;
@@ -90,6 +92,11 @@ public class World {
 	private ObjectMap objectMap;
 	
 	/**
+	 * The login server connector.
+	 */
+	private LoginServerConnector connector;
+	
+	/**
 	 * Creates the world and begins background loading tasks.
 	 */
 	public World() {
@@ -100,6 +107,14 @@ public class World {
 				return null;
 			}
 		});
+	}
+	
+	/**
+	 * Gets the login server connector.
+	 * @return The login server connector.
+	 */
+	public LoginServerConnector getLoginServerConnector() {
+		return connector;
 	}
 	
 	/**
@@ -167,6 +182,10 @@ public class World {
 					PacketManager.getPacketManager().bind(id, (PacketHandler) handlerInstance);
 					logger.fine("Bound " + handler.getValue() + " to opcode : " + id);
 				}
+			}
+			if(loader instanceof LoginServerWorldLoader) {
+				connector = new LoginServerConnector(mappings.get("loginServer"));
+				connector.setAuthenticationDetails(mappings.get("nodePassword"), Integer.parseInt(mappings.get("nodeId")));
 			}
 		} finally {
 			fis.close();

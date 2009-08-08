@@ -14,6 +14,7 @@ import java.util.Map;
 import org.hyperion.ls.Server;
 import org.hyperion.ls.io.Client;
 import org.hyperion.ls.task.Task;
+import org.hyperion.util.CommonConstants;
 
 /**
  * A <code>Task</code> used for the networking of the Hyperion Login Server.
@@ -32,7 +33,7 @@ public class NetworkTask implements Task {
 	{
 		clientMap = new HashMap<SocketChannel, Client>();
 		host = "127.0.0.1";
-		port = 43594;
+		port = CommonConstants.LOGIN_PORT;
 		try {
 			selector = Selector.open();
 			listener = ServerSocketChannel.open();
