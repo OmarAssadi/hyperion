@@ -15,6 +15,7 @@ import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.Skills;
 import org.hyperion.rs2.model.container.Equipment;
+import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.util.NameUtils;
 import org.hyperion.util.Streams;
 
@@ -81,6 +82,15 @@ public class GenericWorldLoader implements WorldLoader {
 				os.writeByte((byte) player.getSkills().getLevel(i));
 				os.writeDouble((double) player.getSkills().getExperience(i));
 			}
+			for(int i = 0; i < Inventory.SIZE; i++) {
+				Item item = player.getInventory().get(i);
+				if(item == null) {
+					os.writeShort((short) -1);
+				} else {
+					os.writeShort((short) item.getId());
+					os.writeInt(item.getCount());
+				}
+			}
 			os.flush();
 			os.close();
 			return true;
@@ -114,6 +124,16 @@ public class GenericWorldLoader implements WorldLoader {
 			for(int i = 0; i < Skills.SKILL_COUNT; i++) {
 				player.getSkills().setLevel(i, is.readByte());
 				player.getSkills().setExperience(i, is.readDouble());
+			}
+			if(is.available() > 0) {
+				for(int i = 0; i < Inventory.SIZE; i++) {
+					int id = is.readUnsignedShort();
+					if(id != 65535) {
+						int amt = is.readInt();
+						Item item = new Item(id, amt);
+						player.getInventory().set(i, item);
+					}
+				}
 			}
 			return true;
 		} catch(IOException ex) {
