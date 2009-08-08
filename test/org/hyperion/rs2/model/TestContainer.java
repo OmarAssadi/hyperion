@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Collection;
 
+import org.hyperion.rs2.model.container.Container;
+import org.hyperion.rs2.model.container.ContainerListener;
 import org.junit.Before;
 import org.junit.Test;
 

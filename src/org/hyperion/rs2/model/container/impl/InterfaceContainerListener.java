@@ -1,4 +1,9 @@
-package org.hyperion.rs2.model;
+package org.hyperion.rs2.model.container.impl;
+
+import org.hyperion.rs2.model.Item;
+import org.hyperion.rs2.model.Player;
+import org.hyperion.rs2.model.container.Container;
+import org.hyperion.rs2.model.container.ContainerListener;
 
 /**
  * A ContainerListener which updates a client-side interface to match the

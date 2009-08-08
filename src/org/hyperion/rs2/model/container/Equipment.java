@@ -1,7 +1,9 @@
-package org.hyperion.rs2.model;
+package org.hyperion.rs2.model.container;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.hyperion.rs2.model.Item;
 
 /**
  * Contains equipment utility methods.

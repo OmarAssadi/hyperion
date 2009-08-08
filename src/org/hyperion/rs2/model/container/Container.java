@@ -1,9 +1,11 @@
-package org.hyperion.rs2.model;
+package org.hyperion.rs2.model.container;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.hyperion.rs2.model.Item;
 
 /**
  * A container holds a group of items.

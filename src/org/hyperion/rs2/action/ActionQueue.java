@@ -3,8 +3,8 @@ package org.hyperion.rs2.action;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.hyperion.rs2.model.Inventory;
 import org.hyperion.rs2.model.World;
+import org.hyperion.rs2.model.container.Inventory;
 
 /**
  * Stores a queue of pending actions.

@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.hyperion.rs2.model.Equipment;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.Skills;
+import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.util.NameUtils;
 import org.hyperion.util.Streams;
 

@@ -3,11 +3,11 @@ package org.hyperion.rs2.net;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.hyperion.rs2.Constants;
-import org.hyperion.rs2.model.EquipmentContainerListener;
-import org.hyperion.rs2.model.InterfaceContainerListener;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
+import org.hyperion.rs2.model.container.impl.EquipmentContainerListener;
+import org.hyperion.rs2.model.container.impl.InterfaceContainerListener;
 import org.hyperion.rs2.net.Packet.Type;
 
 /**
