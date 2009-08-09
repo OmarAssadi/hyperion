@@ -10,6 +10,16 @@ import org.apache.mina.core.buffer.IoBuffer;
 public class LoginPacket {
 	
 	/**
+	 * Authentication request opcode.
+	 */
+	public static final int AUTH = 0;
+	
+	/**
+	 * Authentication response opcode.
+	 */
+	public static final int AUTH_RESPONSE = 1;
+	
+	/**
 	 * The opcode.
 	 */
 	private int opcode;
