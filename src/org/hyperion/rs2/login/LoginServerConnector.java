@@ -7,8 +7,10 @@ import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.hyperion.util.CommonConstants;
+import org.hyperion.util.net.LoginCodecFactory;
 
 /**
  * <p>The <code>LoginServerConnector</code> manages the communication between
@@ -94,6 +96,7 @@ public class LoginServerConnector extends IoHandlerAdapter implements Runnable {
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
 		this.session = session;
+		this.session.getFilterChain().addFirst("protocolCodecFilter", new ProtocolCodecFilter(new LoginCodecFactory()));
 	}
 
 	@Override
