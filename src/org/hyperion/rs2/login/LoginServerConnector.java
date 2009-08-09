@@ -10,6 +10,8 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.hyperion.rs2.model.World;
+import org.hyperion.rs2.util.IoBufferUtils;
 import org.hyperion.util.CommonConstants;
 import org.hyperion.util.net.LoginCodecFactory;
 import org.hyperion.util.net.LoginPacket;
@@ -20,7 +22,7 @@ import org.hyperion.util.net.LoginPacket;
  * @author Graham
  *
  */
-public class LoginServerConnector extends IoHandlerAdapter implements Runnable {
+public class LoginServerConnector extends IoHandlerAdapter {
 	
 	/**
 	 * Logger instance.
@@ -79,24 +81,40 @@ public class LoginServerConnector extends IoHandlerAdapter implements Runnable {
 	 * @return <code>true</code> if so, <code>false</code> if not.
 	 */
 	public boolean isAuthenticated() {
-		return authenticated;
+		return isConnected() && authenticated;
 	}
 
 	/**
-	 * Sets the authentication details.
+	 * Connects to the server.
 	 * @param password The password.
 	 * @param node The node id.
 	 */
-	public void setAuthenticationDetails(String password, int node) {
-		if(password == null) {
-			throw new NullPointerException();
-		}
-		if(this.password != null) {
-			throw new IllegalStateException("Already set authentication details.");
-		}
+	public void connect(final String password, final int node) {
 		this.password = password;
 		this.node = node;
-		(new Thread(this)).start();
+		logger.info("Connecting to login server : " + address + ":" + CommonConstants.LOGIN_PORT + "...");
+		ConnectFuture cf = connector.connect(new InetSocketAddress(address, CommonConstants.LOGIN_PORT));
+		cf.awaitUninterruptibly();
+		if(!cf.isConnected() && (session == null || !session.isConnected())) {
+			logger.severe("Connection to login server failed. Retrying...");
+			// this stops stack overflow errors
+			World.getWorld().getEngine().submitLogic(new Runnable() {
+				public void run() {
+					World.getWorld().getLoginServerConnector().connect(password, node);
+				}
+			});
+		} else {
+			this.session = cf.getSession();
+			logger.info("Connected.");
+			session.getFilterChain().addFirst("protocolCodecFilter", new ProtocolCodecFilter(new LoginCodecFactory()));
+			// create and send auth packet
+			IoBuffer buf = IoBuffer.allocate(16);
+			buf.setAutoExpand(true);
+			buf.putShort((short) node);
+			IoBufferUtils.putRS2String(buf, password);
+			buf.flip();
+			this.session.write(new LoginPacket(LoginPacket.AUTH, buf));
+		}
 	}
 
 	@Override
@@ -114,7 +132,7 @@ public class LoginServerConnector extends IoHandlerAdapter implements Runnable {
 	 * @param packet The packet to write.
 	 */
 	public void write(LoginPacket packet) {
-		if(session != null) {
+		if(!this.isConnected()) {
 			session.write(packet);
 		} else {
 			throw new IllegalStateException("Not connected.");
@@ -143,53 +161,10 @@ public class LoginServerConnector extends IoHandlerAdapter implements Runnable {
 
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
-		this.session = null;
-		this.authenticated = false;
-	}
-	
-	@Override
-	public void sessionOpened(IoSession session) throws Exception {
-		this.session = session;
-		this.session.getFilterChain().addFirst("protocolCodecFilter", new ProtocolCodecFilter(new LoginCodecFactory()));
-		// create and send auth packet
-		IoBuffer buf = IoBuffer.allocate(16);
-		buf.setAutoExpand(true);
-		buf.putShort((short) node);
-		buf.put(password.getBytes());
-		buf.put((byte) 0);
-		this.session.write(new LoginPacket(LoginPacket.AUTH, buf));
-	}
-
-	@Override
-	public void run() {
-		int retries = 0;
-		while(true) {
-			logger.info("Connecting to login server : " + address + ":" + CommonConstants.LOGIN_PORT + "...");
-			ConnectFuture cf = connector.connect(new InetSocketAddress(address, CommonConstants.LOGIN_PORT));
-			cf.awaitUninterruptibly();
-			if(session == null) {
-				retries++;
-				int secs = 5;
-				if(retries > 2) {
-					secs = 30;
-				}
-				if(retries > 4) {
-					secs = 60;
-				}
-				if(retries > 9) {
-					secs = 300;
-				}
-				logger.severe("Connection failed/disconnected. Retrying in " + secs + " seconds...");
-				try {
-					Thread.sleep(secs * 1000L);
-				} catch(InterruptedException e) {
-					continue;
-				}
-			} else {
-				retries = 0;
-				logger.info("Connected.");
-				session.getCloseFuture().awaitUninterruptibly();
-			}
+		if(this.session == session) {
+			logger.info("Disconnected. Retrying...");
+			connect(password, node);
+			this.session = null;
 		}
 	}
 

@@ -185,7 +185,7 @@ public class World {
 			}
 			if(loader instanceof LoginServerWorldLoader) {
 				connector = new LoginServerConnector(mappings.get("loginServer"));
-				connector.setAuthenticationDetails(mappings.get("nodePassword"), Integer.parseInt(mappings.get("nodeId")));
+				connector.connect(mappings.get("nodePassword"), Integer.parseInt(mappings.get("nodeId")));
 			}
 		} finally {
 			fis.close();

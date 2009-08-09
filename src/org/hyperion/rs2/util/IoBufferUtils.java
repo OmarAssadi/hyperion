@@ -23,4 +23,16 @@ public class IoBufferUtils {
 		return bldr.toString();
 	}
 
+	/**
+	 * Writes a RuneScape string to a buffer.
+	 * @param buf The buffer.
+	 * @param string The string.
+	 */
+	public static void putRS2String(IoBuffer buf, String string) {
+		for(char c : string.toCharArray()) {
+			buf.put((byte) c);
+		}
+		buf.put((byte) 10);
+	}
+
 }

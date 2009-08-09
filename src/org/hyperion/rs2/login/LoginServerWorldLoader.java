@@ -14,7 +14,7 @@ public class LoginServerWorldLoader implements WorldLoader {
 
 	@Override
 	public LoginResult checkLogin(PlayerDetails pd) {
-		if(!World.getWorld().getLoginServerConnector().isConnected()) {
+		if(!World.getWorld().getLoginServerConnector().isAuthenticated()) {
 			return new LoginResult(8);
 		} else {
 			// TODO
