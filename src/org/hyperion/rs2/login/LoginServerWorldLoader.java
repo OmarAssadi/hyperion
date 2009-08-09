@@ -17,19 +17,18 @@ public class LoginServerWorldLoader implements WorldLoader {
 		if(!World.getWorld().getLoginServerConnector().isAuthenticated()) {
 			return new LoginResult(8);
 		} else {
-			// TODO
-			return new LoginResult(11);
+			return World.getWorld().getLoginServerConnector().checkLogin(pd);
 		}
 	}
 
 	@Override
 	public boolean loadPlayer(Player player) {
-		return false;
+		return World.getWorld().getLoginServerConnector().loadPlayer(player);
 	}
 
 	@Override
 	public boolean savePlayer(Player player) {
-		return false;
+		return World.getWorld().getLoginServerConnector().savePlayer(player);
 	}
 
 }

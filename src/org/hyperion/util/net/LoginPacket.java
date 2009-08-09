@@ -17,7 +17,17 @@ public class LoginPacket {
 	/**
 	 * Authentication response opcode.
 	 */
-	public static final int AUTH_RESPONSE = 1;
+	public static final int AUTH_RESPONSE = 0;
+	
+	/**
+	 * Check login request opcode.
+	 */
+	public static final int CHECK_LOGIN = 1;
+	
+	/**
+	 * Check login response opcode.
+	 */
+	public static final int CHECK_LOGIN_RESPONSE = 1;
 	
 	/**
 	 * The opcode.

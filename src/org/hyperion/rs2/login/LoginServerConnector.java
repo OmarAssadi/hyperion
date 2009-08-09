@@ -1,6 +1,8 @@
 package org.hyperion.rs2.login;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -10,6 +12,9 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.hyperion.rs2.WorldLoader.LoginResult;
+import org.hyperion.rs2.model.Player;
+import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.util.IoBufferUtils;
 import org.hyperion.util.CommonConstants;
@@ -156,6 +161,14 @@ public class LoginServerConnector extends IoHandlerAdapter {
 				logger.severe("Login server authentication error : " + code + ". Check your password and node id.");
 			}
 			break;
+		case LoginPacket.CHECK_LOGIN_RESPONSE:
+			String name = IoBufferUtils.getRS2String(payload);
+			int returnCode = payload.getUnsigned();
+			synchronized(checkLoginResults) {
+				checkLoginResults.put(name, returnCode);
+				notifyAll();
+			}
+			break;
 		}
 	}
 
@@ -166,6 +179,58 @@ public class LoginServerConnector extends IoHandlerAdapter {
 			connect(password, node);
 			this.session = null;
 		}
+	}
+	
+	/**
+	 * Check login results.
+	 */
+	private Map<String, Integer> checkLoginResults = new HashMap<String, Integer>();
+
+	/**
+	 * Checks the login of a player.
+	 * @param pd The player details.
+	 * @return The login result.
+	 */
+	public LoginResult checkLogin(PlayerDetails pd) {
+		IoBuffer buf = IoBuffer.allocate(16);
+		buf.setAutoExpand(true);
+		IoBufferUtils.putRS2String(buf, pd.getName());
+		IoBufferUtils.putRS2String(buf, pd.getPassword());
+		buf.flip();
+		session.write(new LoginPacket(LoginPacket.CHECK_LOGIN, buf));
+		synchronized(checkLoginResults) {
+			while(!checkLoginResults.containsKey(pd.getName())) {
+				try {
+					wait();
+				} catch(InterruptedException e) {
+					continue;
+				}
+			}
+			int code = checkLoginResults.remove(pd.getName());
+			if(code == 2) {
+				return new LoginResult(code, new Player(pd));
+			} else {
+				return new LoginResult(code);
+			}
+		}
+	}
+
+	/**
+	 * Loads a player.
+	 * @param player The player.
+	 * @return <code>true</code> on success, <code>false</code> on error.
+	 */
+	public boolean loadPlayer(Player player) {
+		return true;
+	}
+
+	/**
+	 * Saves a player.
+	 * @param player The player.
+	 * @return <code>true</code> on success, <code>false</code> on error.
+	 */
+	public boolean savePlayer(Player player) {
+		return true;
 	}
 
 }
