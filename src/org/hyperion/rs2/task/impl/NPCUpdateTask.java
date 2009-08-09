@@ -288,7 +288,7 @@ public class NPCUpdateTask implements Task {
 		if(npc.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
 			mask |= 0x10;
 		}
-		if(npc.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT)) {
 			mask |= 0x8;
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
@@ -300,7 +300,7 @@ public class NPCUpdateTask implements Task {
 		if(npc.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
 			mask |= 0x1;
 		}
-		if(npc.getUpdateFlags().get(UpdateFlag.HIT)) {
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT_2)) {
 			mask |= 0x40;
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.TRANSFORM)) {
@@ -314,13 +314,15 @@ public class NPCUpdateTask implements Task {
 		packet.put((byte) mask);
 		
 		if(npc.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
-			
+			packet.putLEShort(npc.getCurrentAnimation().getId());
+			packet.put((byte) npc.getCurrentAnimation().getDelay());
 		}
-		if(npc.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT)) {
 			
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
-			
+			packet.putShort(npc.getCurrentGraphic().getId());
+			packet.putInt(npc.getCurrentGraphic().getDelay());
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
 			
@@ -328,7 +330,7 @@ public class NPCUpdateTask implements Task {
 		if(npc.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
 			
 		}
-		if(npc.getUpdateFlags().get(UpdateFlag.HIT)) {
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT_2)) {
 			
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.TRANSFORM)) {
