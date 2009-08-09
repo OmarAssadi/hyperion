@@ -327,11 +327,33 @@ public class PlayerUpdateTask implements Task {
 			 * Calculate the bitmask.
 			 */
 			int mask = 0;
+			// TODO mask 0x400
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
+				mask |= 0x100;
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
+				mask |= 0x8;
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
+				mask |= 0x4;
+			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT) && !noChat) {
 				mask |= 0x80;
 			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
+				mask |= 0x1;
+			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 				mask |= 0x10;
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE)) {
+				mask |= 0x2;
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT)) {
+				mask |= 0x20;
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+				mask |= 0x200;
 			}
 			
 			/*
@@ -339,7 +361,7 @@ public class PlayerUpdateTask implements Task {
 			 */
 			if(mask >= 0x100) {
 				/*
-				 * Write it as a short.
+				 * Write it as a short and indicate we have done so.
 				 */
 				mask |= 0x40;
 				block.put((byte) (mask & 0xFF));
@@ -354,11 +376,32 @@ public class PlayerUpdateTask implements Task {
 			/*
 			 * Append the appropriate updates.
 			 */
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
+				appendGraphicsUpdate(block, otherPlayer);
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
+				appendAnimationUpdate(block, otherPlayer);
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
+				
+			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT) && !noChat) {
 				appendChatUpdate(block, otherPlayer);
 			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
+				
+			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 				appendPlayerAppearanceUpdate(block, otherPlayer);
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE)) {
+				
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT)) {
+				
+			}
+			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+				
 			}
 			
 			/*
@@ -381,11 +424,31 @@ public class PlayerUpdateTask implements Task {
 	}
 	
 	/**
+	 * Appends an animation update.
+	 * @param block The update block.
+	 * @param otherPlayer The player.
+	 */
+	private void appendAnimationUpdate(PacketBuilder block, Player otherPlayer) {
+		block.putLEShort(otherPlayer.getCurrentAnimation().getId());
+		block.putByteC(otherPlayer.getCurrentAnimation().getDelay());
+	}
+
+	/**
+	 * Appends a graphics update.
+	 * @param block The update block.
+	 * @param otherPlayer The player.
+	 */
+	private void appendGraphicsUpdate(PacketBuilder block, Player otherPlayer) {
+		block.putLEShort(otherPlayer.getCurrentGraphic().getId());
+		block.putInt(otherPlayer.getCurrentGraphic().getDelay());
+	}
+
+	/**
 	 * Appends a chat text update.
 	 * @param packet The packet.
 	 * @param otherPlayer The player.
 	 */
-	public void appendChatUpdate(PacketBuilder packet, Player otherPlayer) {
+	private void appendChatUpdate(PacketBuilder packet, Player otherPlayer) {
 		ChatMessage cm = otherPlayer.getCurrentChatMessage();
 		
 		byte[] bytes = cm.getText();
@@ -403,7 +466,7 @@ public class PlayerUpdateTask implements Task {
 	 * @param packet The packet.
 	 * @param otherPlayer The player.
 	 */
-	public void appendPlayerAppearanceUpdate(PacketBuilder packet, Player otherPlayer) {
+	private void appendPlayerAppearanceUpdate(PacketBuilder packet, Player otherPlayer) {
 		Appearance app = otherPlayer.getAppearance();
 		Container<Item> eq = otherPlayer.getEquipment();
 		
@@ -501,7 +564,7 @@ public class PlayerUpdateTask implements Task {
 	 * Updates this player's movement.
 	 * @param packet The packet.
 	 */
-	public void updateThisPlayerMovement(PacketBuilder packet) {
+	private void updateThisPlayerMovement(PacketBuilder packet) {
 		/*
 		 * Check if the player is teleporting.
 		 */

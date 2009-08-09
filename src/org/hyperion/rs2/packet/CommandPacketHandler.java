@@ -1,5 +1,7 @@
 package org.hyperion.rs2.packet;
 
+import org.hyperion.rs2.model.Animation;
+import org.hyperion.rs2.model.Graphic;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
@@ -42,6 +44,24 @@ public class CommandPacketHandler implements PacketHandler {
 					player.getInventory().add(new Item(id, count));
 				} else {
 					player.getActionSender().sendMessage("Syntax is ::item [id] [count].");
+				}
+			} else if(command.equals("anim")) {
+				if(args.length == 2 || args.length == 3) {
+					int id = Integer.parseInt(args[1]);
+					int delay = 0;
+					if(args.length == 3) {
+						delay = Integer.parseInt(args[2]);
+					}
+					player.playAnimation(Animation.create(id, delay));
+				}
+			} else if(command.equals("gfx")) {
+				if(args.length == 2 || args.length == 3) {
+					int id = Integer.parseInt(args[1]);
+					int delay = 0;
+					if(args.length == 3) {
+						delay = Integer.parseInt(args[2]);
+					}
+					player.playGraphics(Graphic.create(id, delay));
 				}
 			} else {
 				TriggerManager.getTriggerManager().fire(player, new CommandCondition(command));

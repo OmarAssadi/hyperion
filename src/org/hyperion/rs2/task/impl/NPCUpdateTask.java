@@ -6,6 +6,7 @@ import org.hyperion.rs2.GameEngine;
 import org.hyperion.rs2.model.NPC;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.World;
+import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.net.Packet;
 import org.hyperion.rs2.net.PacketBuilder;
 import org.hyperion.rs2.task.Task;
@@ -284,10 +285,55 @@ public class NPCUpdateTask implements Task {
 		 */
 		int mask = 0;
 		
+		if(npc.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
+			mask |= 0x10;
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+			mask |= 0x8;
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
+			mask |= 0x80;
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
+			mask |= 0x20;
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
+			mask |= 0x1;
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT)) {
+			mask |= 0x40;
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.TRANSFORM)) {
+			mask |= 0x2;
+		}
+		// TODO mask 0x4
+		
 		/*
 		 * And write the mask.
 		 */
 		packet.put((byte) mask);
+		
+		if(npc.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
+			
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+			
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
+			
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
+			
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
+			
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.HIT)) {
+			
+		}
+		if(npc.getUpdateFlags().get(UpdateFlag.TRANSFORM)) {
+			
+		}
 	}
 
 }

@@ -3,6 +3,8 @@ package org.hyperion.rs2.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
+
 /**
  * Represents a character in the game world, i.e. a <code>Player</code> or
  * an <code>NPC</code>.
@@ -70,6 +72,58 @@ public abstract class Entity {
 	 * Map region changing flag.
 	 */
 	private boolean mapRegionChanging = false;
+	
+	/**
+	 * The current animation.
+	 */
+	private Animation currentAnimation;
+	
+	/**
+	 * The current graphic.
+	 */
+	private Graphic currentGraphic;
+	
+	/**
+	 * Gets the current animation.
+	 * @return The current animation;
+	 */
+	public Animation getCurrentAnimation() {
+		return currentAnimation;
+	}
+	
+	/**
+	 * Gets the current graphic.
+	 * @return The current graphic.
+	 */
+	public Graphic getCurrentGraphic() {
+		return currentGraphic;
+	}
+	
+	/**
+	 * Resets attributes after an update cycle.
+	 */
+	public void reset() {
+		this.currentAnimation = null;
+		this.currentGraphic = null;
+	}
+	
+	/**
+	 * Animates the entity.
+	 * @param animation The animation.
+	 */
+	public void playAnimation(Animation animation) {
+		this.currentAnimation = animation;
+		this.getUpdateFlags().flag(UpdateFlag.ANIMATION);
+	}
+	
+	/**
+	 * Plays graphics.
+	 * @param graphic The graphics.
+	 */
+	public void playGraphics(Graphic graphic) {
+		this.currentGraphic = graphic;
+		this.getUpdateFlags().flag(UpdateFlag.GRAPHICS);
+	}
 	
 	/**
 	 * Gets the walking queue.

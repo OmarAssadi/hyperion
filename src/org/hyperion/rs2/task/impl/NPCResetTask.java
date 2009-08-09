@@ -28,6 +28,7 @@ public class NPCResetTask implements Task {
 	public void execute(GameEngine context) {
 		npc.getUpdateFlags().reset();
 		npc.setTeleporting(false);
+		npc.reset();
 	}
 
 }
