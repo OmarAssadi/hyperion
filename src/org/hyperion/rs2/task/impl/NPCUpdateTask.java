@@ -254,6 +254,11 @@ public class NPCUpdateTask implements Task {
 				 * And write the direction.
 				 */
 				packet.putBits(3, npc.getSprites().getPrimarySprite());
+				
+				/*
+				 * And write the update flag.
+				 */
+				packet.putBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 			}
 		} else {
 			/*
@@ -271,6 +276,11 @@ public class NPCUpdateTask implements Task {
 			 */
 			packet.putBits(3, npc.getSprites().getPrimarySprite());
 			packet.putBits(3, npc.getSprites().getSecondarySprite());
+			
+			/*
+			 * And write the update flag.
+			 */
+			packet.putBits(1, npc.getUpdateFlags().isUpdateRequired() ? 1 : 0);
 		}
 	}
 	
