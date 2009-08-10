@@ -1,4 +1,4 @@
-package org.hyperion.util.net;
+package org.hyperion.util.login;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;

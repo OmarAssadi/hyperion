@@ -17,9 +17,10 @@ import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.util.IoBufferUtils;
+import org.hyperion.rs2.util.NameUtils;
 import org.hyperion.util.CommonConstants;
-import org.hyperion.util.net.LoginCodecFactory;
-import org.hyperion.util.net.LoginPacket;
+import org.hyperion.util.login.LoginCodecFactory;
+import org.hyperion.util.login.LoginPacket;
 
 /**
  * <p>The <code>LoginServerConnector</code> manages the communication between
@@ -125,6 +126,7 @@ public class LoginServerConnector extends IoHandlerAdapter {
 	@Override
 	public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
 		session.close(false);
+		throwable.printStackTrace();
 	}
 
 	@Override
@@ -152,23 +154,60 @@ public class LoginServerConnector extends IoHandlerAdapter {
 		final IoBuffer payload = packet.getPayload();
 		switch(packet.getOpcode()) {
 		case LoginPacket.AUTH_RESPONSE:
-			int code = payload.getUnsigned();
-			if(code == 0) {
-				authenticated = true;
-				logger.info("Authenticated as node : World-" + node + ".");
-			} else {
-				session.close(false);
-				logger.severe("Login server authentication error : " + code + ". Check your password and node id.");
+			{
+				int code = payload.getUnsigned();
+				if(code == 0) {
+					authenticated = true;
+					logger.info("Authenticated as node : World-" + node + ".");
+				} else {
+					session.close(false);
+					logger.severe("Login server authentication error : " + code + ". Check your password and node id.");
+				}
+				break;
 			}
-			break;
 		case LoginPacket.CHECK_LOGIN_RESPONSE:
-			String name = IoBufferUtils.getRS2String(payload);
-			int returnCode = payload.getUnsigned();
-			synchronized(checkLoginResults) {
-				checkLoginResults.put(name, returnCode);
-				notifyAll();
+			{
+				String name = IoBufferUtils.getRS2String(payload);
+				int returnCode = payload.getUnsigned();
+				synchronized(checkLoginResults) {
+					checkLoginResults.put(name, returnCode);
+					checkLoginResults.notifyAll();
+				}
+				break;
 			}
-			break;
+		case LoginPacket.LOAD_RESPONSE:
+			{
+				String name = IoBufferUtils.getRS2String(payload);
+				int returnCode = payload.getUnsigned();
+				if(returnCode == 1) {
+					int dataLength = payload.getUnsignedShort();
+					byte[] data = new byte[dataLength];
+					payload.get(data);
+					IoBuffer dataBuffer = IoBuffer.allocate(dataLength);
+					dataBuffer.put(data);
+					dataBuffer.flip();
+					synchronized(playerLoadResults) {
+						playerLoadResults.put(name, dataBuffer);
+						playerLoadResults.notifyAll();
+					}
+				} else {
+					synchronized(playerLoadResults) {
+						playerLoadResults.put(name, null);
+						playerLoadResults.notifyAll();
+					}
+				}
+				break;
+			}
+		case LoginPacket.SAVE_RESPONSE:
+			{
+				String name = IoBufferUtils.getRS2String(payload);
+				int success = payload.getUnsigned();
+				synchronized(playerSaveResults) {
+					playerSaveResults.put(name, success == 1 ? Boolean.TRUE : Boolean.FALSE);
+					playerSaveResults.notifyAll();
+				}
+				break;
+			}
 		}
 	}
 
@@ -185,6 +224,16 @@ public class LoginServerConnector extends IoHandlerAdapter {
 	 * Check login results.
 	 */
 	private Map<String, Integer> checkLoginResults = new HashMap<String, Integer>();
+	
+	/**
+	 * Player load results.
+	 */
+	private Map<String, IoBuffer> playerLoadResults = new HashMap<String, IoBuffer>();
+	
+	/**
+	 * Player save results.
+	 */
+	private Map<String, Boolean> playerSaveResults = new HashMap<String, Boolean>();
 
 	/**
 	 * Checks the login of a player.
@@ -199,14 +248,14 @@ public class LoginServerConnector extends IoHandlerAdapter {
 		buf.flip();
 		session.write(new LoginPacket(LoginPacket.CHECK_LOGIN, buf));
 		synchronized(checkLoginResults) {
-			while(!checkLoginResults.containsKey(pd.getName())) {
+			while(!checkLoginResults.containsKey(NameUtils.formatNameForProtocol(pd.getName()))) {
 				try {
-					wait();
+					checkLoginResults.wait();
 				} catch(InterruptedException e) {
 					continue;
 				}
 			}
-			int code = checkLoginResults.remove(pd.getName());
+			int code = checkLoginResults.remove(NameUtils.formatNameForProtocol(pd.getName()));
 			if(code == 2) {
 				return new LoginResult(code, new Player(pd));
 			} else {
@@ -221,6 +270,26 @@ public class LoginServerConnector extends IoHandlerAdapter {
 	 * @return <code>true</code> on success, <code>false</code> on error.
 	 */
 	public boolean loadPlayer(Player player) {
+		IoBuffer buf = IoBuffer.allocate(16);
+		buf.setAutoExpand(true);
+		IoBufferUtils.putRS2String(buf, NameUtils.formatNameForProtocol(player.getName()));
+		buf.flip();
+		session.write(new LoginPacket(LoginPacket.LOAD, buf));
+		synchronized(playerLoadResults) {
+			while(!playerLoadResults.containsKey(NameUtils.formatNameForProtocol(player.getName()))) {
+				try {
+					playerLoadResults.wait();
+				} catch(InterruptedException e) {
+					continue;
+				}
+			}
+			IoBuffer playerData = playerLoadResults.remove(NameUtils.formatNameForProtocol(player.getName()));
+			if(playerData == null) {
+				return false;
+			} else {
+				player.deserialize(playerData);
+			}
+		}
 		return true;
 	}
 
@@ -230,7 +299,39 @@ public class LoginServerConnector extends IoHandlerAdapter {
 	 * @return <code>true</code> on success, <code>false</code> on error.
 	 */
 	public boolean savePlayer(Player player) {
-		return true;
+		IoBuffer buf = IoBuffer.allocate(16);
+		buf.setAutoExpand(true);
+		IoBufferUtils.putRS2String(buf, NameUtils.formatNameForProtocol(player.getName()));
+		IoBuffer data = IoBuffer.allocate(1024);
+		data.setAutoExpand(true);
+		player.serialize(data);
+		data.flip();
+		buf.putShort((short) data.remaining());
+		buf.put(data);
+		buf.flip();
+		session.write(new LoginPacket(LoginPacket.SAVE, buf));
+		synchronized(playerSaveResults) {
+			while(!playerSaveResults.containsKey(NameUtils.formatNameForProtocol(player.getName()))) {
+				try {
+					playerSaveResults.wait();
+				} catch(InterruptedException e) {
+					continue;
+				}
+			}
+			return playerSaveResults.remove(NameUtils.formatNameForProtocol(player.getName())).booleanValue();
+		}
+	}
+
+	/**
+	 * Sends a notification of player disconnection to the login server.
+	 * @param name The player name.
+	 */
+	public void disconnected(String name) {
+		IoBuffer buf = IoBuffer.allocate(16);
+		buf.setAutoExpand(true);
+		IoBufferUtils.putRS2String(buf, NameUtils.formatNameForProtocol(name));
+		buf.flip();
+		session.write(new LoginPacket(LoginPacket.DISCONNECT, buf));
 	}
 
 }

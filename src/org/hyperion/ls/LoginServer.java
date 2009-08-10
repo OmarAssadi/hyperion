@@ -2,10 +2,14 @@ package org.hyperion.ls;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.hyperion.rs2.GenericWorldLoader;
+import org.hyperion.rs2.WorldLoader;
 import org.hyperion.util.CommonConstants;
 
 /**
@@ -26,6 +30,16 @@ public class LoginServer {
 	private IoAcceptor acceptor = new NioSocketAcceptor();
 	
 	/**
+	 * The task queue.
+	 */
+	private BlockingQueue<Runnable> tasks = new LinkedBlockingQueue<Runnable>();
+	
+	/**
+	 * Login server loader.
+	 */
+	private WorldLoader loader = new GenericWorldLoader();
+	
+	/**
 	 * The entry point of the program.
 	 * @param args The command line arguments.
 	 * @throws IOException if an I/O error occurs.
@@ -39,7 +53,7 @@ public class LoginServer {
 	 */
 	public LoginServer() {
 		logger.info("Starting Hyperion Login Server...");
-		acceptor.setHandler(new LoginConnectionHandler());
+		acceptor.setHandler(new LoginConnectionHandler(this));
 	}
 
 	/**
@@ -58,6 +72,29 @@ public class LoginServer {
 	 */
 	public void start() {
 		logger.info("Ready.");
+		while(true) {
+			try {
+				tasks.take().run();
+			} catch(InterruptedException e) {
+				continue;
+			}
+		}
+	}
+
+	/**
+	 * Pushses a task onto the queue.
+	 * @param runnable The runnable.
+	 */
+	public void pushTask(Runnable runnable) {
+		tasks.add(runnable);
+	}
+	
+	/**
+	 * Gets the login server loader.
+	 * @return The loader.
+	 */
+	public WorldLoader getLoader() {
+		return loader;
 	}
 
 }

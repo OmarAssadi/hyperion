@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.hyperion.rs2.util.NameUtils;
+
 /**
  * Manages all of the nodes in the login server.
  * @author Graham
@@ -41,6 +43,20 @@ public class NodeManager {
 	private Map<String, Node> players = new HashMap<String, Node>();
 	
 	/**
+	 * Gets a player.
+	 * @param name The player name.
+	 * @return The player object.
+	 */
+	public PlayerData getPlayer(String name) {
+		name = NameUtils.formatNameForProtocol(name);
+		Node n = getPlayersNode(name);
+		if(n == null) {
+			return null;
+		}
+		return n.getPlayer(name);
+	}
+	
+	/**
 	 * Registers a node.
 	 * @param node The node to add.
 	 */
@@ -56,6 +72,9 @@ public class NodeManager {
 	public void unregister(Node node) {
 		logger.info("Unregistering node : World-" + node.getId() + ".");
 		nodes.remove(node.getId());
+		for(PlayerData p : node.getPlayers()) {
+			players.remove(p.getName());
+		}
 	}
 	
 	/**
@@ -72,16 +91,21 @@ public class NodeManager {
 	 * @param player The player.
 	 * @param node The node.
 	 */
-	public void register(Player player, Node node) {
+	public void register(PlayerData player, Node node) {
+		logger.info("Registering player : " + player.getName() + "...");
 		players.put(player.getName(), node);
+		node.register(player);
 	}
 	
 	/**
 	 * Unregisters a player.
 	 * @param player The player.
 	 */
-	public void unregister(Player player) {
-		players.remove(player.getName());
+	public void unregister(PlayerData player) {
+		logger.info("Unregistering player : " + player.getName() + "...");
+		if(players.containsKey(player.getName())) {
+			players.remove(player.getName()).unregister(player);
+		}
 	}
 	
 	/**
@@ -90,7 +114,7 @@ public class NodeManager {
 	 * @return The node.
 	 */
 	public Node getPlayersNode(String player) {
-		return nodes.get(player);
+		return players.get(player);
 	}
 	
 	/**

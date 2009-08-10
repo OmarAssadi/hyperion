@@ -1,4 +1,4 @@
-package org.hyperion.util.net;
+package org.hyperion.util.login;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -26,7 +26,7 @@ public class LoginDecoder extends CumulativeProtocolDecoder {
 	protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 		if(opcode == -1) {
 			if(in.remaining() >= 1) {
-				opcode = in.get() & 0xFF;
+				opcode = in.getUnsigned();
 			} else {
 				return false;
 			}
@@ -45,6 +45,8 @@ public class LoginDecoder extends CumulativeProtocolDecoder {
 			buf.put(payload);
 			buf.flip();
 			out.write(new LoginPacket(opcode, buf));
+			opcode = -1;
+			length = -1;
 			return true;
 		} else {
 			return false;

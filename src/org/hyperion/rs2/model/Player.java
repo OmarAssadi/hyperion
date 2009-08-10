@@ -3,7 +3,9 @@ package org.hyperion.rs2.model;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
+import org.hyperion.data.Data;
 import org.hyperion.rs2.action.ActionQueue;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.container.Container;
@@ -12,13 +14,15 @@ import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.net.ActionSender;
 import org.hyperion.rs2.net.ISAACCipher;
 import org.hyperion.rs2.net.Packet;
+import org.hyperion.rs2.util.IoBufferUtils;
+import org.hyperion.rs2.util.NameUtils;
 
 /**
  * Represents a player-controller character.
  * @author Graham
  *
  */
-public class Player extends Entity {
+public class Player extends Entity implements Data {
 	
 	/**
 	 * Represents the rights of a player.
@@ -131,7 +135,7 @@ public class Player extends Entity {
 	/**
 	 * The name.
 	 */
-	private final String name;
+	private String name;
 	
 	/**
 	 * The UID, i.e. number in <code>random.dat</code>.
@@ -141,7 +145,7 @@ public class Player extends Entity {
 	/**
 	 * The password.
 	 */
-	private String pass;
+	private String password;
 	
 	/**
 	 * The rights level.
@@ -194,7 +198,7 @@ public class Player extends Entity {
 		this.inCipher = details.getInCipher();
 		this.outCipher = details.getOutCipher();
 		this.name = details.getName();
-		this.pass = details.getPassword();
+		this.password = details.getPassword();
 		this.uid = details.getUID();
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		this.setTeleporting(true);
@@ -316,7 +320,7 @@ public class Player extends Entity {
 	 * @return The player's password.
 	 */
 	public String getPassword() {
-		return pass;
+		return password;
 	}
 	
 	/**
@@ -324,7 +328,7 @@ public class Player extends Entity {
 	 * @param pass The password.
 	 */
 	public void setPassword(String pass) {
-		this.pass = pass;
+		this.password = pass;
 	}
 	
 	/**
@@ -410,6 +414,77 @@ public class Player extends Entity {
 	 */
 	public Container<Item> getInventory() {
 		return inventory;
+	}
+
+	@Override
+	public void deserialize(IoBuffer buf) {
+		this.name = IoBufferUtils.getRS2String(buf);
+		this.password = IoBufferUtils.getRS2String(buf);
+		this.rights = Player.Rights.getRights(buf.getUnsigned());
+		this.members = buf.getUnsigned() == 1 ? true : false;
+		setLocation(Location.create(buf.getUnsignedShort(), buf.getUnsignedShort(), buf.getUnsigned()));
+		int[] look = new int[13];
+		for(int i = 0; i < 13; i++) {
+			look[i] = buf.getUnsigned();
+		}
+		appearance.setLook(look);
+		for(int i = 0; i < Equipment.SIZE; i++) {
+			int id = buf.getUnsignedShort();
+			if(id != 65535) {
+				int amt = buf.getInt();
+				Item item = new Item(id, amt);
+				equipment.set(i, item);
+			}
+		}
+		for(int i = 0; i < Skills.SKILL_COUNT; i++) {
+			skills.setLevel(i, buf.getUnsigned());
+			skills.setExperience(i, buf.getDouble());
+		}
+		for(int i = 0; i < Inventory.SIZE; i++) {
+			int id = buf.getUnsignedShort();
+			if(id != 65535) {
+				int amt = buf.getInt();
+				Item item = new Item(id, amt);
+				inventory.set(i, item);
+			}
+		}
+	}
+
+	@Override
+	public void serialize(IoBuffer buf) {
+		IoBufferUtils.putRS2String(buf, NameUtils.formatName(name));
+		IoBufferUtils.putRS2String(buf, password);
+		buf.put((byte) rights.toInteger());
+		buf.put((byte) (members ? 1 : 0));
+		buf.putShort((short) getLocation().getX());
+		buf.putShort((short) getLocation().getY());
+		buf.put((byte) getLocation().getZ());
+		int[] look = appearance.getLook();
+		for(int i = 0; i < 13; i++) {
+			buf.put((byte) look[i]);
+		}
+		for(int i = 0; i < Equipment.SIZE; i++) {
+			Item item = equipment.get(i);
+			if(item == null) {
+				buf.putShort((short) 65535);
+			} else {
+				buf.putShort((short) item.getId());
+				buf.putInt(item.getCount());
+			}
+		}
+		for(int i = 0; i < Skills.SKILL_COUNT; i++) {
+			buf.put((byte) skills.getLevel(i));
+			buf.putDouble((double) skills.getExperience(i));
+		}
+		for(int i = 0; i < Inventory.SIZE; i++) {
+			Item item = inventory.get(i);
+			if(item == null) {
+				buf.putShort((short) 65535);
+			} else {
+				buf.putShort((short) item.getId());
+				buf.putInt(item.getCount());
+			}
+		}
 	}
 	
 }

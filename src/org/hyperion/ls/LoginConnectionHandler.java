@@ -5,8 +5,8 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.hyperion.rs2.util.IoBufferUtils;
-import org.hyperion.util.net.LoginCodecFactory;
-import org.hyperion.util.net.LoginPacket;
+import org.hyperion.util.login.LoginCodecFactory;
+import org.hyperion.util.login.LoginPacket;
 
 /**
  * Handles the login server connections.
@@ -14,30 +14,48 @@ import org.hyperion.util.net.LoginPacket;
  *
  */
 public class LoginConnectionHandler extends IoHandlerAdapter {
+	
+	/**
+	 * The login server.
+	 */
+	private LoginServer server;
+	
+	/**
+	 * Creates the connection handler.
+	 * @param server The server.
+	 */
+	public LoginConnectionHandler(LoginServer server) {
+		this.server = server;
+	}
 
 	@Override
 	public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
 		session.close(false);
+		throwable.printStackTrace();
 	}
 
 	@Override
-	public void messageReceived(IoSession session, Object message) throws Exception {
-		if(session.containsAttribute("node")) {
-			synchronized(NodeManager.class) {
-				((Node) session.getAttribute("node")).handlePacket((LoginPacket) message);
+	public void messageReceived(final IoSession session, final Object message) throws Exception {
+		server.pushTask(new Runnable() {
+			public void run() {
+				if(session.containsAttribute("node")) {
+					((Node) session.getAttribute("node")).handlePacket((LoginPacket) message);
+				} else {
+					handlePreAuthenticationPacket(session, (LoginPacket) message);
+				}
 			}
-		} else {
-			handlePreAuthenticationPacket(session, (LoginPacket) message);
-		}
+		});
 	}
 
 	@Override
-	public void sessionClosed(IoSession session) throws Exception {
-		if(session.containsAttribute("node")) {
-			synchronized(NodeManager.class) {
-				NodeManager.getNodeManager().unregister((Node) session.getAttribute("node"));
+	public void sessionClosed(final IoSession session) throws Exception {
+		server.pushTask(new Runnable() {
+			public void run() {
+				if(session.containsAttribute("node")) {
+					NodeManager.getNodeManager().unregister((Node) session.getAttribute("node"));
+				}
 			}
-		}
+		});
 	}
 
 	@Override
@@ -52,19 +70,17 @@ public class LoginConnectionHandler extends IoHandlerAdapter {
 	 */
 	private void handlePreAuthenticationPacket(IoSession session, LoginPacket message) {
 		if(message.getOpcode() == LoginPacket.AUTH) {
-			synchronized(NodeManager.class) {
-				int node = message.getPayload().getUnsignedShort();
-				String password = IoBufferUtils.getRS2String(message.getPayload());
-				boolean valid = NodeManager.getNodeManager().isNodeAuthenticationValid(node, password);
-				Node n = new Node(session, node);
-				session.setAttribute("node", n);
-				NodeManager.getNodeManager().register(n);
-				int code = valid ? 0 : 1;
-				IoBuffer resp = IoBuffer.allocate(1);
-				resp.put((byte) code);
-				resp.flip();
-				session.write(new LoginPacket(LoginPacket.AUTH_RESPONSE, resp));
-			}
+			int node = message.getPayload().getUnsignedShort();
+			String password = IoBufferUtils.getRS2String(message.getPayload());
+			boolean valid = NodeManager.getNodeManager().isNodeAuthenticationValid(node, password);
+			Node n = new Node(server, session, node);
+			session.setAttribute("node", n);
+			NodeManager.getNodeManager().register(n);
+			int code = valid ? 0 : 1;
+			IoBuffer resp = IoBuffer.allocate(1);
+			resp.put((byte) code);
+			resp.flip();
+			session.write(new LoginPacket(LoginPacket.AUTH_RESPONSE, resp));
 		} else {
 			session.close(false);
 		}

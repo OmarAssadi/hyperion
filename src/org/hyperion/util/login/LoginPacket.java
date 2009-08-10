@@ -1,4 +1,4 @@
-package org.hyperion.util.net;
+package org.hyperion.util.login;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
@@ -28,6 +28,31 @@ public class LoginPacket {
 	 * Check login response opcode.
 	 */
 	public static final int CHECK_LOGIN_RESPONSE = 1;
+	
+	/**
+	 * Load request opcode.
+	 */
+	public static final int LOAD = 2;
+	
+	/**
+	 * Load response opcode.
+	 */
+	public static final int LOAD_RESPONSE = 2;
+	
+	/**
+	 * Save request opcode.
+	 */
+	public static final int SAVE = 3;
+	
+	/**
+	 * Save response opcode.
+	 */
+	public static final int SAVE_RESPONSE = 3;
+
+	/**
+	 * Player disconnected opcode.
+	 */
+	public static final int DISCONNECT = 4;
 	
 	/**
 	 * The opcode.

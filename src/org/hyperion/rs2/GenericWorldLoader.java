@@ -104,7 +104,7 @@ public class GenericWorldLoader implements WorldLoader {
 		try {
 			DataInputStream is = new DataInputStream(new GZIPInputStream(new FileInputStream("data/savedGames/" + NameUtils.formatNameForProtocol(player.getName()) + ".dat")));
 			Streams.readString(is);
-			Streams.readString(is);
+			player.setPassword(Streams.readString(is));
 			player.setRights(Player.Rights.getRights(is.readUnsignedByte()));
 			player.setMembers(is.readUnsignedByte() == 1 ? true : false);
 			player.setLocation(Location.create(is.readUnsignedShort(), is.readUnsignedShort(), is.readUnsignedByte()));

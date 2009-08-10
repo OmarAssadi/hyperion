@@ -364,6 +364,9 @@ public class World {
 		engine.submitWork(new Runnable() {
 			public void run() {
 				loader.savePlayer(player);
+				if(World.getWorld().getLoginServerConnector() != null) {
+					World.getWorld().getLoginServerConnector().disconnected(player.getName());
+				}
 			}
 		});
 	}
