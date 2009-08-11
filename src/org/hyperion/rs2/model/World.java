@@ -101,9 +101,17 @@ public class World {
 	 */
 	public World() {
 		backgroundLoader.submit(new Callable<Object>() {
+			@Override
 			public Object call() throws Exception {
 				objectMap = new ObjectMap();
 				objectMap.load();
+				return null;
+			}
+		});
+		backgroundLoader.submit(new Callable<Object>() {
+			@Override
+			public Object call() throws Exception {
+				ItemDefinition.init();
 				return null;
 			}
 		});

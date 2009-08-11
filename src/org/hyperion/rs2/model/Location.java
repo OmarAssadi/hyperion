@@ -10,17 +10,17 @@ public class Location {
 	/**
 	 * The x coordinate.
 	 */
-	private int x;
+	private final int x;
 	
 	/**
 	 * The y coordinate.
 	 */
-	private int y;
+	private final int y;
 	
 	/**
 	 * The z coordinate.
 	 */
-	private int z;
+	private final int z;
 	
 	/**
 	 * Creates a location.
@@ -42,6 +42,7 @@ public class Location {
 	private Location(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
+		this.z = z;
 	}
 	
 	/**
