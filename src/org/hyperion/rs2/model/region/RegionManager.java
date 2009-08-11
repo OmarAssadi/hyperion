@@ -25,6 +25,11 @@ public class RegionManager {
 	public static final int REGION_SIZE = 32;
 	
 	/**
+	 * The lower bound that splits the region in half.
+	 */
+	private static final int LOWER_BOUND = REGION_SIZE / 2 - 1;
+	
+	/**
 	 * The active (loaded) region map.
 	 */
 	private Map<RegionCoordinates, Region> activeRegions = new HashMap<RegionCoordinates, Region>();
@@ -70,9 +75,7 @@ public class RegionManager {
 	 * @param location The location.
 	 * @return The regions surrounding the location.
 	 */
-	public Region[] getSurroundingRegions(Location location) {
-		final int LOWER_BOUND = REGION_SIZE / 2 - 1;
-		
+	public Region[] getSurroundingRegions(Location location) {		
 		int regionX = location.getX() / REGION_SIZE;
 		int regionY = location.getY() / REGION_SIZE;
 		
