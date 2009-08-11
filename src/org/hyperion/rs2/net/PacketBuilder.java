@@ -308,9 +308,81 @@ public class PacketBuilder {
 	 * @param data The bytes.
 	 * @param offset The offset.
 	 * @param length The length.
+	 * @return The PacketBuilder instance, for chaining.
 	 */
-	public void put(byte[] data, int offset, int length) {
+	public PacketBuilder put(byte[] data, int offset, int length) {
 		payload.put(data, offset, length);
+		return this;
+	}
+	
+	/**
+	 * Puts a type-A byte in the buffer.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putByteA(byte val) {
+		payload.put((byte) (val + 128));
+		return this;
+	}
+	
+	/**
+	 * Puts a type-C byte in the buffer.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putByteC(byte val) {
+		payload.put((byte) (-128));
+		return this;
+	}
+	
+	/**
+	 * Puts a type-S byte in the buffer.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putByteS(byte val) {
+		payload.put((byte) (128 - val));
+		return this;
+	}
+	
+	/**
+	 * Puts a series of reversed bytes in the buffer.
+	 * @param is The source byte array.
+	 * @param offset The offset.
+	 * @param length The length.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putReverse(byte[] is, int offset, int length) {
+		for(int i = (offset + length - 1); i >= offset; i--) {
+			payload.put(is[i]);
+		}
+		return this;
+	}
+	
+	/**
+	 * Puts a series of reversed type-A bytes in the buffer.
+	 * @param is The source byte array.
+	 * @param offset The offset.
+	 * @param length The length.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putReverseA(byte[] is, int offset, int length) {
+		for(int i = (offset + length - 1); i >= offset; i--) {
+			putByteA(is[i]);
+		}
+		return this;
+	}
+	
+	/**
+	 * Puts a 3-byte integer.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putTriByte(int val) {
+		payload.put((byte) (val >> 16));
+		payload.put((byte) (val >> 8));
+		payload.put((byte) val);
+		return this;
 	}
 
 }

@@ -227,6 +227,14 @@ public class Packet {
 		int b4 = payload.get() & 0xFF;
 		return ((b2 << 24) & 0xFF) | ((b1 << 16) & 0xFF) | ((b4 << 8) & 0xFF) | (b3 & 0xFF);
 	}
+	
+	/**
+	 * Gets a 3-byte integer.
+	 * @return The 3-byte integer.
+	 */
+	public int getTriByte() {
+		return ((payload.get() << 16) & 0xFF) | ((payload.get() << 8) & 0xFF) | (payload.get() & 0xFF);
+	}
 
 	/**
 	 * Reads a type A byte.
@@ -262,7 +270,7 @@ public class Packet {
 	 * @param length The length.
 	 */
 	public void getReverse(byte[] is, int offset, int length) {
-		for(int i = (offset + length); i >= offset; i--) {
+		for(int i = (offset + length - 1); i >= offset; i--) {
 			is[i] = payload.get();
 		}
 	}
@@ -274,7 +282,7 @@ public class Packet {
 	 * @param length The length.
 	 */
 	public void getReverseA(byte[] is, int offset, int length) {
-		for(int i = (offset + length); i >= offset; i--) {
+		for(int i = (offset + length - 1); i >= offset; i--) {
 			is[i] = getByteA();
 		}
 	}
