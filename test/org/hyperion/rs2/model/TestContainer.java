@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.hyperion.rs2.model.container.Container;
 import org.hyperion.rs2.model.container.ContainerListener;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestContainer implements ContainerListener {
@@ -14,10 +15,14 @@ public class TestContainer implements ContainerListener {
 	public static final int CAP = 28;
 	
 	private Container container;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ItemDefinition.init();
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		ItemDefinition.init();
 		container = new Container(CAP);
 		itemChangedFired = false;
 		itemsChangedFired = false;
@@ -124,16 +129,15 @@ public class TestContainer implements ContainerListener {
 	
 	@Test
 	public void testAdd() {
-		Item item = new Item(995);
 		container.addListener(this);
 		for(int i = 0; i < CAP; i++) {
-			assertTrue(container.add(item));
+			assertTrue(container.add(new Item(995 + (slot * 2))));
 			assertTrue(itemChangedFired);
 			assertEquals(i, slot);
 			this.itemChangedFired = false;
 			this.slot = -1;
 		}
-		assertFalse(container.add(item));
+		assertFalse(container.add(new Item(995 + (CAP + 1) * 2)));
 	}
 
 	@Test
