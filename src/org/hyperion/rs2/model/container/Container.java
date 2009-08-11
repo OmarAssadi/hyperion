@@ -242,4 +242,15 @@ public class Container {
 		}
 	}
 
+	/**
+	 * Swaps two items.
+	 * @param fromSlot From slot.
+	 * @param toSlot To slot.
+	 */
+	public void swap(int fromSlot, int toSlot) {
+		Item temp = get(fromSlot);
+		set(fromSlot, get(toSlot));
+		set(toSlot, temp);
+	}
+
 }
