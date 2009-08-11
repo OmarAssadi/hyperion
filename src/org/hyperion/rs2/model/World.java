@@ -21,6 +21,7 @@ import org.hyperion.rs2.event.impl.CleanupEvent;
 import org.hyperion.rs2.event.impl.UpdateEvent;
 import org.hyperion.rs2.login.LoginServerConnector;
 import org.hyperion.rs2.login.LoginServerWorldLoader;
+import org.hyperion.rs2.model.region.RegionManager;
 import org.hyperion.rs2.net.PacketBuilder;
 import org.hyperion.rs2.net.PacketManager;
 import org.hyperion.rs2.packet.PacketHandler;
@@ -97,6 +98,11 @@ public class World {
 	private LoginServerConnector connector;
 	
 	/**
+	 * The region manager.
+	 */
+	private RegionManager regionManager = new RegionManager();
+	
+	/**
 	 * Creates the world and begins background loading tasks.
 	 */
 	public World() {
@@ -131,6 +137,14 @@ public class World {
 	 */
 	public BlockingExecutorService getBackgroundLoader() {
 		return backgroundLoader;
+	}
+	
+	/**
+	 * Gets the region manager.
+	 * @return The region manager.
+	 */
+	public RegionManager getRegionManager() {
+		return regionManager;
 	}
 	
 	/**
