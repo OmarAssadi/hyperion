@@ -197,4 +197,25 @@ public class Container<T extends Item> {
 		return items[slot] == null;
 	}
 
+	/**
+	 * Transfers an item from one container to another.
+	 * @param from The container to transfer from.
+	 * @param to The container to transfer to.
+	 * @param fromSlot The slot in the original container.
+	 * @param id The item id.
+	 * @return A flag indicating if the transfer was successful.
+	 */
+	public static boolean transfer(Container<Item> from, Container<Item> to, int fromSlot, int id) {
+		Item fromItem = from.get(fromSlot);
+		if(fromItem == null || fromItem.getId() != id) {
+			return false;
+		}
+		if(to.add(fromItem)) {
+			from.set(fromSlot, null);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

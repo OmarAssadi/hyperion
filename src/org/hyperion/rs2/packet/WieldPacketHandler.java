@@ -27,7 +27,8 @@ public class WieldPacketHandler implements PacketHandler {
 				if(item != null && item.getId() == id) {
 					EquipmentType type = Equipment.getType(item);
 					Item oldEquip = null;
-					if(player.getEquipment().isSlotUsed(type.getSlot())) {
+					boolean stackable = false;
+					if(player.getEquipment().isSlotUsed(type.getSlot()) && !stackable) {
 						oldEquip = player.getEquipment().get(type.getSlot());
 						player.getEquipment().set(type.getSlot(), null);
 					}
@@ -35,7 +36,11 @@ public class WieldPacketHandler implements PacketHandler {
 					if(oldEquip != null) {
 						player.getInventory().add(oldEquip);
 					}
-					player.getEquipment().set(type.getSlot(), item);
+					if(!stackable) {
+						player.getEquipment().set(type.getSlot(), item);
+					} else {
+						player.getEquipment().add(item);
+					}
 				}
 			}
 			break;

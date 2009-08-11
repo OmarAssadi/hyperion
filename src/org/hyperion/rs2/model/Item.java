@@ -54,5 +54,10 @@ public class Item {
 	public int getCount() {
 		return count;
 	}
+	
+	@Override
+	public String toString() {
+		return Item.class.getName() + " [id=" + id + ", count=" + count + "]";
+	}
 
 }
