@@ -254,5 +254,41 @@ public class Packet {
 			i -= 0x10000;
 		return (short) i;
 	}
+	
+	/**
+	 * Reads a series of bytes in reverse.
+	 * @param is The target byte array.
+	 * @param offset The offset.
+	 * @param length The length.
+	 */
+	public void getReverse(byte[] is, int offset, int length) {
+		for(int i = (offset + length); i >= offset; i--) {
+			is[i] = payload.get();
+		}
+	}
+	
+	/**
+	 * Reads a series of type A bytes in reverse.
+	 * @param is The target byte array.
+	 * @param offset The offset.
+	 * @param length The length.
+	 */
+	public void getReverseA(byte[] is, int offset, int length) {
+		for(int i = (offset + length); i >= offset; i--) {
+			is[i] = getByteA();
+		}
+	}
+	
+	/**
+	 * Reads a series of bytes.
+	 * @param is The target byte array.
+	 * @param offset The offset.
+	 * @param length The length.
+	 */
+	public void get(byte[] is, int offset, int length) {
+		for(int i = 0; i < length; i++) {
+			is[offset + i] = payload.get();
+		}
+	}
 
 }
