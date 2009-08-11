@@ -13,11 +13,12 @@ public class TestContainer implements ContainerListener {
 	
 	public static final int CAP = 28;
 	
-	private Container<Item> container;
+	private Container container;
 
 	@Before
 	public void setUp() throws Exception {
-		container = new Container<Item>(CAP);
+		ItemDefinition.init();
+		container = new Container(CAP);
 		itemChangedFired = false;
 		itemsChangedFired = false;
 		slot = -1;
@@ -27,15 +28,15 @@ public class TestContainer implements ContainerListener {
 	public void testGetListeners() {
 		ContainerListener listener1 = new ContainerListener() {
 			@Override
-			public void itemChanged(Container<?> container, int slot) {}
+			public void itemChanged(Container container, int slot) {}
 			@Override
-			public void itemsChanged(Container<?> container) {}
+			public void itemsChanged(Container container) {}
 		};
 		ContainerListener listener2 = new ContainerListener() {
 			@Override
-			public void itemChanged(Container<?> container, int slot) {}
+			public void itemChanged(Container container, int slot) {}
 			@Override
-			public void itemsChanged(Container<?> container) {}
+			public void itemsChanged(Container container) {}
 		};
 		container.addListener(listener1);
 		container.addListener(listener2);
@@ -50,9 +51,9 @@ public class TestContainer implements ContainerListener {
 		assertEquals(0, container.getListeners().size());
 		ContainerListener listener = new ContainerListener() {
 			@Override
-			public void itemChanged(Container<?> container, int slot) {}
+			public void itemChanged(Container container, int slot) {}
 			@Override
-			public void itemsChanged(Container<?> container) {}
+			public void itemsChanged(Container container) {}
 		};
 		container.addListener(listener);
 		assertEquals(1, container.getListeners().size());
@@ -62,9 +63,9 @@ public class TestContainer implements ContainerListener {
 	public void testRemoveListener() {
 		ContainerListener listener = new ContainerListener() {
 			@Override
-			public void itemChanged(Container<?> container, int slot) {}
+			public void itemChanged(Container container, int slot) {}
 			@Override
-			public void itemsChanged(Container<?> container) {}
+			public void itemsChanged(Container container) {}
 		};
 		container.addListener(listener);
 		container.removeListener(listener);
@@ -75,15 +76,15 @@ public class TestContainer implements ContainerListener {
 	public void testRemoveAllListeners() {
 		ContainerListener listener1 = new ContainerListener() {
 			@Override
-			public void itemChanged(Container<?> container, int slot) {}
+			public void itemChanged(Container container, int slot) {}
 			@Override
-			public void itemsChanged(Container<?> container) {}
+			public void itemsChanged(Container container) {}
 		};
 		ContainerListener listener2 = new ContainerListener() {
 			@Override
-			public void itemChanged(Container<?> container, int slot) {}
+			public void itemChanged(Container container, int slot) {}
 			@Override
-			public void itemsChanged(Container<?> container) {}
+			public void itemsChanged(Container container) {}
 		};
 		container.addListener(listener1);
 		container.addListener(listener2);
@@ -180,14 +181,14 @@ public class TestContainer implements ContainerListener {
 	private int slot = -1;
 
 	@Override
-	public void itemChanged(Container<?> container, int slot) {
+	public void itemChanged(Container container, int slot) {
 		assertEquals(this.container, container);
 		this.itemChangedFired = true;
 		this.slot = slot;
 	}
 
 	@Override
-	public void itemsChanged(Container<?> container) {
+	public void itemsChanged(Container container) {
 		assertEquals(this.container, container);
 		this.itemsChangedFired = true;
 	}

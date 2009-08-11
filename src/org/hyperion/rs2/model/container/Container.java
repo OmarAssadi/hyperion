@@ -11,9 +11,8 @@ import org.hyperion.rs2.model.Item;
  * A container holds a group of items.
  * @author Graham
  *
- * @param <T> The type of Item this container holds.
  */
-public class Container<T extends Item> {
+public class Container {
 
 	/**
 	 * The capacity of this container.
@@ -107,24 +106,49 @@ public class Container<T extends Item> {
 	 * @return <code>true</code> if the item was added,
 	 * <code>false</code> if not.
 	 */
-	public boolean add(T item) {
-		int slot = freeSlot();
-		if(slot == -1) {
-			return false;
+	public boolean add(Item item) {
+		if(item.getDefinition().isStackable()) {
+			for(int i = 0; i < items.length; i++) {
+				if(items[i] != null && items[i].getId() == item.getId()) {
+					set(i, new Item(items[i].getId(), items[i].getCount() + item.getCount()));
+					return true;
+				}
+			}
+			int slot = freeSlot();
+			if(slot == -1) {
+				return false;
+			} else {
+				set(slot, item);
+				return true;
+			}
 		} else {
-			set(slot, item);
-			return true;
+			int slots = freeSlots();
+			if(slots >= item.getCount()) {
+				for(int i = 0; i < item.getCount(); i++) {
+					set(freeSlot(), new Item(item.getId()));
+				}
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 	
+	/**
+	 * Gets the number of free slots.
+	 * @return The number of free slots.
+	 */
+	public int freeSlots() {
+		return capacity - size();
+	}
+
 	/**
 	 * Gets an item.
 	 * @param index The position in the container.
 	 * @return The item.
 	 */
-	@SuppressWarnings("unchecked")
-	public T get(int index) {
-		return (T) items[index];
+	public Item get(int index) {
+		return items[index];
 	}
 	
 	/**
@@ -132,7 +156,7 @@ public class Container<T extends Item> {
 	 * @param index The position in the container.
 	 * @param item The item.
 	 */
-	public void set(int index, T item) {
+	public void set(int index, Item item) {
 		items[index] = item;
 		for(ContainerListener listener : listeners) {
 			listener.itemChanged(this, index);
@@ -205,7 +229,7 @@ public class Container<T extends Item> {
 	 * @param id The item id.
 	 * @return A flag indicating if the transfer was successful.
 	 */
-	public static boolean transfer(Container<Item> from, Container<Item> to, int fromSlot, int id) {
+	public static boolean transfer(Container from, Container to, int fromSlot, int id) {
 		Item fromItem = from.get(fromSlot);
 		if(fromItem == null || fromItem.getId() != id) {
 			return false;

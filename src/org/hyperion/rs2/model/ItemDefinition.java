@@ -58,6 +58,7 @@ public class ItemDefinition {
 				if(parentId == 65535) {
 					parentId = -1;
 				}
+				boolean noteable = buffer.get() == 1 ? true : false;
 				int notedId = buffer.getShort() & 0xFFFF;
 				if(notedId == 65535) {
 					notedId = -1;
@@ -73,7 +74,7 @@ public class ItemDefinition {
 					highAlc = (int) (shop * 0.6D);
 					lowAlc = (int) (shop * 0.4D);
 				}
-				definitions[i] = new ItemDefinition(i, name, examine, noted, stackable, parentId, notedId, members, shop, highAlc, lowAlc);
+				definitions[i] = new ItemDefinition(i, name, examine, noted, noteable, stackable, parentId, notedId, members, shop, highAlc, lowAlc);
 			}
 			logger.info("Loaded " + definitions.length + " definitions.");
 		} finally {
@@ -100,6 +101,11 @@ public class ItemDefinition {
 	 * Noted flag.
 	 */
 	private final boolean noted;
+	
+	/**
+	 * Noteable flag.
+	 */
+	private final boolean noteable;
 	
 	/**
 	 * Stackable flag.
@@ -142,6 +148,7 @@ public class ItemDefinition {
 	 * @param name The name.
 	 * @param examine The description.
 	 * @param noted The noted flag.
+	 * @param noteable The noteable flag.
 	 * @param stackable The stackable flag.
 	 * @param parentId The non-noted id.
 	 * @param notedId The noted id.
@@ -150,11 +157,12 @@ public class ItemDefinition {
 	 * @param highAlcValue The high alc value.
 	 * @param lowAlcValue The low alc value.
 	 */
-	private ItemDefinition(int id, String name, String examine, boolean noted, boolean stackable, int parentId, int notedId, boolean members, int shopValue, int highAlcValue, int lowAlcValue) {
+	private ItemDefinition(int id, String name, String examine, boolean noted, boolean noteable, boolean stackable, int parentId, int notedId, boolean members, int shopValue, int highAlcValue, int lowAlcValue) {
 		this.id = id;
 		this.name = name;
 		this.examine = examine;
 		this.noted = noted;
+		this.noteable = noteable;
 		this.stackable = stackable;
 		this.parentId = parentId;
 		this.notedId = notedId;
@@ -197,11 +205,19 @@ public class ItemDefinition {
 	}
 	
 	/**
+	 * Gets the noteable flag.
+	 * @return The noteable flag.
+	 */
+	public boolean isNoteable() {
+		return noteable;
+	}
+	
+	/**
 	 * Gets the stackable flag.
 	 * @return The stackable flag.
 	 */
 	public boolean isStackable() {
-		return stackable;
+		return stackable || noted;
 	}
 	
 	/**

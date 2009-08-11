@@ -468,7 +468,7 @@ public class PlayerUpdateTask implements Task {
 	 */
 	private void appendPlayerAppearanceUpdate(PacketBuilder packet, Player otherPlayer) {
 		Appearance app = otherPlayer.getAppearance();
-		Container<Item> eq = otherPlayer.getEquipment();
+		Container eq = otherPlayer.getEquipment();
 		
 		PacketBuilder playerProps = new PacketBuilder();
 		playerProps.put((byte) app.getGender()); // gender

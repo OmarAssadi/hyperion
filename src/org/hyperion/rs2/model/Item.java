@@ -40,6 +40,14 @@ public class Item {
 	}
 	
 	/**
+	 * Gets the definition of this item.
+	 * @return The definition.
+	 */
+	public ItemDefinition getDefinition() {
+		return ItemDefinition.forId(id);
+	}
+	
+	/**
 	 * Gets the item id.
 	 * @return The item id.
 	 */

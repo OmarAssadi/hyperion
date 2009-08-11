@@ -169,7 +169,7 @@ public class Player extends Entity implements Data {
 	/**
 	 * The player's equipment.
 	 */
-	private final Container<Item> equipment = new Container<Item>(Equipment.SIZE);
+	private final Container equipment = new Container(Equipment.SIZE);
 	
 	/**
 	 * The player's skill levels.
@@ -179,7 +179,7 @@ public class Player extends Entity implements Data {
 	/**
 	 * The player's inventory.
 	 */
-	private final Container<Item> inventory = new Container<Item>(Inventory.SIZE);
+	private final Container inventory = new Container(Inventory.SIZE);
 	
 	/*
 	 * Cached details.
@@ -271,7 +271,7 @@ public class Player extends Entity implements Data {
 	 * Gets the player's equipment.
 	 * @return The player's equipment.
 	 */
-	public Container<Item> getEquipment() {
+	public Container getEquipment() {
 		return equipment;
 	}
 	
@@ -412,7 +412,7 @@ public class Player extends Entity implements Data {
 	 * Gets the inventory.
 	 * @return The inventory.
 	 */
-	public Container<Item> getInventory() {
+	public Container getInventory() {
 		return inventory;
 	}
 

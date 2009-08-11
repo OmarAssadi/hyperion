@@ -12,12 +12,12 @@ public interface ContainerListener {
 	 * @param container The container.
 	 * @param slot The slot that was changed.
 	 */
-	public void itemChanged(Container<?> container, int slot);
+	public void itemChanged(Container container, int slot);
 	
 	/**
 	 * Called when a group of items are changed.
 	 * @param container The container.
 	 */
-	public void itemsChanged(Container<?> container);
+	public void itemsChanged(Container container);
 
 }

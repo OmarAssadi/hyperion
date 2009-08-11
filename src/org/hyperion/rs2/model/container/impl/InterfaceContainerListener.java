@@ -34,13 +34,13 @@ public class InterfaceContainerListener implements ContainerListener {
 	}
 
 	@Override
-	public void itemChanged(Container<?> container, int slot) {
+	public void itemChanged(Container container, int slot) {
 		Item item = container.get(slot);
 		player.getActionSender().sendUpdateItem(interfaceId, slot, item);
 	}
 
 	@Override
-	public void itemsChanged(Container<?> container) {
+	public void itemsChanged(Container container) {
 		player.getActionSender().sendUpdateItems(interfaceId, container.toArray());
 	}
 

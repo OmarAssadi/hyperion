@@ -27,12 +27,12 @@ public class EquipmentContainerListener implements ContainerListener {
 	}
 
 	@Override
-	public void itemChanged(Container<?> container, int slot) {
+	public void itemChanged(Container container, int slot) {
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
 	@Override
-	public void itemsChanged(Container<?> container) {
+	public void itemsChanged(Container container) {
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
