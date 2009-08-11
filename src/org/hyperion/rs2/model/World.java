@@ -90,7 +90,7 @@ public class World {
 	/**
 	 * The game object map.
 	 */
-	private ObjectMap objectMap;
+	private ObjectManager objectMap;
 	
 	/**
 	 * The login server connector.
@@ -109,7 +109,7 @@ public class World {
 		backgroundLoader.submit(new Callable<Object>() {
 			@Override
 			public Object call() throws Exception {
-				objectMap = new ObjectMap();
+				objectMap = new ObjectManager();
 				objectMap.load();
 				return null;
 			}
@@ -242,7 +242,7 @@ public class World {
 	 * Gets the object map.
 	 * @return The object map.
 	 */
-	public ObjectMap getObjectMap() {
+	public ObjectManager getObjectMap() {
 		return objectMap;
 	}
 	

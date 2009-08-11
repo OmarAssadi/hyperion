@@ -10,17 +10,12 @@ import java.nio.channels.FileChannel.MapMode;
  * @author Graham
  *
  */
-public class ObjectMap {
+public class ObjectManager {
 	
 	/**
 	 * The maximum number of allowed objects.
 	 */
 	public static final int MAX_OBJECTS = 1280618;
-	
-	/**
-	 * The objects.
-	 */
-	private GameObject[] objects = new GameObject[MAX_OBJECTS];
 	
 	/**
 	 * Loads the objects in the map.
@@ -37,7 +32,9 @@ public class ObjectMap {
 				int z = bb.get() & 0xFF;
 				int type = bb.get() & 0xFF;
 				int face = bb.get() & 0xFF;
-				objects[i] = new GameObject(GameObjectDefinition.forId(id), Location.create(x, y, z), type, face);
+				Location l = Location.create(x, y, z);
+				GameObject obj = new GameObject(GameObjectDefinition.forId(id), l, type, face);
+				World.getWorld().getRegionManager().getRegionByLocation(l).getGameObjects().add(obj);
 			}
 		} finally {
 			raf.close();
