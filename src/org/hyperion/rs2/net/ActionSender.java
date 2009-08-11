@@ -57,6 +57,34 @@ public class ActionSender {
 	}
 
 	/**
+	 * Sends the packet to construct a map region.
+	 * @param palette The palette of map regions, int[13][13] array.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendConstructMapRegion(int[][] palette) {
+		player.setLastKnownRegion(player.getLocation());
+
+		PacketBuilder bldr = new PacketBuilder(241, Type.VARIABLE_SHORT);
+		bldr.putShortA(player.getLocation().getRegionY() + 6);
+		bldr.startBitAccess();
+		for(int z = 0; z < 4; z++) {
+			for(int x = 0; x < 13; x++) {
+				for(int y = 0; y < 13; y++) {
+					boolean flag = z == player.getLocation().getZ();
+					bldr.putBits(1, flag ? 1 : 0);
+					if(flag) {
+						bldr.putBits(26, palette[x][y] << 14 | palette[x][y] << 3);
+					}
+				}
+			}
+		}
+		bldr.finishBitAccess();
+		bldr.putShort(player.getLocation().getRegionX() + 6);
+		player.getSession().write(bldr.toPacket());
+		return this;
+	}
+
+	/**
 	 * Sends the initial login packet (e.g. members, player id).
 	 * @return The action sender instance, for chaining.
 	 */
