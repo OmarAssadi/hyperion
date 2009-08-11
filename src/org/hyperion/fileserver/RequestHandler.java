@@ -1,6 +1,7 @@
 package org.hyperion.fileserver;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -29,11 +30,23 @@ public class RequestHandler {
 	private static ByteBuffer crcTable = null;
 	
 	/**
+	 * The cache instance.
+	 */
+	private static Cache cache;
+	
+	/**
 	 * Handles a single request.
 	 * @param request The request.
 	 * @return The response.
 	 */
-	public static Response handle(Request request) {
+	public static synchronized Response handle(Request request) {
+		if(cache == null) {
+			try {
+				cache = new Cache("./data/cache/");
+			} catch(FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		String path = request.getPath();
 		if(path.equals("/")) {
 			path = "/index.html";
@@ -46,21 +59,21 @@ public class RequestHandler {
 			if(path.startsWith("/crc")) {
 				return new Response(crcTable.asReadOnlyBuffer(), mime);
 			} else if(path.startsWith("/title")) {
-				return new Response(Cache.getCache().read(0, 1), mime);
+				return new Response(cache.read(0, 1), mime);
 			} else if(path.startsWith("/config")) {
-				return new Response(Cache.getCache().read(0, 2), mime);
+				return new Response(cache.read(0, 2), mime);
 			} else if(path.startsWith("/interface")) {
-				return new Response(Cache.getCache().read(0, 3), mime);
+				return new Response(cache.read(0, 3), mime);
 			} else if(path.startsWith("/media")) {
-				return new Response(Cache.getCache().read(0, 4), mime);
+				return new Response(cache.read(0, 4), mime);
 			} else if(path.startsWith("/versionlist")) {
-				return new Response(Cache.getCache().read(0, 5), mime);
+				return new Response(cache.read(0, 5), mime);
 			} else if(path.startsWith("/textures")) {
-				return new Response(Cache.getCache().read(0, 6), mime);
+				return new Response(cache.read(0, 6), mime);
 			} else if(path.startsWith("/wordenc")) {
-				return new Response(Cache.getCache().read(0, 7), mime);
+				return new Response(cache.read(0, 7), mime);
 			} else if(path.startsWith("/sounds")) {
-				return new Response(Cache.getCache().read(0, 8), mime);
+				return new Response(cache.read(0, 8), mime);
 			}
 			path = new File(FILES_DIRECTORY + path).getAbsolutePath();
 			if(!path.startsWith(FILES_DIRECTORY)) {
@@ -277,7 +290,7 @@ public class RequestHandler {
 		 * Calculate the checksums.
 		 */
 		for(int i = 1; i < checksums.length; i++) {
-			byte[] file = Cache.getCache().read(0, i); // each of these maps to the files above
+			byte[] file = cache.read(0, i); // each of these maps to the files above
 			crc.reset();
 			crc.update(file, 0, file.length);
 			checksums[i] = (int) crc.getValue();

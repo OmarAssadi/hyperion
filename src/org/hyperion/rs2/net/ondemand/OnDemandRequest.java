@@ -52,9 +52,8 @@ public class OnDemandRequest {
 	/**
 	 * Services the request.
 	 */
-	public void service() {
+	public void service(Cache cache) {
 		try {
-			Cache cache = Cache.getCache();
 			byte[] data = cache.read(cacheId + 1, fileId);
 			int totalSize = data.length;
 			int roundedSize = totalSize;

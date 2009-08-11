@@ -18,23 +18,6 @@ import java.io.RandomAccessFile;
 public class Cache {
 	
 	/**
-	 * The instance of this class.
-	 */
-	private static Cache cache;
-
-	/**
-	 * Gets the cache instance.
-	 * @return The cache instance.
-	 * @throws FileNotFoundException if the cache directory was not found.
-	 */
-	public static Cache getCache() throws FileNotFoundException {
-		if(cache == null) {
-			cache = new Cache("data/cache/");
-		}
-		return cache;
-	}
-	
-	/**
 	 * An array of caches.
 	 */
 	private CacheIndex[] caches = new CacheIndex[5];
@@ -44,7 +27,7 @@ public class Cache {
 	 * @param directory The directory.
 	 * @throws FileNotFoundException if a file in the directory was not found.
 	 */
-	private Cache(String directory) throws FileNotFoundException {
+	public Cache(String directory) throws FileNotFoundException {
 		for(int i = 0; i < 5; i++) {
 			caches[i] = new CacheIndex(new RandomAccessFile(directory + "main_file_cache.dat", "r"), new RandomAccessFile(directory + "main_file_cache.idx" + i, "r"), i+1);
 		}
