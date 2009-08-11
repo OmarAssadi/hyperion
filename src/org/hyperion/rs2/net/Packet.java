@@ -244,4 +244,15 @@ public class Packet {
 		return IoBufferUtils.getRS2String(payload);
 	}
 
+	/**
+	 * Reads a type A short.
+	 * @return A type A short.
+	 */
+	public short getShortA() {
+		int i = ((payload.get() & 0xFF) << 8) | (payload.get() - 128 & 0xFF);
+		if(i > 32767)
+			i -= 0x10000;
+		return (short) i;
+	}
+
 }

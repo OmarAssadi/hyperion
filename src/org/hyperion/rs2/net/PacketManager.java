@@ -1,5 +1,6 @@
 package org.hyperion.rs2.net;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.mina.core.session.IoSession;
@@ -69,7 +70,7 @@ public class PacketManager {
 		try {
 			packetHandlers[packet.getOpcode()].handle((Player) session.getAttribute("player"), packet);
 		} catch(Exception ex) {
-			logger.severe("Exception handling packet : " + ex.getMessage());
+			logger.log(Level.SEVERE, "Exception handling packet.", ex);
 			session.close(false);
 		}
 	}

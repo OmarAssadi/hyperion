@@ -238,37 +238,70 @@ public class Equipment {
 	 * Equipment type map.
 	 */
 	private static final Map<Integer, EquipmentType> equipmentTypes = new HashMap<Integer, EquipmentType>();
+
+	/**
+	 * Equipment interface id.
+	 */
+	public static final int INTERFACE = 1688;
 	
 	/**
 	 * Equipment type enum.
 	 * @author Lothy
+	 * @author Miss Silabsoft
 	 *
 	 */
 	public enum EquipmentType {
-		CAPE("Cape"),
-		BOOTS("Boots"),
-		GLOVES("Gloves"),
-		SHIELD("Shield"),
-		HAT("Hat"),
-		AMULET("Amulet"),
-		ARROWS("Arrows"),
-		RING("Ring"),
-		BODY("Body"),
-		LEGS("Legs"),
-		PLATEBODY("Plate body"),
-		FULL_HELM("Full helm"),
-		FULL_MASK("Full mask"),
-		WEAPON("Weapon");
- 
+		CAPE("Cape", Equipment.SLOT_CAPE),
+		BOOTS("Boots", Equipment.SLOT_BOOTS),
+		GLOVES("Gloves", Equipment.SLOT_GLOVES),
+		SHIELD("Shield", Equipment.SLOT_SHIELD),
+		HAT("Hat", Equipment.SLOT_HELM),
+		AMULET("Amulet", Equipment.SLOT_AMULET),
+		ARROWS("Arrows", Equipment.SLOT_ARROWS),
+		RING("Ring", Equipment.SLOT_RING),
+		BODY("Body", Equipment.SLOT_CHEST),
+		LEGS("Legs", Equipment.SLOT_BOTTOMS),
+		PLATEBODY("Plate body", Equipment.SLOT_CHEST),
+		FULL_HELM("Full helm", Equipment.SLOT_HELM),
+		FULL_MASK("Full mask", Equipment.SLOT_HELM),
+		WEAPON("Weapon", Equipment.SLOT_WEAPON);
+		
+		/**
+		 * The description.
+		 */
 		private String description;
- 
-		private EquipmentType(String description) {
+		
+		/**
+		 * The slot.
+		 */
+		private int slot;
+		
+		/**
+		 * Creates the equipment type.
+		 * @param description The description.
+		 * @param slot The slot.
+		 */
+		private EquipmentType(String description, int slot) {
 			this.description = description;
+			this.slot = slot;
 		}
- 
+		
+		/**
+		 * Gets the description.
+		 * @return The description.
+		 */
 		public String getDescription() {
 			return description;
 		}
+		
+		/**
+		 * Gets the slot.
+		 * @return The slot.
+		 */
+		public int getSlot() {
+			return slot;
+		}
+		
 	}
 	
 	/**
@@ -326,7 +359,7 @@ public class Equipment {
 		if(equipmentTypes.containsKey(id)) {
 			return equipmentTypes.get(id);
 		} else {
-			return equipmentTypes.get(EquipmentType.WEAPON);
+			return EquipmentType.WEAPON;
 		}
 	}
 	

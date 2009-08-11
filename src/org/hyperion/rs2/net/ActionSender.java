@@ -6,6 +6,8 @@ import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
+import org.hyperion.rs2.model.container.Equipment;
+import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.model.container.impl.EquipmentContainerListener;
 import org.hyperion.rs2.model.container.impl.InterfaceContainerListener;
 import org.hyperion.rs2.net.Packet.Type;
@@ -42,11 +44,11 @@ public class ActionSender {
 		sendSidebarInterfaces();
 		sendSkills();
 		
-		InterfaceContainerListener inventoryListener = new InterfaceContainerListener(player, 3214);
+		InterfaceContainerListener inventoryListener = new InterfaceContainerListener(player, Inventory.INTERFACE);
 		player.getInventory().addListener(inventoryListener);
 		inventoryListener.itemsChanged(player.getInventory());
 		
-		InterfaceContainerListener equipmentListener = new InterfaceContainerListener(player, 1688);
+		InterfaceContainerListener equipmentListener = new InterfaceContainerListener(player, Equipment.INTERFACE);
 		player.getEquipment().addListener(equipmentListener);
 		player.getEquipment().addListener(new EquipmentContainerListener(player));
 		equipmentListener.itemsChanged(player.getEquipment());
