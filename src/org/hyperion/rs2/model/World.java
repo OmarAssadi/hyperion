@@ -308,6 +308,7 @@ public class World {
 	 */
 	public void unregister(NPC npc) {
 		npcs.remove(npc);
+		npc.destroy();
 	}
 
 	/**
@@ -380,6 +381,7 @@ public class World {
 	 * @param player The player to unregister.
 	 */
 	public void unregister(final Player player) {
+		player.destroy();
 		player.getSession().close(false);
 		players.remove(player);
 		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");

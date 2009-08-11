@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hyperion.rs2.model.Entity;
+import org.hyperion.rs2.model.region.Region;
 import org.hyperion.rs2.util.EntityList;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,16 @@ import org.junit.Test;
 public class TestEntityList {
 	
 	private static class EntityStub extends Entity {
+
+		@Override
+		public void addToRegion(Region region) {
+			
+		}
+
+		@Override
+		public void removeFromRegion(Region region) {
+			
+		}
 		
 	}
 	

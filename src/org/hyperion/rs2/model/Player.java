@@ -11,6 +11,7 @@ import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.container.Container;
 import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.model.container.Inventory;
+import org.hyperion.rs2.model.region.Region;
 import org.hyperion.rs2.net.ActionSender;
 import org.hyperion.rs2.net.ISAACCipher;
 import org.hyperion.rs2.net.Packet;
@@ -194,6 +195,7 @@ public class Player extends Entity implements Data {
 	 * @param details The details object.
 	 */
 	public Player(PlayerDetails details) {
+		super();
 		this.session = details.getSession();
 		this.inCipher = details.getInCipher();
 		this.outCipher = details.getOutCipher();
@@ -485,6 +487,16 @@ public class Player extends Entity implements Data {
 				buf.putInt(item.getCount());
 			}
 		}
+	}
+
+	@Override
+	public void addToRegion(Region region) {
+		region.getPlayers().add(this);
+	}
+
+	@Override
+	public void removeFromRegion(Region region) {
+		region.getPlayers().remove(this);
 	}
 	
 }

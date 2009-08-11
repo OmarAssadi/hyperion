@@ -92,7 +92,7 @@ public class NPCUpdateTask implements Task {
 		/*
 		 * Loop through all NPCs in the world.
 		 */
-		for(NPC npc : World.getWorld().getNPCs()) {
+		for(NPC npc : World.getWorld().getRegionManager().getLocalNpcs(player)) {
 			/*
 			 * Check if there is room left in the local list.
 			 */
@@ -113,30 +113,25 @@ public class NPCUpdateTask implements Task {
 			}
 			
 			/*
-			 * If the NPC could be added, check if it is within distance.
+			 * Add the npc to the local list if it is within distance.
 			 */
-			if(npc.getLocation().isWithinDistance(player.getLocation())) {
+			player.getLocalNPCs().add(npc);
+			
+			/*
+			 * Add the npc in the packet.
+			 */
+			addNewNPC(packet, npc);
+			
+			/*
+			 * Check if an update is required.
+			 */
+			if(npc.getUpdateFlags().isUpdateRequired()) {
+			
 				/*
-				 * Add the npc to the local list if it is within distance.
+				 * If so, update the npc.
 				 */
-				player.getLocalNPCs().add(npc);
-				
-				/*
-				 * Add the npc in the packet.
-				 */
-				addNewNPC(packet, npc);
-				
-				/*
-				 * Check if an update is required.
-				 */
-				if(npc.getUpdateFlags().isUpdateRequired()) {
-				
-					/*
-					 * If so, update the npc.
-					 */
-					updateNPC(updateBlock, npc);
-				
-				}
+				updateNPC(updateBlock, npc);
+			
 			}
 		}
 		

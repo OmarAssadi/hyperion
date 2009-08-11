@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
+import org.hyperion.rs2.model.region.Region;
 
 /**
  * Represents a character in the game world, i.e. a <code>Player</code> or
@@ -26,7 +27,7 @@ public abstract class Entity {
 	/**
 	 * The current location.
 	 */
-	private Location location = DEFAULT_LOCATION;
+	private Location location;
 	
 	/**
 	 * The teleportation target.
@@ -82,6 +83,26 @@ public abstract class Entity {
 	 * The current graphic.
 	 */
 	private Graphic currentGraphic;
+	
+	/**
+	 * The current region.
+	 */
+	private Region currentRegion;
+	
+	/**
+	 * Creates the entity.
+	 */
+	public Entity() {
+		setLocation(DEFAULT_LOCATION);
+	}
+	
+	/**
+	 * Gets the current region.
+	 * @return The current region.
+	 */
+	public Region getRegion() {
+		return currentRegion;
+	}
 	
 	/**
 	 * Gets the current animation.
@@ -258,7 +279,35 @@ public abstract class Entity {
 	 */
 	public void setLocation(Location location) {
 		this.location = location;
+		
+		Region newRegion = World.getWorld().getRegionManager().getRegionByLocation(location);
+		if(newRegion != currentRegion) {
+			if(currentRegion != null) {
+				removeFromRegion(currentRegion);
+			}
+			currentRegion = newRegion;
+			addToRegion(currentRegion);
+		}
 	}
+	
+	/**
+	 * Destroys this entity.
+	 */
+	public void destroy() {
+		removeFromRegion(currentRegion);
+	}
+	
+	/**
+	 * Removes this entity from the specified region.
+	 * @param region The region.
+	 */
+	public abstract void removeFromRegion(Region region);
+	
+	/**
+	 * Adds this entity to the specified region.
+	 * @param region The region.
+	 */
+	public abstract void addToRegion(Region region);
 	
 	/**
 	 * Gets the current location.

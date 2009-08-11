@@ -114,7 +114,7 @@ public class PlayerUpdateTask implements Task {
 		/*
 		 * Loop through every player.
 		 */
-		for(Player otherPlayer : World.getWorld().getPlayers()) {
+		for(Player otherPlayer : World.getWorld().getRegionManager().getLocalPlayers(player)) {
 			/*
 			 * Check if there is room left in the local list.
 			 */
@@ -135,24 +135,19 @@ public class PlayerUpdateTask implements Task {
 			}
 			
 			/*
-			 * If the player could be added, check if it is within distance.
+			 * Add the player to the local list if it is within distance.
 			 */
-			if(otherPlayer.getLocation().isWithinDistance(player.getLocation())) {
-				/*
-				 * Add the player to the local list if it is within distance.
-				 */
-				player.getLocalPlayers().add(otherPlayer);
-				
-				/*
-				 * Add the player in the packet.
-				 */
-				addNewPlayer(packet, otherPlayer);
-				
-				/*
-				 * Update the player, forcing the appearance flag.
-				 */
-				updatePlayer(updateBlock, otherPlayer, true, false);
-			}
+			player.getLocalPlayers().add(otherPlayer);
+			
+			/*
+			 * Add the player in the packet.
+			 */
+			addNewPlayer(packet, otherPlayer);
+			
+			/*
+			 * Update the player, forcing the appearance flag.
+			 */
+			updatePlayer(updateBlock, otherPlayer, true, false);
 		}
 		
 		/*

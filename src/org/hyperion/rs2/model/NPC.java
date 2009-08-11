@@ -1,5 +1,7 @@
 package org.hyperion.rs2.model;
 
+import org.hyperion.rs2.model.region.Region;
+
 /**
  * <p>Represents a non-player character in the in-game world.</p>
  * @author Graham
@@ -17,6 +19,7 @@ public class NPC extends Entity {
 	 * @param definition The definition.
 	 */
 	public NPC(NPCDefinition definition) {
+		super();
 		this.definition = definition;
 	}
 	
@@ -26,6 +29,16 @@ public class NPC extends Entity {
 	 */
 	public NPCDefinition getDefinition() {
 		return definition;
+	}
+
+	@Override
+	public void addToRegion(Region region) {
+		region.getNpcs().add(this);
+	}
+
+	@Override
+	public void removeFromRegion(Region region) {
+		region.getNpcs().remove(this);
 	}
 
 }
