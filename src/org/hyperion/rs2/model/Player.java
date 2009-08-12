@@ -8,6 +8,7 @@ import org.apache.mina.core.session.IoSession;
 import org.hyperion.data.Data;
 import org.hyperion.rs2.action.ActionQueue;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
+import org.hyperion.rs2.model.container.Bank;
 import org.hyperion.rs2.model.container.Container;
 import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.model.container.Inventory;

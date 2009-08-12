@@ -1,5 +1,6 @@
-package org.hyperion.rs2.model;
+package org.hyperion.rs2.model.container;
 
+import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.container.impl.InterfaceContainerListener;
 
 /**

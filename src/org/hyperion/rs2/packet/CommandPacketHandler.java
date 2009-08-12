@@ -1,11 +1,11 @@
 package org.hyperion.rs2.packet;
 
 import org.hyperion.rs2.model.Animation;
-import org.hyperion.rs2.model.Bank;
 import org.hyperion.rs2.model.Graphic;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
+import org.hyperion.rs2.model.container.Bank;
 import org.hyperion.rs2.net.Packet;
 import org.hyperion.rs2.trigger.TriggerManager;
 import org.hyperion.rs2.trigger.impl.cond.CommandCondition;
