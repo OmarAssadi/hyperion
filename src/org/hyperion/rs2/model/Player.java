@@ -491,12 +491,12 @@ public class Player extends Entity implements Data {
 
 	@Override
 	public void addToRegion(Region region) {
-		region.getPlayers().add(this);
+		region.addPlayer(this);
 	}
 
 	@Override
 	public void removeFromRegion(Region region) {
-		region.getPlayers().remove(this);
+		region.removePlayer(this);
 	}
 	
 }

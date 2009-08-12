@@ -94,6 +94,7 @@ public abstract class Entity {
 	 */
 	public Entity() {
 		setLocation(DEFAULT_LOCATION);
+		this.lastKnownRegion = location;
 	}
 	
 	/**

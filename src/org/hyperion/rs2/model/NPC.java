@@ -33,12 +33,12 @@ public class NPC extends Entity {
 
 	@Override
 	public void addToRegion(Region region) {
-		region.getNpcs().add(this);
+		region.addNpc(this);
 	}
 
 	@Override
 	public void removeFromRegion(Region region) {
-		region.getNpcs().remove(this);
+		region.removeNpc(this);
 	}
 
 }

@@ -1,5 +1,7 @@
 package org.hyperion.rs2.model.region;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,24 +56,68 @@ public class Region {
 	 * Gets the list of players.
 	 * @return The list of players.
 	 */
-	public List<Player> getPlayers() {
-		return players;
+	public Collection<Player> getPlayers() {
+		synchronized(this) {
+			return Collections.unmodifiableCollection(new LinkedList<Player>(players));
+		}
 	}
 	
 	/**
 	 * Gets the list of NPCs.
 	 * @return The list of NPCs.
 	 */
-	public List<NPC> getNpcs() {
-		return npcs;
+	public Collection<NPC> getNpcs() {
+		synchronized(this) {
+			return Collections.unmodifiableCollection(new LinkedList<NPC>(npcs));
+		}
 	}
 	
 	/**
 	 * Gets the list of objects.
 	 * @return The list of objects.
 	 */
-	public List<GameObject> getGameObjects() {
+	public Collection<GameObject> getGameObjects() {
 		return objects;
+	}
+
+	/**
+	 * Adds a new player.
+	 * @param player The player to add.
+	 */
+	public void addPlayer(Player player) {
+		synchronized(this) {
+			players.add(player);
+		}
+	}
+
+	/**
+	 * Removes an old player.
+	 * @param player The player to remove.
+	 */
+	public void removePlayer(Player player) {
+		synchronized(this) {
+			players.remove(player);
+		}
+	}
+
+	/**
+	 * Adds a new NPC.
+	 * @param npc The NPC to add.
+	 */
+	public void addNpc(NPC npc) {
+		synchronized(this) {
+			npcs.add(npc);
+		}
+	}
+
+	/**
+	 * Removes an old NPC.
+	 * @param npc The NPC to remove.
+	 */
+	public void removeNpc(NPC npc) {
+		synchronized(this) {
+			npcs.remove(npc);
+		}
 	}
 
 }

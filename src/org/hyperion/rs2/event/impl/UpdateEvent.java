@@ -53,7 +53,8 @@ public class UpdateEvent extends Event {
 			resetTasks.add(new PlayerResetTask(player));
 		}
 		
-		Task tickTask = new ParallelTask(tickTasks.toArray(new Task[0]));
+		// ticks can no longer be parallel due to region code
+		Task tickTask = new ConsecutiveTask(tickTasks.toArray(new Task[0]));
 		Task updateTask = new ParallelTask(updateTasks.toArray(new Task[0]));
 		Task resetTask = new ParallelTask(resetTasks.toArray(new Task[0]));
 		
