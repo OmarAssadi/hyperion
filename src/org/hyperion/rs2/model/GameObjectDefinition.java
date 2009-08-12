@@ -2,7 +2,7 @@ package org.hyperion.rs2.model;
 
 /**
  * Represents a single type of object.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class GameObjectDefinition {

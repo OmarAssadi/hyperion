@@ -2,7 +2,7 @@ package org.hyperion.rs2.model;
 
 /**
  * Holds information about a single player's look.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Appearance {

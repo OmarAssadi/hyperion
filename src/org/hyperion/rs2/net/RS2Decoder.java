@@ -10,7 +10,7 @@ import org.hyperion.rs2.net.Packet.Type;
 
 /**
  * Game protocol decoding class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RS2Decoder extends CumulativeProtocolDecoder {

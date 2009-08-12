@@ -7,7 +7,7 @@ import org.hyperion.rs2.model.World;
 
 /**
  * A <code>WorldLoader</code> which loads from the login server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginServerWorldLoader implements WorldLoader {

@@ -9,7 +9,7 @@ import org.hyperion.rs2.model.World;
 
 /**
  * A class to start both the file and game servers.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Server {

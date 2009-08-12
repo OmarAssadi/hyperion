@@ -9,7 +9,7 @@ import org.hyperion.rs2.model.region.Region;
 /**
  * Represents a character in the game world, i.e. a <code>Player</code> or
  * an <code>NPC</code>.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public abstract class Entity {

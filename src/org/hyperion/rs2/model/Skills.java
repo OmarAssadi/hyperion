@@ -4,7 +4,7 @@ import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 
 /**
  * Represents a player's skill and experience levels.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Skills {

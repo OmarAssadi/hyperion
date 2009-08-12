@@ -2,7 +2,7 @@ package org.hyperion.rs2;
 
 /**
  * Holds global server constants.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Constants {

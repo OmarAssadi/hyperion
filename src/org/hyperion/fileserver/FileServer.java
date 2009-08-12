@@ -13,7 +13,7 @@ import org.hyperion.fileserver.UpdateSession.Type;
  * 
  * <p>A lot of the work in the JAGGRAB server is based on some code
  * Miss Silabsoft re-released, originally authored by Winterlove.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class FileServer {

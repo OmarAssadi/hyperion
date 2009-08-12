@@ -4,7 +4,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  * Represents a packet between the login server and world server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginPacket {

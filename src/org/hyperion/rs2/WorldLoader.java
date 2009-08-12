@@ -6,14 +6,14 @@ import org.hyperion.rs2.model.PlayerDetails;
 /**
  * An interface which describes the methods for loading persistent world
  * information such as players.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public interface WorldLoader {
 	
 	/**
 	 * Represents the result of a login request.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	public static class LoginResult {

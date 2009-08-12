@@ -2,7 +2,7 @@ package org.hyperion.rs2.util;
 
 /**
  * A utility class for direction-related methods.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class DirectionUtils {

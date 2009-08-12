@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Represents a response to either a JAGGRAB or HTTP request.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Response {

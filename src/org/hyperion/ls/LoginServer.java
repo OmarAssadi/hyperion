@@ -14,7 +14,7 @@ import org.hyperion.util.CommonConstants;
 
 /**
  * The login server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginServer {

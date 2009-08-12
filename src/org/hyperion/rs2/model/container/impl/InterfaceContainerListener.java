@@ -8,7 +8,7 @@ import org.hyperion.rs2.model.container.ContainerListener;
 /**
  * A ContainerListener which updates a client-side interface to match the
  * server-side copy of the container.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class InterfaceContainerListener implements ContainerListener {

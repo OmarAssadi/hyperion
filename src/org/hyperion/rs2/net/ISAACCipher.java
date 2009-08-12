@@ -8,7 +8,7 @@ package org.hyperion.rs2.net;
  * <p>This implementation is based on the one written by Bob Jenkins, which is
  * available at <a href="http://www.burtleburtle.net/bob/java/rand/Rand.java">
  * http://www.burtleburtle.net/bob/java/rand/Rand.java</a>.</p>
- * @author Graham
+ * @author Graham Edgecombe
  * 
  */
 public class ISAACCipher {

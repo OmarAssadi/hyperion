@@ -5,7 +5,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * An interface which describes a class that handles packets.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public interface PacketHandler {

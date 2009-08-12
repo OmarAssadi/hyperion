@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * A utility class that assists in dealing with <code>InputStream</code> and
  * <code>OutputStream</code> classes.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Streams {

@@ -6,7 +6,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * Switch item packet handler.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class SwitchItemPacketHandler implements PacketHandler {

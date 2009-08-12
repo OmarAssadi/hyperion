@@ -7,7 +7,7 @@ import org.hyperion.rs2.util.NameUtils;
 
 /**
  * Represents a single player in the login server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class PlayerData {

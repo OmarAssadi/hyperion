@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * An <code>ExecutorService</code> that waits for all its events to finish
  * executing.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class BlockingExecutorService implements ExecutorService {

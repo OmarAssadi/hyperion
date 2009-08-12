@@ -8,7 +8,7 @@ import org.hyperion.rs2.model.container.ContainerListener;
 /**
  * A ContainerListener which flags for an appearance update when the player
  * equips or removes an item.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class EquipmentContainerListener implements ContainerListener {

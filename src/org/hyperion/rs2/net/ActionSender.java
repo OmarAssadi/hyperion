@@ -14,7 +14,7 @@ import org.hyperion.rs2.net.Packet.Type;
 
 /**
  * A utility class for sending packets.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ActionSender {
@@ -33,6 +33,18 @@ public class ActionSender {
 	}
 	
 	/**
+	 * Sends an inventory interface.
+	 * @param interfaceId The interface id.
+	 * @param inventoryInterfaceId The inventory interface id.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendInventoryInterface(int interfaceId, int inventoryInterfaceId) {
+		player.getInterfaceState().interfaceOpened(interfaceId);
+		player.getSession().write(new PacketBuilder(248).putShortA(interfaceId).putShort(inventoryInterfaceId).toPacket());
+		return this;
+	}
+	
+	/**
 	 * Sends all the login packets.
 	 * @return The action sender instance, for chaining.
 	 */
@@ -46,12 +58,10 @@ public class ActionSender {
 		
 		InterfaceContainerListener inventoryListener = new InterfaceContainerListener(player, Inventory.INTERFACE);
 		player.getInventory().addListener(inventoryListener);
-		inventoryListener.itemsChanged(player.getInventory());
 		
 		InterfaceContainerListener equipmentListener = new InterfaceContainerListener(player, Equipment.INTERFACE);
 		player.getEquipment().addListener(equipmentListener);
 		player.getEquipment().addListener(new EquipmentContainerListener(player));
-		equipmentListener.itemsChanged(player.getEquipment());
 		
 		return this;
 	}

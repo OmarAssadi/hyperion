@@ -7,7 +7,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * Reports information about unhandled packets.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class DefaultPacketHandler implements PacketHandler {

@@ -5,7 +5,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task which stops the game engine.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class DeathTask implements Task {

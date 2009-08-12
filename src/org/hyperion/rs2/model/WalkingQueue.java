@@ -13,14 +13,14 @@ import org.hyperion.rs2.util.DirectionUtils;
  * <p>The class will also process these steps when
  * {@link #processNextMovement()} is called. This should be called once
  * per server cycle.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class WalkingQueue {
 	
 	/**
 	 * Represents a single point in the queue.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	private static class Point {

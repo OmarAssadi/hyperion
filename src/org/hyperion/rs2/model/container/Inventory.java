@@ -2,7 +2,7 @@ package org.hyperion.rs2.model.container;
 
 /**
  * A utility class for the player's inventory.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Inventory {

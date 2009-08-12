@@ -9,7 +9,7 @@ import org.hyperion.rs2.util.NameUtils;
 
 /**
  * Manages all of the nodes in the login server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class NodeManager {

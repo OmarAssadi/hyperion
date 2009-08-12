@@ -19,7 +19,7 @@ import org.hyperion.rs2.task.impl.PlayerUpdateTask;
 
 /**
  * An event which starts player update tasks.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class UpdateEvent extends Event {

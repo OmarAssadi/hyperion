@@ -2,7 +2,7 @@ package org.hyperion.rs2.model;
 
 /**
  * Represents a single item.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Item {

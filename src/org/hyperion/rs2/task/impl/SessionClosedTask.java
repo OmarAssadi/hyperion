@@ -11,7 +11,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task that is executed when a session is closed.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class SessionClosedTask implements Task {

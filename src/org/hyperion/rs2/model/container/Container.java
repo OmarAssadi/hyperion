@@ -9,7 +9,7 @@ import org.hyperion.rs2.model.Item;
 
 /**
  * A container holds a group of items.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Container {
@@ -52,6 +52,7 @@ public class Container {
 	 */
 	public void addListener(ContainerListener listener) {
 		listeners.add(listener);
+		listener.itemsChanged(this);
 	}
 	
 	/**

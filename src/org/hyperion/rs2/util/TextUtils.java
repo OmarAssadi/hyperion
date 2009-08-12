@@ -4,7 +4,7 @@ import org.hyperion.rs2.Constants;
 
 /**
  * Text utility class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class TextUtils {

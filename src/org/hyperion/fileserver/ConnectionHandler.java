@@ -11,7 +11,7 @@ import org.hyperion.fileserver.UpdateSession.Type;
 
 /**
  * Handles connection events.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ConnectionHandler extends IoHandlerAdapter {

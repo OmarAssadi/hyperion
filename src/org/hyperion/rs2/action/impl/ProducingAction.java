@@ -12,7 +12,7 @@ import org.hyperion.rs2.model.Player;
  * 
  * <p>The individual crafting, smithing, and other skills implement
  * functionality specific to them such as random events.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public abstract class ProducingAction extends Action {

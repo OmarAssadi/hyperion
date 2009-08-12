@@ -2,7 +2,7 @@ package org.hyperion.rs2.model;
 
 /**
  * <p>Represents a type of NPC.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class NPCDefinition {

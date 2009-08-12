@@ -4,7 +4,7 @@ import org.hyperion.rs2.model.region.Region;
 
 /**
  * <p>Represents a non-player character in the in-game world.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class NPC extends Entity {

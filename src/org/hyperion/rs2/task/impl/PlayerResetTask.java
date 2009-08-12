@@ -6,7 +6,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task which resets a player after an update cycle.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class PlayerResetTask implements Task {

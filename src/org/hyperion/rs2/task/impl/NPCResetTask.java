@@ -6,7 +6,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task which resets an NPC after an update cycle.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class NPCResetTask implements Task {

@@ -12,7 +12,7 @@ import java.io.RandomAccessFile;
  * 
  * <p>A lot of the research for Tom's project was done by super_, I also
  * referred to a few of his topics when creating this system.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Cache {

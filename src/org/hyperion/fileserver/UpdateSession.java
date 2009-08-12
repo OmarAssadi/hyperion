@@ -10,7 +10,7 @@ import org.apache.mina.core.session.IoSession;
 
 /**
  * Represents a single update session.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class UpdateSession {
@@ -22,7 +22,7 @@ public class UpdateSession {
 	
 	/**
 	 * An enum which describes the type of session.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	public enum Type {

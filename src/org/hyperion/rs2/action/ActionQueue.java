@@ -9,7 +9,7 @@ import org.hyperion.rs2.model.container.Inventory;
 /**
  * Stores a queue of pending actions.
  * @author blakeman8192
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ActionQueue {

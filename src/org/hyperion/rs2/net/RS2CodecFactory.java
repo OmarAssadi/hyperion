@@ -7,7 +7,7 @@ import org.apache.mina.filter.codec.ProtocolEncoder;
 
 /**
  * A factory which produces codecs for the RuneScape protocol.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RS2CodecFactory implements ProtocolCodecFactory {

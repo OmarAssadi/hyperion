@@ -7,7 +7,7 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
 /**
  * Login protocol encoding class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginEncoder implements ProtocolEncoder {

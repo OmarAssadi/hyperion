@@ -7,7 +7,7 @@ import java.nio.channels.FileChannel.MapMode;
 
 /**
  * Manages all of the in-game objects.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ObjectManager {

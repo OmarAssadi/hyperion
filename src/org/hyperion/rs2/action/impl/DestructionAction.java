@@ -11,7 +11,7 @@ import org.hyperion.rs2.model.Player;
  * destruction-type skills.</p>
  * 
  * <p>The individual skills handle specific functionality.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public abstract class DestructionAction extends Action {

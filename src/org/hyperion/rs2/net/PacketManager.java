@@ -9,7 +9,7 @@ import org.hyperion.rs2.packet.*;
 
 /**
  * Managers <code>PacketHandler</code>s.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class PacketManager {

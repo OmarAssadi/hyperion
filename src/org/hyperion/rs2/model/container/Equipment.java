@@ -7,7 +7,7 @@ import org.hyperion.rs2.model.Item;
 
 /**
  * Contains equipment utility methods.
- * @author Graham
+ * @author Graham Edgecombe
  * @author Lothy
  *
  */

@@ -7,7 +7,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * Remove item (unequip) packet handler.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RemovePacketHandler implements PacketHandler {

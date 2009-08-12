@@ -5,7 +5,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * A packet which handles walking requests.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class WalkingPacketHandler implements PacketHandler {

@@ -11,7 +11,7 @@ import org.hyperion.util.Buffers;
 /**
  * The item definition manager.
  * @author Vastico
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ItemDefinition {

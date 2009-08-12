@@ -2,7 +2,7 @@ package org.hyperion.fileserver;
 
 /**
  * Represents a single request for a file on either a JAGGRAB or HTTP server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Request {

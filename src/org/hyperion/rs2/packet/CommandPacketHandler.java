@@ -1,6 +1,7 @@
 package org.hyperion.rs2.packet;
 
 import org.hyperion.rs2.model.Animation;
+import org.hyperion.rs2.model.Bank;
 import org.hyperion.rs2.model.Graphic;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Location;
@@ -11,7 +12,7 @@ import org.hyperion.rs2.trigger.impl.cond.CommandCondition;
 
 /**
  * Handles player commands (the ::words).
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class CommandPacketHandler implements PacketHandler {
@@ -63,6 +64,8 @@ public class CommandPacketHandler implements PacketHandler {
 					}
 					player.playGraphics(Graphic.create(id, delay));
 				}
+			} else if(command.equals("bank")) {
+				Bank.open(player);
 			} else {
 				TriggerManager.getTriggerManager().fire(player, new CommandCondition(command));
 			}

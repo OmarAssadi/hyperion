@@ -5,7 +5,7 @@ import org.hyperion.rs2.net.Packet.Type;
 
 /**
  * A utility class for building packets.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class PacketBuilder {

@@ -6,14 +6,14 @@ import org.hyperion.rs2.model.Player;
 /**
  * An <code>Event</code> used for handling game actions.
  * @author blakeman8192
- * @author Graham
+ * @author Graham Edgecombe
  * 
  */
 public abstract class Action extends Event {
 	
 	/**
 	 * A queue policy determines when the clients should queue up actions.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	public enum QueuePolicy {

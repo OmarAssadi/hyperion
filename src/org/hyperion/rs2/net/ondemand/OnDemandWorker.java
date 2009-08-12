@@ -8,7 +8,7 @@ import org.hyperion.cache.Cache;
 /**
  * <p>A class which waits for ondemand requests to queue up and then processes
  * them.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class OnDemandWorker implements Runnable {

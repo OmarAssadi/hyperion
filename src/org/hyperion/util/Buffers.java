@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Buffer utility class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Buffers {

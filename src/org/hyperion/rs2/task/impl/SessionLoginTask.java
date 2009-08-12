@@ -7,7 +7,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task that is executed when a player has logged in.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class SessionLoginTask implements Task {

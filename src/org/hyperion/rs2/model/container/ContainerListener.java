@@ -2,7 +2,7 @@ package org.hyperion.rs2.model.container;
 
 /**
  * Listens to events from a container.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public interface ContainerListener {

@@ -14,7 +14,7 @@ import org.hyperion.cache.Cache;
 
 /**
  * Handles update requests and creates a response.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RequestHandler {

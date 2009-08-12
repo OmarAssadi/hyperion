@@ -11,7 +11,7 @@ import org.hyperion.rs2.model.Player;
 
 /**
  * Represents a single region.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Region {

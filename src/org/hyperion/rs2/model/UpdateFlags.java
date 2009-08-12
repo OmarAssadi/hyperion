@@ -4,7 +4,7 @@ import java.util.BitSet;
 
 /**
  * Holds update flags.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class UpdateFlags {
@@ -16,7 +16,7 @@ public class UpdateFlags {
 	
 	/**
 	 * Represents a single type of update flag.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	public enum UpdateFlag {

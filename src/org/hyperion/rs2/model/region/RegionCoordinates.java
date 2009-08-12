@@ -2,7 +2,7 @@ package org.hyperion.rs2.model.region;
 
 /**
  * Holds the x and y coordinate for a region.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RegionCoordinates {

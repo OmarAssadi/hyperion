@@ -13,7 +13,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task which creates and sends the NPC update block.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class NPCUpdateTask implements Task {

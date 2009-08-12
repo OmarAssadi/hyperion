@@ -9,7 +9,7 @@ import org.hyperion.rs2.model.Player;
  * The <code>TriggerManager</code> manages the relationship between a
  * <code>TriggerCondition</code> and a <code>Trigger</code> and processes a
  * <code>TriggerCondition</code> when one is met.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class TriggerManager {

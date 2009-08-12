@@ -7,7 +7,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
 /**
  * Login protocol decoding class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginDecoder extends CumulativeProtocolDecoder {

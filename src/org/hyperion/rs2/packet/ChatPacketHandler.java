@@ -7,7 +7,7 @@ import org.hyperion.rs2.util.TextUtils;
 
 /**
  * Handles public chat messages.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ChatPacketHandler implements PacketHandler {

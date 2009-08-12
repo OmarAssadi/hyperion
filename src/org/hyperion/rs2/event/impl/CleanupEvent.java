@@ -7,7 +7,7 @@ import org.hyperion.rs2.task.impl.CleanupTask;
 /**
  * An event which runs periodically and performs tasks such as garbage
  * collection.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class CleanupEvent extends Event {

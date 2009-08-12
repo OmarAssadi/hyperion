@@ -5,14 +5,14 @@ import org.hyperion.rs2.util.IoBufferUtils;
 
 /**
  * Represents a single packet.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Packet {
 	
 	/**
 	 * The type of packet.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	public enum Type {

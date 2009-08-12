@@ -20,14 +20,14 @@ import org.hyperion.rs2.util.NameUtils;
 
 /**
  * Represents a player-controller character.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Player extends Entity implements Data {
 	
 	/**
 	 * Represents the rights of a player.
-	 * @author Graham
+	 * @author Graham Edgecombe
 	 *
 	 */
 	public enum Rights {
@@ -129,6 +129,11 @@ public class Player extends Entity implements Data {
 	 */
 	private boolean active = false;
 	
+	/**
+	 * The interface state.
+	 */
+	private final InterfaceState interfaceState = new InterfaceState(this);
+	
 	/*
 	 * Core login details.
 	 */
@@ -182,6 +187,11 @@ public class Player extends Entity implements Data {
 	 */
 	private final Container inventory = new Container(Inventory.SIZE);
 	
+	/**
+	 * The player's bank.
+	 */
+	private final Container bank = new Container(Bank.SIZE);
+	
 	/*
 	 * Cached details.
 	 */
@@ -204,6 +214,22 @@ public class Player extends Entity implements Data {
 		this.uid = details.getUID();
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		this.setTeleporting(true);
+	}
+	
+	/**
+	 * Gets the player's bank.
+	 * @return The player's bank.
+	 */
+	public Container getBank() {
+		return bank;
+	}
+	
+	/**
+	 * Gets the interface state.
+	 * @return The interface state.
+	 */
+	public InterfaceState getInterfaceState() {
+		return interfaceState;
 	}
 	
 	/**

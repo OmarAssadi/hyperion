@@ -23,7 +23,7 @@ import org.hyperion.util.Streams;
  * An implementation of the <code>WorldLoader</code> class that saves players
  * in binary, gzip-compressed files in the <code>data/players/</code>
  * directory.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class GenericWorldLoader implements WorldLoader {

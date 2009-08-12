@@ -14,7 +14,7 @@ import org.hyperion.rs2.model.Player;
 
 /**
  * Manages the world regions.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RegionManager {

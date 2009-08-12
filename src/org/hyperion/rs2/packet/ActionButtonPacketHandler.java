@@ -7,7 +7,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * Handles clicking on most buttons in the interface.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ActionButtonPacketHandler implements PacketHandler {

@@ -18,7 +18,7 @@ import org.hyperion.rs2.util.NameUtils;
 
 /**
  * Login protocol decoding class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RS2LoginDecoder extends CumulativeProtocolDecoder {

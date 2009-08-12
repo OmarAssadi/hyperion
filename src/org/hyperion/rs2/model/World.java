@@ -34,7 +34,7 @@ import org.hyperion.util.BlockingExecutorService;
 
 /**
  * Holds data global to the game world.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class World {

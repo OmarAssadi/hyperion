@@ -12,7 +12,7 @@ import org.hyperion.rs2.task.Task;
  * A task which is executed before an <code>UpdateTask</code>. It is similar to
  * the call to <code>process()</code> but you should use <code>Event</code>s
  * instead of putting timers in this class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class PlayerTickTask implements Task {

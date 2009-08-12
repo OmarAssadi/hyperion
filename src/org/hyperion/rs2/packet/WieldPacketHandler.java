@@ -9,7 +9,7 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * Handles the 'wield' option on items.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class WieldPacketHandler implements PacketHandler {

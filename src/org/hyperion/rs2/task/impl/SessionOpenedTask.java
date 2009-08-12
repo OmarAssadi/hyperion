@@ -8,7 +8,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task that is executed when a session is opened.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class SessionOpenedTask implements Task {

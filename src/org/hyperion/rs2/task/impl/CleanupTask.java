@@ -5,7 +5,7 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * Performs garbage collection and finalization.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class CleanupTask implements Task {

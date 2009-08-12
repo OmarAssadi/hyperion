@@ -5,7 +5,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 /**
  * Represents a type that can be converted to and from an <code>IoBuffer</code>
  * allowing it to be transferred between the login and world server.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public interface Data {

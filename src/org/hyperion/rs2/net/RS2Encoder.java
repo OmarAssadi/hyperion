@@ -8,7 +8,7 @@ import org.hyperion.rs2.model.Player;
 
 /**
  * Game protocol encoding class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class RS2Encoder implements ProtocolEncoder {

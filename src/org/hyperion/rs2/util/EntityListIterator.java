@@ -7,7 +7,7 @@ import org.hyperion.rs2.model.Entity;
 
 /**
  * An implementation of an iterator for an entity list.
- * @author Graham
+ * @author Graham Edgecombe
  *
  * @param <E> The type of entity.
  */

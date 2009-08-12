@@ -2,7 +2,7 @@ package org.hyperion.rs2.model;
 
 /**
  * Represents a single animation request.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Animation {

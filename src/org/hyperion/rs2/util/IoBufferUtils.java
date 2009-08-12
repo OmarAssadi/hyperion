@@ -4,7 +4,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  * A utility class for dealing with <code>IoBuffer</code>s.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class IoBufferUtils {

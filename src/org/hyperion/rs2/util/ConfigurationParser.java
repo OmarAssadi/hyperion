@@ -19,7 +19,7 @@ import java.util.Map;
  * key3[subkey1]: value3
  * key3[subkey2]: value4
  * </code>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ConfigurationParser {

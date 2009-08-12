@@ -10,7 +10,7 @@ import org.hyperion.util.login.LoginPacket;
 
 /**
  * Handles the login server connections.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginConnectionHandler extends IoHandlerAdapter {

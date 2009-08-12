@@ -14,7 +14,7 @@ import org.hyperion.rs2.model.Player;
  * 
  * <p>The individual woodcutting and mining classes implement things specific
  * to these individual skills such as random events.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public abstract class HarvestingAction extends Action {

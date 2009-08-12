@@ -19,7 +19,7 @@ import org.hyperion.rs2.util.NameUtils;
 
 /**
  * A task which creates and sends the player update block.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class PlayerUpdateTask implements Task {

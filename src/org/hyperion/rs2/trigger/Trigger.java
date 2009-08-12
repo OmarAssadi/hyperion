@@ -5,7 +5,7 @@ import org.hyperion.rs2.model.Player;
 /**
  * A <code>Trigger</code> handles the logic necessary to fire a new
  * <code>Action</code> for a specified <code>Player</code>.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public interface Trigger {

@@ -6,7 +6,7 @@ import java.io.RandomAccessFile;
 /**
  * Represents a single cache index. For more information aobut the credits of
  * the cache system, see the Cache class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class CacheIndex {

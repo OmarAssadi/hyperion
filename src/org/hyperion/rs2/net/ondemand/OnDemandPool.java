@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * <p>When an ondemand request is submitted, it is added to the appropriate
  * queue and then the workers are notified about this. The workers can then
  * service requests.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 @SuppressWarnings("unchecked")

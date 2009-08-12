@@ -2,7 +2,7 @@ package org.hyperion.rs2.event;
 
 /**
  * Represents a task that is executed in the future, once or periodically.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public abstract class Event {

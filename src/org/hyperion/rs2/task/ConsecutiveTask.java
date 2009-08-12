@@ -9,7 +9,7 @@ import org.hyperion.rs2.GameEngine;
 
 /**
  * A task which executes a group of tasks in a guaranteed sequence.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ConsecutiveTask implements Task {

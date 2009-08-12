@@ -4,7 +4,7 @@ import org.hyperion.rs2.Constants;
 
 /**
  * Name utility class.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class NameUtils {

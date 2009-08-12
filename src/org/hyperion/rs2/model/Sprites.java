@@ -2,7 +2,7 @@ package org.hyperion.rs2.model;
 
 /**
  * Represents walking and running directions.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Sprites {

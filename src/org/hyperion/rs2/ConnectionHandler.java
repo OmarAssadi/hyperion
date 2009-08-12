@@ -14,7 +14,7 @@ import org.hyperion.rs2.task.impl.SessionOpenedTask;
 /**
  * The <code>ConnectionHandler</code> processes incoming events from MINA,
  * submitting appropriate tasks to the <code>GameEngine</code>.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ConnectionHandler extends IoHandlerAdapter {

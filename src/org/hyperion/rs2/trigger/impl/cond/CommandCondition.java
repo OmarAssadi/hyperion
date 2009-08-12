@@ -4,7 +4,7 @@ import org.hyperion.rs2.trigger.TriggerCondition;
 
 /**
  * A condition which is triggered upon a command.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class CommandCondition implements TriggerCondition {

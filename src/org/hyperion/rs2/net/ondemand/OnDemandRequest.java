@@ -10,7 +10,7 @@ import org.hyperion.rs2.net.PacketBuilder;
  * <p>Represents a single 'ondemand' request. Ondemand requests are created
  * when the client requests a file from the cache using the update
  * protocol.<?p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class OnDemandRequest {

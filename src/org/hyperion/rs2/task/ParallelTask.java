@@ -10,7 +10,7 @@ import org.hyperion.rs2.GameEngine;
 
 /**
  * A task which can execute multiple child tasks simultaneously.
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class ParallelTask implements Task {

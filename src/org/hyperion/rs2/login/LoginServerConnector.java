@@ -25,7 +25,7 @@ import org.hyperion.util.login.LoginPacket;
 /**
  * <p>The <code>LoginServerConnector</code> manages the communication between
  * the game server and the login server.</p>
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class LoginServerConnector extends IoHandlerAdapter {

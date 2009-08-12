@@ -15,7 +15,7 @@ import org.hyperion.util.login.LoginPacket;
 
 /**
  * Manages a single node (world).
- * @author Graham
+ * @author Graham Edgecombe
  *
  */
 public class Node {
