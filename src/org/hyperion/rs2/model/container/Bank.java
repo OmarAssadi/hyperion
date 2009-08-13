@@ -16,6 +16,11 @@ public class Bank {
 	public static final int SIZE = 352;
 	
 	/**
+	 * The player inventory interface.
+	 */
+	public static final int PLAYER_INVENTORY_INTERFACE = 5064;
+	
+	/**
 	 * Opens the bank for the specified player.
 	 * @param player The player to open the bank for.
 	 */

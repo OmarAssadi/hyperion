@@ -153,6 +153,34 @@ public class Container {
 	}
 	
 	/**
+	 * Gets an item by id.
+	 * @param id The id.
+	 * @return The item, or <code>null</code> if it could not be found.
+	 */
+	public Item getById(int id) {
+		for(int i = 0; i < items.length; i++) {
+			if(items[i].getId() == id) {
+				return items[i];
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets a slot by id.
+	 * @param id The id.
+	 * @return The slot, or <code>-1</code> if it could not be found.
+	 */
+	public int getSlotById(int id) {
+		for(int i = 0; i < items.length; i++) {
+			if(items[i].getId() == id) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
 	 * Sets an item.
 	 * @param index The position in the container.
 	 * @param item The item.
@@ -220,6 +248,37 @@ public class Container {
 	 */
 	public boolean isSlotFree(int slot) {
 		return items[slot] == null;
+	}
+	
+	/**
+	 * Removes an item.
+	 * @param item The item to remove.
+	 * @return The number of items removed.
+	 */
+	public int remove(Item item) {
+		int removed = 0;
+		if(item.getDefinition().isStackable()) {
+			int slot = getSlotById(item.getId());
+			Item stack = get(slot);
+			if(stack.getCount() > item.getCount()) {
+				removed = item.getCount();
+				set(slot, new Item(stack.getId(), stack.getCount() - item.getCount()));
+			} else {
+				removed = stack.getCount();
+				set(slot, null);
+			}
+		} else {
+			for(int i = 0; i < item.getCount(); i++) {
+				int slot = getSlotById(item.getId());
+				if(slot != -1) {
+					removed++;
+					set(slot, null);
+				} else {
+					break;
+				}
+			}
+		}
+		return removed;
 	}
 
 	/**
