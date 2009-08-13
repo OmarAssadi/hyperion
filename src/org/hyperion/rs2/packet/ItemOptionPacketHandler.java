@@ -1,6 +1,5 @@
 package org.hyperion.rs2.packet;
 
-import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.container.Bank;
 import org.hyperion.rs2.model.container.Container;
@@ -23,7 +22,22 @@ public class ItemOptionPacketHandler implements PacketHandler {
 	/**
 	 * Option 2 opcode.
 	 */
-	private static final int OPTION_2 = 0;
+	private static final int OPTION_2 = 117;
+	
+	/**
+	 * Option 3 opcode.
+	 */
+	private static final int OPTION_3 = 43;
+	
+	/**
+	 * Option 4 opcode.
+	 */
+	private static final int OPTION_4 = 129;
+	
+	/**
+	 * Option 5 opcode.
+	 */
+	private static final int OPTION_5 = 135;
 
 	@Override
 	public void handle(Player player, Packet packet) {
@@ -34,13 +48,23 @@ public class ItemOptionPacketHandler implements PacketHandler {
 		case OPTION_2:
 			handleItemOption2(player, packet);
 			break;
+		case OPTION_3:
+			handleItemOption3(player, packet);
+			break;
+		case OPTION_4:
+			handleItemOption4(player, packet);
+			break;
+		case OPTION_5:
+			handleItemOption5(player, packet);
+			break;
 		}
 	}
 
-	private void handleItemOption2(Player player, Packet packet) {
-		
-	}
-
+	/**
+	 * Handles item option 1.
+	 * @param player The player.
+	 * @param packet The packet.
+	 */
 	private void handleItemOption1(Player player, Packet packet) {
 		int interfaceId = packet.getShortA() & 0xFFFF;
 		int slot = packet.getShortA() & 0xFFFF;
@@ -56,16 +80,46 @@ public class ItemOptionPacketHandler implements PacketHandler {
 			break;
 		case Bank.PLAYER_INVENTORY_INTERFACE:
 			if(slot >= 0 && slot < Inventory.SIZE) {
-				Item item = player.getInventory().get(slot);
-				if(item != null) {
-					int removed = player.getInventory().remove(slot, new Item(item.getId(), 1));
-					if(removed > 0) {
-						player.getBank().add(new Item(item.getId(), removed));
-					}
-				}
+				
 			}
 			break;
 		}
+	}
+	
+	/**
+	 * Handles item option 2.
+	 * @param player The player.
+	 * @param packet The packet.
+	 */
+	private void handleItemOption2(Player player, Packet packet) {
+		
+	}
+	
+	/**
+	 * Handles item option 3.
+	 * @param player The player.
+	 * @param packet The packet.
+	 */
+	private void handleItemOption3(Player player, Packet packet) {
+		
+	}
+	
+	/**
+	 * Handles item option 4.
+	 * @param player The player.
+	 * @param packet The packet.
+	 */
+	private void handleItemOption4(Player player, Packet packet) {
+		
+	}
+	
+	/**
+	 * Handles item option 5.
+	 * @param player The player.
+	 * @param packet The packet.
+	 */
+	private void handleItemOption5(Player player, Packet packet) {
+		
 	}
 
 }
