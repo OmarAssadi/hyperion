@@ -173,6 +173,9 @@ public class Container {
 	 */
 	public int getSlotById(int id) {
 		for(int i = 0; i < items.length; i++) {
+			if(items[i] == null) {
+				continue;
+			}
 			if(items[i].getId() == id) {
 				return i;
 			}
@@ -256,6 +259,16 @@ public class Container {
 	 * @return The number of items removed.
 	 */
 	public int remove(Item item) {
+		return remove(-1, item);
+	}
+	
+	/**
+	 * Removes an item.
+	 * @param preferredSlot The preferred slot.
+	 * @param item The item to remove.
+	 * @return The number of items removed.
+	 */
+	public int remove(int preferredSlot, Item item) {
 		int removed = 0;
 		if(item.getDefinition().isStackable()) {
 			int slot = getSlotById(item.getId());
@@ -270,6 +283,12 @@ public class Container {
 		} else {
 			for(int i = 0; i < item.getCount(); i++) {
 				int slot = getSlotById(item.getId());
+				if(i == 0 && preferredSlot != -1) {
+					Item inSlot = get(preferredSlot);
+					if(inSlot.getId() == item.getId()) {
+						slot = preferredSlot;
+					}
+				}
 				if(slot != -1) {
 					removed++;
 					set(slot, null);

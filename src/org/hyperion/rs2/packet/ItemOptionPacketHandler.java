@@ -19,6 +19,11 @@ public class ItemOptionPacketHandler implements PacketHandler {
 	 * Option 1 opcode.
 	 */
 	private static final int OPTION_1 = 145;
+	
+	/**
+	 * Option 2 opcode.
+	 */
+	private static final int OPTION_2 = 0;
 
 	@Override
 	public void handle(Player player, Packet packet) {
@@ -26,7 +31,14 @@ public class ItemOptionPacketHandler implements PacketHandler {
 		case OPTION_1:
 			handleItemOption1(player, packet);
 			break;
+		case OPTION_2:
+			handleItemOption2(player, packet);
+			break;
 		}
+	}
+
+	private void handleItemOption2(Player player, Packet packet) {
+		
 	}
 
 	private void handleItemOption1(Player player, Packet packet) {
@@ -46,7 +58,7 @@ public class ItemOptionPacketHandler implements PacketHandler {
 			if(slot >= 0 && slot < Inventory.SIZE) {
 				Item item = player.getInventory().get(slot);
 				if(item != null) {
-					int removed = player.getInventory().remove(new Item(item.getId(), 1));
+					int removed = player.getInventory().remove(slot, new Item(item.getId(), 1));
 					if(removed > 0) {
 						player.getBank().add(new Item(item.getId(), removed));
 					}
