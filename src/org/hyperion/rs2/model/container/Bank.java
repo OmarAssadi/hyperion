@@ -13,30 +13,16 @@ public class Bank {
 	/**
 	 * The bank size.
 	 */
-	public static final int SIZE = 800;
-	
-	/**
-	 * Bank interface.
-	 */
-	public static final int INTERFACE = 5292;
-	
-	/**
-	 * The actual bank inventory interface.
-	 */
-	public static final int BANK_INVENTORY_INTERFACE = 5063;
-	
-	/**
-	 * The inventory interface with banking options.
-	 */
-	public static final int PLAYER_INVENTORY_INTERFACE = 5064;
+	public static final int SIZE = 352;
 	
 	/**
 	 * Opens the bank for the specified player.
 	 * @param player The player to open the bank for.
 	 */
 	public static void open(Player player) {
-		player.getActionSender().sendInventoryInterface(INTERFACE, BANK_INVENTORY_INTERFACE);
-		player.getInterfaceState().addListener(player.getInventory(), new InterfaceContainerListener(player, PLAYER_INVENTORY_INTERFACE));
+		player.getActionSender().sendInventoryInterface(5292, 5063);
+		player.getInterfaceState().addListener(player.getBank(), new InterfaceContainerListener(player, 5382));
+		player.getInterfaceState().addListener(player.getInventory(), new InterfaceContainerListener(player, 5064));
 	}
 
 }
