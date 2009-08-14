@@ -68,10 +68,10 @@ public class ActionSender {
 
 	/**
 	 * Sends the packet to construct a map region.
-	 * @param palette The palette of map regions, int[13][13] array.
+	 * @param palette The palette of map regions, int[13][13][2] array.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendConstructMapRegion(int[][] palette) {
+	public ActionSender sendConstructMapRegion(int[][][] palette) {
 		player.setLastKnownRegion(player.getLocation());
 
 		PacketBuilder bldr = new PacketBuilder(241, Type.VARIABLE_SHORT);
@@ -83,7 +83,7 @@ public class ActionSender {
 					boolean flag = z == player.getLocation().getZ();
 					bldr.putBits(1, flag ? 1 : 0);
 					if(flag) {
-						bldr.putBits(26, palette[x][y] << 14 | palette[x][y] << 3);
+						bldr.putBits(26, palette[x][y][0] << 14 | palette[x][y][1] << 3);
 					}
 				}
 			}
