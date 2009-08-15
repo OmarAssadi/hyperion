@@ -331,7 +331,7 @@ public class PacketBuilder {
 	 * @return The PacketBuilder instance, for chaining.
 	 */
 	public PacketBuilder putByteC(byte val) {
-		payload.put((byte) (-128));
+		payload.put((byte) (-val));
 		return this;
 	}
 	
