@@ -1,48 +1,182 @@
 package org.hyperion.cache;
 
+import java.io.Closeable;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel.MapMode;
+
+import org.hyperion.cache.Cache;
+import org.hyperion.cache.CacheFile;
+import org.hyperion.cache.InvalidCacheException;
 
 /**
- * <p>Manages the game cache. Most of the code in this class is based on
- * decompiled work of Tom's cache suite, which is available here:
- * <a href="http://nuke-net.com/?page_id=169"
- * http://nuke-net.com/?page_id=169</a>.</p>
- * 
- * <p>A lot of the research for Tom's project was done by super_, I also
- * referred to a few of his topics when creating this system.</p>
+ * Manages the game cache.
  * @author Graham Edgecombe
  *
  */
-public class Cache {
+public class Cache implements Closeable {
 	
 	/**
-	 * An array of caches.
+	 * The size of a block in the index file.
 	 */
-	private CacheIndex[] caches = new CacheIndex[5];
+	public static final int INDEX_SIZE = 6;
 	
 	/**
-	 * Loads the cache.
-	 * @param directory The directory.
-	 * @throws FileNotFoundException if a file in the directory was not found.
+	 * The size of a data block in the data file.
 	 */
-	public Cache(String directory) throws FileNotFoundException {
-		for(int i = 0; i < 5; i++) {
-			caches[i] = new CacheIndex(new RandomAccessFile(directory + "main_file_cache.dat", "r"), new RandomAccessFile(directory + "main_file_cache.idx" + i, "r"), i+1);
+	public static final int DATA_BLOCK_SIZE = 512;
+	
+	/**
+	 * The size of a header block in the data file.
+	 */
+	public static final int DATA_HEADER_SIZE = 8;
+	
+	/**
+	 * The overall size of a block in the data file.
+	 */
+	public static final int DATA_SIZE = DATA_BLOCK_SIZE + DATA_HEADER_SIZE;
+	
+	/**
+	 * The data random access file.
+	 */
+	private final RandomAccessFile dataFile;
+	
+	/**
+	 * The index random access files.
+	 */
+	private final RandomAccessFile[] indexFiles;
+	
+	/**
+	 * Creates the cache.
+	 * @param directory The directory where the cache is stored.
+	 * @throws InvalidCacheException if the cache is corrupt or invalid.
+	 */
+	public Cache(File directory) throws InvalidCacheException {
+		try {
+			int count = 0;
+			for(int i = 0; i < 255; i++) {
+				File indexFile = new File(directory.getAbsolutePath() + "/main_file_cache.idx" + i);
+				if(!indexFile.exists()) {
+					break;
+				} else {
+					count++;
+				}
+			}
+			if(count == 0) {
+				throw new InvalidCacheException("No index files present.");
+			}
+			indexFiles = new RandomAccessFile[count];
+			dataFile = new RandomAccessFile(directory.getAbsolutePath() + "/main_file_cache.dat", "r");
+			for(int i = 0; i < indexFiles.length; i++) {
+				indexFiles[i] = new RandomAccessFile(directory.getAbsolutePath() + "/main_file_cache.idx" + i, "r");
+			}
+		} catch(FileNotFoundException ex) {
+			throw new InvalidCacheException(ex);
 		}
 	}
 	
 	/**
-	 * Reads a file from the cache.
-	 * @param cacheId The cache id.
-	 * @param fileId The file id.
-	 * @return The file buffer.
+	 * Gets a file from the cache.
+	 * @param cache The cache id.
+	 * @param file The file id.
+	 * @return The file.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public byte[] read(int cacheId, int fileId) throws IOException {
-		return caches[cacheId].read(fileId);
+	public CacheFile getFile(int cache, int file) throws IOException {
+		if(cache < 0 || cache >= indexFiles.length) {
+			throw new IOException("Cache does not exist.");
+		}
+		
+		RandomAccessFile indexFile = indexFiles[cache];
+		cache += 1;
+		
+		if(file < 0 || file >= (indexFile.length() * INDEX_SIZE + INDEX_SIZE)) {
+			throw new IOException("File does not exist.");
+		}
+		
+		ByteBuffer index = indexFile.getChannel().map(MapMode.READ_ONLY, INDEX_SIZE * file, INDEX_SIZE);
+		int fileSize = ((index.get() & 0xFF) << 16) | ((index.get() & 0xFF) << 8) | (index.get() & 0xFF);
+		int fileBlock = ((index.get() & 0xFF) << 16) | ((index.get() & 0xFF) << 8) | (index.get() & 0xFF);
+		
+		int remainingBytes = fileSize;
+		int currentBlock = fileBlock;
+		
+		ByteBuffer fileBuffer = ByteBuffer.allocate(fileSize);
+		int cycles = 0;
+		
+		while(remainingBytes > 0) {
+			ByteBuffer block = dataFile.getChannel().map(MapMode.READ_ONLY, currentBlock * DATA_SIZE, DATA_SIZE);
+			int nextFileId = block.getShort() & 0xFFFF;
+			int currentPartId = block.getShort() & 0xFFFF;
+			int nextBlockId = ((block.get() & 0xFF) << 16) | ((block.get() & 0xFF) << 8) | (block.get() & 0xFF);
+			int nextCacheId = block.get() & 0xFF;
+			
+			int bytesThisCycle = remainingBytes;
+			if(bytesThisCycle > DATA_BLOCK_SIZE) {
+				bytesThisCycle = DATA_BLOCK_SIZE;
+			}
+			
+			byte[] temp = new byte[DATA_BLOCK_SIZE];
+			block.get(temp, 0, temp.length);
+			
+			fileBuffer.put(temp, 0, bytesThisCycle);
+			
+			remainingBytes -= bytesThisCycle;
+			
+			if(cycles != currentPartId) {
+				throw new IOException("Cycle does not match part id.");
+			}
+			
+			if(remainingBytes > 0) {
+				if(nextCacheId != cache) {
+					throw new IOException("Unexpected next cache id.");
+				}
+				if(nextFileId != file) {
+					throw new IOException("Unexpected next file id.");
+				}
+			}
+			
+			cycles++;
+			currentBlock = nextBlockId;
+		}
+		return new CacheFile(cache, file, (ByteBuffer) fileBuffer.flip());
+	}
+
+	/**
+	 * Closes the cache.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	@Override
+	public void close() throws IOException {
+		dataFile.close();
+		for(RandomAccessFile indexFile : indexFiles) {
+			indexFile.close();
+		}
+	}
+	
+	/**
+	 * Gets the number of caches.
+	 * @return The number of caches.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public int getCacheCount() throws IOException {
+		return indexFiles.length;
+	}
+
+	/**
+	 * Gets the number of files.
+	 * @param cache The cache.
+	 * @return The number of files.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public int getFileCount(int cache) throws IOException {
+		if(cache < 0 || cache >= indexFiles.length) {
+			throw new IOException("Cache does not exist.");
+		}
+		return (int) (indexFiles[cache].length() / INDEX_SIZE) - 1;
 	}
 
 }
-

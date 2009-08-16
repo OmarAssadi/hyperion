@@ -1,7 +1,6 @@
 package org.hyperion.fileserver;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -42,8 +41,8 @@ public class RequestHandler {
 	public static synchronized Response handle(Request request) {
 		if(cache == null) {
 			try {
-				cache = new Cache("./data/cache/");
-			} catch(FileNotFoundException e) {
+				cache = new Cache(new File("./data/cache/"));
+			} catch(Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -59,21 +58,21 @@ public class RequestHandler {
 			if(path.startsWith("/crc")) {
 				return new Response(crcTable.asReadOnlyBuffer(), mime);
 			} else if(path.startsWith("/title")) {
-				return new Response(cache.read(0, 1), mime);
+				return new Response(cache.getFile(0, 1).getBytes(), mime);
 			} else if(path.startsWith("/config")) {
-				return new Response(cache.read(0, 2), mime);
+				return new Response(cache.getFile(0, 2).getBytes(), mime);
 			} else if(path.startsWith("/interface")) {
-				return new Response(cache.read(0, 3), mime);
+				return new Response(cache.getFile(0, 3).getBytes(), mime);
 			} else if(path.startsWith("/media")) {
-				return new Response(cache.read(0, 4), mime);
+				return new Response(cache.getFile(0, 4).getBytes(), mime);
 			} else if(path.startsWith("/versionlist")) {
-				return new Response(cache.read(0, 5), mime);
+				return new Response(cache.getFile(0, 5).getBytes(), mime);
 			} else if(path.startsWith("/textures")) {
-				return new Response(cache.read(0, 6), mime);
+				return new Response(cache.getFile(0, 6).getBytes(), mime);
 			} else if(path.startsWith("/wordenc")) {
-				return new Response(cache.read(0, 7), mime);
+				return new Response(cache.getFile(0, 7).getBytes(), mime);
 			} else if(path.startsWith("/sounds")) {
-				return new Response(cache.read(0, 8), mime);
+				return new Response(cache.getFile(0, 8).getBytes(), mime);
 			}
 			path = new File(FILES_DIRECTORY + path).getAbsolutePath();
 			if(!path.startsWith(FILES_DIRECTORY)) {
@@ -290,7 +289,7 @@ public class RequestHandler {
 		 * Calculate the checksums.
 		 */
 		for(int i = 1; i < checksums.length; i++) {
-			byte[] file = cache.read(0, i); // each of these maps to the files above
+			byte[] file = cache.getFile(0, i).getBytes(); // each of these maps to the files above
 			crc.reset();
 			crc.update(file, 0, file.length);
 			checksums[i] = (int) crc.getValue();

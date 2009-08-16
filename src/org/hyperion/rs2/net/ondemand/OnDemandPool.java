@@ -1,6 +1,5 @@
 package org.hyperion.rs2.net.ondemand;
 
-import java.io.FileNotFoundException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,7 +56,7 @@ public class OnDemandPool {
 		for(int i = 0; i < POOL_SIZE; i++) {
 			try {
 				service.submit(new OnDemandWorker(queues));
-			} catch(FileNotFoundException e) {
+			} catch(Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

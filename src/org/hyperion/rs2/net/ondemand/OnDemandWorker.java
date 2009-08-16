@@ -1,9 +1,11 @@
 package org.hyperion.rs2.net.ondemand;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.concurrent.BlockingQueue;
 
 import org.hyperion.cache.Cache;
+import org.hyperion.cache.InvalidCacheException;
 
 /**
  * <p>A class which waits for ondemand requests to queue up and then processes
@@ -27,9 +29,10 @@ public class OnDemandWorker implements Runnable {
 	 * Creates the ondemand worker.
 	 * @param queues The array of request queues.
 	 * @throws FileNotFoundException if the cache could not be found.
+	 * @throws InvalidCacheException if the cache is invalid.
 	 */
-	public OnDemandWorker(BlockingQueue<OnDemandRequest>[] queues) throws FileNotFoundException {
-		this.cache = new Cache("./data/cache/");
+	public OnDemandWorker(BlockingQueue<OnDemandRequest>[] queues) throws FileNotFoundException, InvalidCacheException {
+		this.cache = new Cache(new File("./data/cache/"));
 		this.queues = queues;
 	}
 
