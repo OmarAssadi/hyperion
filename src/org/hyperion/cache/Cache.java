@@ -93,7 +93,7 @@ public class Cache implements Closeable {
 		RandomAccessFile indexFile = indexFiles[cache];
 		cache += 1;
 		
-		if(file < 0 || file >= (indexFile.length() * INDEX_SIZE + INDEX_SIZE)) {
+		if(file < 0 || file >= (indexFile.length() * INDEX_SIZE)) {
 			throw new IOException("File does not exist.");
 		}
 		
@@ -106,21 +106,30 @@ public class Cache implements Closeable {
 		
 		ByteBuffer fileBuffer = ByteBuffer.allocate(fileSize);
 		int cycles = 0;
-		
+				
 		while(remainingBytes > 0) {
-			ByteBuffer block = dataFile.getChannel().map(MapMode.READ_ONLY, currentBlock * DATA_SIZE, DATA_SIZE);
+			
+			int size = DATA_SIZE;
+			int rem = (int) (dataFile.length() - currentBlock * DATA_SIZE);
+			if(rem < DATA_SIZE) {
+				size = rem;
+			}
+						
+			ByteBuffer block = dataFile.getChannel().map(MapMode.READ_ONLY, currentBlock * DATA_SIZE, size);
 			int nextFileId = block.getShort() & 0xFFFF;
 			int currentPartId = block.getShort() & 0xFFFF;
 			int nextBlockId = ((block.get() & 0xFF) << 16) | ((block.get() & 0xFF) << 8) | (block.get() & 0xFF);
 			int nextCacheId = block.get() & 0xFF;
 			
+			size -= 8;
+						
 			int bytesThisCycle = remainingBytes;
 			if(bytesThisCycle > DATA_BLOCK_SIZE) {
 				bytesThisCycle = DATA_BLOCK_SIZE;
 			}
 			
-			byte[] temp = new byte[DATA_BLOCK_SIZE];
-			block.get(temp, 0, temp.length);
+			byte[] temp = new byte[bytesThisCycle];
+			block.get(temp);
 			
 			fileBuffer.put(temp, 0, bytesThisCycle);
 			
