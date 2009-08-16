@@ -79,33 +79,42 @@ public class RegionManager {
 		int regionX = location.getX() / REGION_SIZE;
 		int regionY = location.getY() / REGION_SIZE;
 		
-		int regionPositionX = location.getX() % REGION_SIZE;
-		int regionPositionY = location.getY() % REGION_SIZE;
+//		int regionPositionX = location.getX() % REGION_SIZE;
+//		int regionPositionY = location.getY() % REGION_SIZE;
 		
-		Region[] surrounding = new Region[4];
+		Region[] surrounding = new Region[9];
 		surrounding[0] = getRegion(regionX, regionY);
-		
-		if(regionPositionX <= LOWER_BOUND) {
-			if(regionPositionY <= LOWER_BOUND) {
-				surrounding[1] = getRegion(regionX - 1, regionY - 1);
-				surrounding[2] = getRegion(regionX - 1, regionY);
-				surrounding[3] = getRegion(regionX, regionY - 1);
-			} else {
-				surrounding[1] = getRegion(regionX + 1, regionY - 1);
-				surrounding[2] = getRegion(regionX + 1, regionY);
-				surrounding[3] = getRegion(regionX, regionY - 1);
-			}
-		} else {
-			if(regionPositionY <= LOWER_BOUND) {
-				surrounding[1] = getRegion(regionX - 1, regionY + 1);
-				surrounding[2] = getRegion(regionX - 1, regionY);
-				surrounding[3] = getRegion(regionX, regionY + 1);
-			} else {
-				surrounding[1] = getRegion(regionX + 1, regionY + 1);
-				surrounding[2] = getRegion(regionX + 1, regionY);
-				surrounding[3] = getRegion(regionX, regionY + 1);
-			}
-		}
+		surrounding[1] = getRegion(regionX - 1, regionY - 1);
+		surrounding[2] = getRegion(regionX + 1, regionY + 1);
+		surrounding[3] = getRegion(regionX - 1, regionY);
+		surrounding[4] = getRegion(regionX, regionY - 1);
+		surrounding[5] = getRegion(regionX + 1, regionY);
+		surrounding[6] = getRegion(regionX, regionY + 1);
+		surrounding[7] = getRegion(regionX - 1, regionY + 1);
+		surrounding[8] = getRegion(regionX + 1, regionY - 1);
+
+//		FIXME
+//		if(regionPositionX <= LOWER_BOUND) {
+//			if(regionPositionY <= LOWER_BOUND) {
+//				surrounding[1] = getRegion(regionX - 1, regionY - 1);
+//				surrounding[2] = getRegion(regionX - 1, regionY);
+//				surrounding[3] = getRegion(regionX, regionY - 1);
+//			} else {
+//				surrounding[1] = getRegion(regionX + 1, regionY - 1);
+//				surrounding[2] = getRegion(regionX + 1, regionY);
+//				surrounding[3] = getRegion(regionX, regionY - 1);
+//			}
+//		} else {
+//			if(regionPositionY <= LOWER_BOUND) {
+//				surrounding[1] = getRegion(regionX - 1, regionY + 1);
+//				surrounding[2] = getRegion(regionX - 1, regionY);
+//				surrounding[3] = getRegion(regionX, regionY + 1);
+//			} else {
+//				surrounding[1] = getRegion(regionX + 1, regionY + 1);
+//				surrounding[2] = getRegion(regionX + 1, regionY);
+//				surrounding[3] = getRegion(regionX, regionY + 1);
+//			}
+//		}
 		
 		return surrounding;
 	}
