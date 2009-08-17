@@ -1,7 +1,5 @@
 package org.hyperion.rs2.net;
 
-import org.apache.mina.core.future.IoFuture;
-import org.apache.mina.core.future.IoFutureListener;
 import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
@@ -40,7 +38,7 @@ public class ActionSender {
 	 */
 	public ActionSender sendInventoryInterface(int interfaceId, int inventoryInterfaceId) {
 		player.getInterfaceState().interfaceOpened(interfaceId);
-		player.getSession().write(new PacketBuilder(248).putShortA(interfaceId).putShort(inventoryInterfaceId).toPacket());
+		player.write(new PacketBuilder(248).putShortA(interfaceId).putShort(inventoryInterfaceId).toPacket());
 		return this;
 	}
 	
@@ -90,7 +88,7 @@ public class ActionSender {
 		}
 		bldr.finishBitAccess();
 		bldr.putShort(player.getLocation().getRegionX() + 6);
-		player.getSession().write(bldr.toPacket());
+		player.write(bldr.toPacket());
 		return this;
 	}
 
@@ -99,8 +97,8 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendDetails() {
-		player.getSession().write(new PacketBuilder(249).putByteA(player.isMembers() ? 1 : 0).putLEShortA(player.getIndex()).toPacket());
-		player.getSession().write(new PacketBuilder(107).toPacket());
+		player.write(new PacketBuilder(249).putByteA(player.isMembers() ? 1 : 0).putLEShortA(player.getIndex()).toPacket());
+		player.write(new PacketBuilder(107).toPacket());
 		return this;
 	}
 	
@@ -125,7 +123,7 @@ public class ActionSender {
 		bldr.put((byte) skill);
 		bldr.putInt1((int) player.getSkills().getExperience(skill));
 		bldr.put((byte) player.getSkills().getLevel(skill));
-		player.getSession().write(bldr.toPacket());
+		player.write(bldr.toPacket());
 		return this;
 	}
 
@@ -149,7 +147,7 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendSidebarInterface(int icon, int interfaceId) {
-		player.getSession().write(new PacketBuilder(71).putShort(interfaceId).putByteA(icon).toPacket());
+		player.write(new PacketBuilder(71).putShort(interfaceId).putByteA(icon).toPacket());
 		return this;
 	}
 	
@@ -159,7 +157,7 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendMessage(String message) {
-		player.getSession().write(new PacketBuilder(253, Type.VARIABLE).putRS2String(message).toPacket());
+		player.write(new PacketBuilder(253, Type.VARIABLE).putRS2String(message).toPacket());
 		return this;
 	}
 	
@@ -169,7 +167,7 @@ public class ActionSender {
 	 */
 	public ActionSender sendMapRegion() {
 		player.setLastKnownRegion(player.getLocation());
-		player.getSession().write(new PacketBuilder(73).putShortA(player.getLocation().getRegionX() + 6).putShort(player.getLocation().getRegionY() + 6).toPacket());
+		player.write(new PacketBuilder(73).putShortA(player.getLocation().getRegionX() + 6).putShort(player.getLocation().getRegionY() + 6).toPacket());
 		return this;
 	}
 	
@@ -178,12 +176,7 @@ public class ActionSender {
 	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendLogout() {
-		player.getSession().write(new PacketBuilder(109).toPacket()).addListener(new IoFutureListener<IoFuture>() {
-			@Override
-			public void operationComplete(IoFuture future) {
-				future.getSession().close(false);
-			}
-		});
+		player.write(new PacketBuilder(109).toPacket()); // TODO IoFuture
 		return this;
 	}
 	
@@ -212,7 +205,7 @@ public class ActionSender {
 				bldr.putLEShortA(0);
 			}
 		}
-		player.getSession().write(bldr.toPacket());
+		player.write(bldr.toPacket());
 		return this;
 	}
 
@@ -239,7 +232,7 @@ public class ActionSender {
 			bldr.putShort(0);
 			bldr.put((byte) 0);
 		}
-		player.getSession().write(bldr.toPacket());
+		player.write(bldr.toPacket());
 		return this;
 	}
 

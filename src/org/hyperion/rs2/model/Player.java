@@ -135,6 +135,11 @@ public class Player extends Entity implements Data {
 	 */
 	private final InterfaceState interfaceState = new InterfaceState(this);
 	
+	/**
+	 * A queue of packets that are pending.
+	 */
+	private final Queue<Packet> pendingPackets = new LinkedList<Packet>();
+	
 	/*
 	 * Core login details.
 	 */
@@ -215,6 +220,25 @@ public class Player extends Entity implements Data {
 		this.uid = details.getUID();
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		this.setTeleporting(true);
+	}
+	
+	/**
+	 * Writes a packet to the <code>IoSession</code>. If the player is not
+	 * yet active, the packets are queued.
+	 * @param packet The packet.
+	 */
+	public void write(Packet packet) {
+		synchronized(this) {
+			if(!active) {
+				pendingPackets.add(packet);
+			} else {
+				for(Packet pendingPacket : pendingPackets) {
+					session.write(pendingPacket);
+				}
+				pendingPackets.clear();
+				session.write(packet);
+			}
+		}
 	}
 	
 	/**
@@ -418,7 +442,9 @@ public class Player extends Entity implements Data {
 	 * @param active The active flag.
 	 */
 	public void setActive(boolean active) {
-		this.active = active;
+		synchronized(this) {
+			this.active = active;
+		}
 	}
 
 	/**
@@ -426,7 +452,9 @@ public class Player extends Entity implements Data {
 	 * @return The active flag.
 	 */
 	public boolean isActive() {
-		return active;
+		synchronized(this) {
+			return active;
+		}
 	}
 	
 	/**

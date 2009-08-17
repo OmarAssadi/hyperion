@@ -174,7 +174,7 @@ public class PlayerUpdateTask implements Task {
 		/*
 		 * Write the packet.
 		 */
-		player.getSession().write(packet.toPacket());
+		player.write(packet.toPacket());
 	}
 
 	/**

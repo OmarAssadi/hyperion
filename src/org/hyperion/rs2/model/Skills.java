@@ -115,9 +115,7 @@ public class Skills {
 	 */
 	public void setLevel(int skill, int level) {
 		levels[skill] = level;
-		if(player.isActive()) {
-			player.getActionSender().sendSkill(skill);
-		}
+		player.getActionSender().sendSkill(skill);
 	}
 	
 	/**
@@ -127,9 +125,7 @@ public class Skills {
 	 */
 	public void setExperience(int skill, double exp) {
 		exps[skill] = exp;
-		if(player.isActive()) {
-			player.getActionSender().sendSkill(skill);
-		}
+		player.getActionSender().sendSkill(skill);
 	}
 	
 	/**
@@ -138,9 +134,7 @@ public class Skills {
 	 */
 	public void incrementLevel(int skill) {
 		levels[skill]++;
-		if(player.isActive()) {
-			player.getActionSender().sendSkill(skill);
-		}
+		player.getActionSender().sendSkill(skill);
 	}
 	
 	/**
@@ -149,9 +143,7 @@ public class Skills {
 	 */
 	public void decrementLevel(int skill) {
 		levels[skill]--;
-		if(player.isActive()) {
-			player.getActionSender().sendSkill(skill);
-		}
+		player.getActionSender().sendSkill(skill);
 	}
 	
 	/**
@@ -162,14 +154,10 @@ public class Skills {
 		int norm = getLevelForExperience(skill);
 		if(levels[skill] > norm) {
 			levels[skill]--;
-			if(player.isActive()) {
-				player.getActionSender().sendSkill(skill);
-			}
+			player.getActionSender().sendSkill(skill);
 		} else if(levels[skill] < norm) {
 			levels[skill]++;
-			if(player.isActive()) {
-				player.getActionSender().sendSkill(skill);
-			}
+			player.getActionSender().sendSkill(skill);
 		}
 	}
 	
