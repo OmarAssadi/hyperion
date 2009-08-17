@@ -24,10 +24,10 @@
 require("config.php");
 
 // initialize some constants
-define("dir_class","/class/");
-define("dir_module","/module/");
-define("dir_req","/req/");
-define("dir_util","/util/");
+define("dir_class","class/");
+define("dir_module","module/");
+define("dir_req","req/");
+define("dir_util","util/");
 
 /**
  * Main class that initializes all other classes
@@ -47,7 +47,7 @@ class Hyperite
 			if(class_exists($curr))
 			{
 				$this->$curr = new $curr();
-				// bind that class to this object
+				// bind that object to this one
 				$this->$curr->Hyperite = &$this;
 				// initialize if necessary
 				if(method_exists($this->$curr, 'init')) $this->$curr->init();
@@ -64,7 +64,7 @@ class Hyperite
 				$this->$module = new $module();
 				$this->$module->Hyperite = &$this;
 				if(method_exists($this->$module, 'init')) $this->$module->init();
-			} else echo("<b>Warning:</b> Could not initiate module ".$module);			
+			} else echo("<strong>Warning:</strong> Could not initiate module ".$module);			
 	}
 	
 	// array search method
