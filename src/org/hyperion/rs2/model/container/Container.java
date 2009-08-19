@@ -388,17 +388,31 @@ public class Container {
 			return;
 		}
 		items[fromSlot] = null;
-		// now we determine which direction to shift in
+		// find which direction to shift in
 		if(fromSlot > toSlot) {
-			// we need to shift to the right
-			Item[] slice = new Item[fromSlot-toSlot];
-			System.arraycopy(items, toSlot, slice, 0, slice.length);
-			System.arraycopy(slice, 0, items, toSlot + 1, slice.length);
+			int shiftFrom = toSlot;
+			int shiftTo = fromSlot;
+			for(int i = (toSlot + 1); i < fromSlot; i++) {
+				if(items[i] == null) {
+					shiftTo = i;
+					break;
+				}
+			}
+			Item[] slice = new Item[shiftTo - shiftFrom];
+			System.arraycopy(items, shiftFrom, slice, 0, slice.length);
+			System.arraycopy(slice, 0, items, shiftFrom + 1, slice.length);
 		} else {
-			// we need to shift to the left
-			Item[] slice = new Item[toSlot-fromSlot];
-			System.arraycopy(items, fromSlot + 1, slice, 0, slice.length);
-			System.arraycopy(slice, 0, items, fromSlot, slice.length);
+			int sliceStart = fromSlot + 1;
+			int sliceEnd = toSlot;
+			for(int i = (sliceEnd - 1); i >= sliceStart; i--) {
+				if(items[i] == null) {
+					sliceStart = i;
+					break;
+				}
+			}
+			Item[] slice = new Item[sliceEnd - sliceStart + 1];
+			System.arraycopy(items, sliceStart, slice, 0, slice.length);
+			System.arraycopy(slice, 0, items, sliceStart - 1, slice.length);
 		}
 		// now fill in the target slot
 		items[toSlot] = from;
