@@ -50,6 +50,9 @@ public class Bank {
 			return; // invalid packet, or client out of sync
 		}
 		if(item.getDefinition().isStackable()) {
+			if(player.getBank().freeSlots() < 1 && player.getBank().getById(item.getId()) == null) {
+				player.getActionSender().sendMessage("Not enough room in your bank."); // TODO real messsage?
+			}
 			// we only need to remove from one stack
 			int newInventoryAmount = item.getCount() - transferAmount;
 			Item newItem;
@@ -61,6 +64,9 @@ public class Bank {
 			player.getInventory().set(slot, newItem);
 			player.getBank().add(new Item(item.getId(), transferAmount));
 		} else {
+			if(player.getBank().freeSlots() < transferAmount) {
+				player.getActionSender().sendMessage("Not enough room in your bank."); // TODO real messsage?
+			}
 			// we need to remove multiple items
 			for(int i = 0; i < transferAmount; i++) {
 				if(i == 0) {
