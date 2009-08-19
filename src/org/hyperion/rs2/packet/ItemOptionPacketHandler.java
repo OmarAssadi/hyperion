@@ -92,7 +92,17 @@ public class ItemOptionPacketHandler implements PacketHandler {
 	 * @param packet The packet.
 	 */
 	private void handleItemOption2(Player player, Packet packet) {
+		int interfaceId = packet.getLEShortA() & 0xFFFF;
+		int id = packet.getLEShortA() & 0xFFFF;
+		int slot = packet.getLEShort() & 0xFFFF;
 		
+		switch(interfaceId) {
+		case Bank.PLAYER_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Inventory.SIZE) {
+				Bank.deposit(player, slot, id, 5);
+			}
+			break;
+		}
 	}
 	
 	/**
@@ -101,7 +111,17 @@ public class ItemOptionPacketHandler implements PacketHandler {
 	 * @param packet The packet.
 	 */
 	private void handleItemOption3(Player player, Packet packet) {
+		int interfaceId = packet.getLEShort() & 0xFFFF;
+		int id = packet.getShortA() & 0xFFFF;
+		int slot = packet.getShortA() & 0xFFFF;
 		
+		switch(interfaceId) {
+		case Bank.PLAYER_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Inventory.SIZE) {
+				Bank.deposit(player, slot, id, 10);
+			}
+			break;
+		}
 	}
 	
 	/**
@@ -110,7 +130,17 @@ public class ItemOptionPacketHandler implements PacketHandler {
 	 * @param packet The packet.
 	 */
 	private void handleItemOption4(Player player, Packet packet) {
+		int slot = packet.getShortA() & 0xFFFF;
+		int interfaceId = packet.getShort() & 0xFFFF;
+		int id = packet.getShortA() & 0xFFFF;
 		
+		switch(interfaceId) {
+		case Bank.PLAYER_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Inventory.SIZE) {
+				Bank.deposit(player, slot, id, player.getInventory().getCount(id));
+			}
+			break;
+		}
 	}
 	
 	/**
@@ -119,7 +149,17 @@ public class ItemOptionPacketHandler implements PacketHandler {
 	 * @param packet The packet.
 	 */
 	private void handleItemOption5(Player player, Packet packet) {
+		int slot = packet.getLEShort() & 0xFFFF;
+		int interfaceId = packet.getShortA() & 0xFFFF;
+		int id = packet.getLEShort() & 0xFFFF;
 		
+		switch(interfaceId) {
+		case Bank.PLAYER_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Inventory.SIZE) {
+				// TODO bank X
+			}
+			break;
+		}
 	}
 
 }
