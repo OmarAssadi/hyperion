@@ -30,6 +30,12 @@ public class ActionButtonPacketHandler implements PacketHandler {
 		case 5386:
 			player.getSettings().setWithdrawAsNotes(true);
 			break;
+		case 8130:
+			player.getSettings().setSwapping(true);
+			break;
+		case 8131:
+			player.getSettings().setSwapping(false);
+			break;
 		default:
 			logger.info("Unhandled action button : " + button);
 			break;

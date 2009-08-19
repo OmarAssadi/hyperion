@@ -71,10 +71,10 @@ public class Bank {
 			}
 		} else {
 			int free = player.getInventory().freeSlots();
-			if(free < transferAmount) {
+			if(transferAmount > free) {
 				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // TODO real message?
+				transferAmount = free;
 			}
-			transferAmount = free;
 		}
 		// all items in the bank are stacked, makes it very easy!
 		int newAmount = item.getCount() - transferAmount;
