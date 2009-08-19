@@ -156,7 +156,7 @@ public class ItemOptionPacketHandler implements PacketHandler {
 		switch(interfaceId) {
 		case Bank.PLAYER_INVENTORY_INTERFACE:
 			if(slot >= 0 && slot < Inventory.SIZE) {
-				// TODO bank X
+				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
 			}
 			break;
 		}

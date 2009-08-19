@@ -235,4 +235,13 @@ public class ActionSender {
 		return this;
 	}
 
+	/**
+	 * Sends the enter amount interface.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendEnterAmountInterface() {
+		player.write(new PacketBuilder(27).toPacket());
+		return this;
+	}
+
 }
