@@ -504,6 +504,16 @@ public class Player extends Entity implements Data {
 				inventory.set(i, item);
 			}
 		}
+		if(buf.hasRemaining()) { // backwards compat
+			for(int i = 0; i < Bank.SIZE; i++) {
+				int id = buf.getUnsignedShort();
+				if(id != 65535) {
+					int amt = buf.getInt();
+					Item item = new Item(id, amt);
+					bank.set(i, item);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -534,6 +544,15 @@ public class Player extends Entity implements Data {
 		}
 		for(int i = 0; i < Inventory.SIZE; i++) {
 			Item item = inventory.get(i);
+			if(item == null) {
+				buf.putShort((short) 65535);
+			} else {
+				buf.putShort((short) item.getId());
+				buf.putInt(item.getCount());
+			}
+		}
+		for(int i = 0; i < Bank.SIZE; i++) {
+			Item item = bank.get(i);
 			if(item == null) {
 				buf.putShort((short) 65535);
 			} else {
