@@ -7,8 +7,6 @@ import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.container.Bank;
 import org.hyperion.rs2.net.Packet;
-import org.hyperion.rs2.trigger.TriggerManager;
-import org.hyperion.rs2.trigger.impl.cond.CommandCondition;
 
 /**
  * Handles player commands (the ::words).
@@ -66,8 +64,6 @@ public class CommandPacketHandler implements PacketHandler {
 				}
 			} else if(command.equals("bank")) {
 				Bank.open(player);
-			} else {
-				TriggerManager.getTriggerManager().fire(player, new CommandCondition(command));
 			}
 		} catch(Exception ex) {
 			player.getActionSender().sendMessage("Error while processing command.");
