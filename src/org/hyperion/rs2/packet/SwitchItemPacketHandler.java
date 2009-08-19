@@ -31,7 +31,7 @@ public class SwitchItemPacketHandler implements PacketHandler {
 				if(player.getSettings().isSwapping()) {
 					player.getBank().swap(fromSlot, toSlot);
 				} else {
-					// TODO
+					player.getBank().insert(fromSlot, toSlot);
 				}
 			}
 			break;

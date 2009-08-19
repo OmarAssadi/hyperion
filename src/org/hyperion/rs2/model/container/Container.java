@@ -376,4 +376,35 @@ public class Container {
 		return total;
 	}
 
+	/**
+	 * Inserts an item.
+	 * @param fromSlot The old slot.
+	 * @param toSlot The new slot.
+	 */
+	public void insert(int fromSlot, int toSlot) {
+		// we reset the item in the from slot
+		Item from = items[fromSlot];
+		if(from == null) {
+			return;
+		}
+		items[fromSlot] = null;
+		// now we determine which direction to shift in
+		if(fromSlot > toSlot) {
+			// we need to shift to the right
+			Item[] slice = new Item[fromSlot-toSlot];
+			System.arraycopy(items, toSlot, slice, 0, slice.length);
+			System.arraycopy(slice, 0, items, toSlot + 1, slice.length);
+		} else {
+			// we need to shift to the left
+			Item[] slice = new Item[toSlot-fromSlot];
+			System.arraycopy(items, fromSlot + 1, slice, 0, slice.length);
+			System.arraycopy(slice, 0, items, fromSlot, slice.length);
+		}
+		// now fill in the target slot
+		items[toSlot] = from;
+		for(ContainerListener listener : listeners) {
+			listener.itemsChanged(this);
+		}
+	}
+
 }
