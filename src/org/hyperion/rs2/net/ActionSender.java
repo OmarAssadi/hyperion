@@ -2,8 +2,10 @@ package org.hyperion.rs2.net;
 
 import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.model.Item;
+import org.hyperion.rs2.model.Palette;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
+import org.hyperion.rs2.model.Palette.Tile;
 import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.model.container.impl.EquipmentContainerListener;
@@ -50,6 +52,7 @@ public class ActionSender {
 		player.setActive(true);
 		sendDetails();
 		sendMessage("Welcome to RuneScape.");
+		
 		sendMapRegion();
 		sendSidebarInterfaces();
 		
@@ -65,22 +68,21 @@ public class ActionSender {
 
 	/**
 	 * Sends the packet to construct a map region.
-	 * @param palette The palette of map regions, int[13][13][2] array.
+	 * @param palette The palette of map regions.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendConstructMapRegion(int[][][] palette) {
+	public ActionSender sendConstructMapRegion(Palette palette) {
 		player.setLastKnownRegion(player.getLocation());
-
 		PacketBuilder bldr = new PacketBuilder(241, Type.VARIABLE_SHORT);
 		bldr.putShortA(player.getLocation().getRegionY() + 6);
 		bldr.startBitAccess();
 		for(int z = 0; z < 4; z++) {
 			for(int x = 0; x < 13; x++) {
 				for(int y = 0; y < 13; y++) {
-					boolean flag = z == player.getLocation().getZ();
-					bldr.putBits(1, flag ? 1 : 0);
-					if(flag) {
-						bldr.putBits(26, palette[x][y][0] << 14 | palette[x][y][1] << 3);
+					Tile tile = palette.getTile(x, y, z);
+					bldr.putBits(1, tile != null ? 1 : 0);
+					if(tile != null) {
+						bldr.putBits(26, tile.getX() << 14 | tile.getY() << 3 | tile.getZ() << 24 | tile.getRotation() << 1);
 					}
 				}
 			}
