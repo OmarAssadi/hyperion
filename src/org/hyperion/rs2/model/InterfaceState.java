@@ -133,6 +133,9 @@ public class InterfaceState {
 			case Bank.PLAYER_INVENTORY_INTERFACE:
 				Bank.deposit(player, enterAmountSlot, enterAmountId, amount);
 				break;
+			case Bank.BANK_INVENTORY_INTERFACE:
+				Bank.withdraw(player, enterAmountSlot, enterAmountId, amount);
+				break;
 			}
 		} finally {
 			enterAmountInterfaceId = -1;

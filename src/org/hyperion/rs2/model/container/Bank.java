@@ -1,6 +1,7 @@
 package org.hyperion.rs2.model.container;
 
 import org.hyperion.rs2.model.Item;
+import org.hyperion.rs2.model.ItemDefinition;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.container.impl.InterfaceContainerListener;
 
@@ -20,6 +21,11 @@ public class Bank {
 	 * The player inventory interface.
 	 */
 	public static final int PLAYER_INVENTORY_INTERFACE = 5064;
+
+	/**
+	 * The bank inventory interface.
+	 */
+	public static final int BANK_INVENTORY_INTERFACE = 5382;
 	
 	/**
 	 * Opens the bank for the specified player.
@@ -32,6 +38,51 @@ public class Bank {
 	}
 	
 	/**
+	 * Withdraws an item.
+	 * @param player The player.
+	 * @param slot The slot in the player's inventory.
+	 * @param id The item id.
+	 * @param amount The amount of the item to deposit.
+	 */
+	public static void withdraw(Player player, int slot, int id, int amount) {
+		Item item = player.getBank().get(slot);
+		if(item == null) {
+			return; // invalid packet, or client out of sync
+		}
+		if(item.getId() != id) {
+			return; // invalid packet, or client out of sync
+		}
+		int transferAmount = item.getCount();
+		if(transferAmount >= amount) {
+			transferAmount = amount;
+		} else if(transferAmount == 0) {
+			return; // invalid packet, or client out of sync
+		}
+		int newId = item.getId(); // TODO deal with withdraw as notes!
+		ItemDefinition def = ItemDefinition.forId(newId);
+		if(def.isStackable()) {
+			if(player.getInventory().freeSlots() <= 0 && player.getInventory().getById(newId) == null) {
+				player.getActionSender().sendMessage("You don't have enough inventory space."); // TODO real message?
+			}
+		} else {
+			int free = player.getInventory().freeSlots();
+			if(free < transferAmount) {
+				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // TODO real message?
+			}
+			transferAmount = free;
+		}
+		// all items in the bank are stacked, makes it very easy!
+		int newAmount = item.getCount() - transferAmount;
+		if(newAmount <= 0) {
+			player.getBank().set(slot, null);
+		} else {
+			player.getBank().set(slot, new Item(item.getId(), newAmount));
+		}
+		// now add it to inv
+		player.getInventory().add(new Item(newId, transferAmount));
+	}
+	
+	/**
 	 * Deposits an item.
 	 * @param player The player.
 	 * @param slot The slot in the player's inventory.
@@ -40,6 +91,9 @@ public class Bank {
 	 */
 	public static void deposit(Player player, int slot, int id, int amount) {
 		Item item = player.getInventory().get(slot);
+		if(item == null) {
+			return; // invalid packet, or client out of sync
+		}
 		if(item.getId() != id) {
 			return; // invalid packet, or client out of sync
 		}
@@ -53,7 +107,7 @@ public class Bank {
 		if(item.getDefinition().isStackable() || noted) {
 			int bankedId = noted ? item.getDefinition().getNormalId() : item.getId();
 			if(player.getBank().freeSlots() < 1 && player.getBank().getById(bankedId) == null) {
-				player.getActionSender().sendMessage("Not enough room in your bank."); // TODO real messsage?
+				player.getActionSender().sendMessage("You don't have enough bank space."); // TODO real messsage?
 			}
 			// we only need to remove from one stack
 			int newInventoryAmount = item.getCount() - transferAmount;
@@ -67,7 +121,7 @@ public class Bank {
 			player.getBank().add(new Item(bankedId, transferAmount));
 		} else {
 			if(player.getBank().freeSlots() < transferAmount) {
-				player.getActionSender().sendMessage("Not enough room in your bank."); // TODO real messsage?
+				player.getActionSender().sendMessage("You don't have enough bank space."); // TODO real messsage?
 			}
 			// we need to remove multiple items
 			for(int i = 0; i < transferAmount; i++) {

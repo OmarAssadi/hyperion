@@ -83,6 +83,11 @@ public class ItemOptionPacketHandler implements PacketHandler {
 				Bank.deposit(player, slot, id, 1);
 			}
 			break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Bank.SIZE) {
+				Bank.withdraw(player, slot, id, 1);
+			}
+			break;
 		}
 	}
 	
@@ -100,6 +105,11 @@ public class ItemOptionPacketHandler implements PacketHandler {
 		case Bank.PLAYER_INVENTORY_INTERFACE:
 			if(slot >= 0 && slot < Inventory.SIZE) {
 				Bank.deposit(player, slot, id, 5);
+			}
+			break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Bank.SIZE) {
+				Bank.withdraw(player, slot, id, 5);
 			}
 			break;
 		}
@@ -121,6 +131,11 @@ public class ItemOptionPacketHandler implements PacketHandler {
 				Bank.deposit(player, slot, id, 10);
 			}
 			break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Bank.SIZE) {
+				Bank.withdraw(player, slot, id, 10);
+			}
+			break;
 		}
 	}
 	
@@ -140,6 +155,11 @@ public class ItemOptionPacketHandler implements PacketHandler {
 				Bank.deposit(player, slot, id, player.getInventory().getCount(id));
 			}
 			break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Bank.SIZE) {
+				Bank.withdraw(player, slot, id, player.getBank().getCount(id));
+			}
+			break;
 		}
 	}
 	
@@ -156,6 +176,11 @@ public class ItemOptionPacketHandler implements PacketHandler {
 		switch(interfaceId) {
 		case Bank.PLAYER_INVENTORY_INTERFACE:
 			if(slot >= 0 && slot < Inventory.SIZE) {
+				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
+			}
+			break;
+		case Bank.BANK_INVENTORY_INTERFACE:
+			if(slot >= 0 && slot < Bank.SIZE) {
 				player.getInterfaceState().openEnterAmountInterface(interfaceId, slot, id);
 			}
 			break;
