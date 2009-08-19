@@ -25,7 +25,7 @@ public class TestContainer implements ContainerListener {
 
 	@Before
 	public void setUp() throws Exception {
-		container = new Container(CAP);
+		container = new Container(Container.Type.STANDARD, CAP);
 		itemChangedFired = false;
 		itemsChangedFired = false;
 		slot = -1;
