@@ -24,6 +24,12 @@ public class ActionButtonPacketHandler implements PacketHandler {
 		case 2458:
 			player.getActionSender().sendLogout();
 			break;
+		case 5387:
+			player.getSettings().setWithdrawAsNotes(false);
+			break;
+		case 5386:
+			player.getSettings().setWithdrawAsNotes(true);
+			break;
 		default:
 			logger.info("Unhandled action button : " + button);
 			break;

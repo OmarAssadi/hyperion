@@ -198,6 +198,11 @@ public class Player extends Entity implements Data {
 	 */
 	private final Container bank = new Container(Container.Type.ALWAYS_STACK, Bank.SIZE);
 	
+	/**
+	 * The player's settings.
+	 */
+	private final Settings settings = new Settings();
+	
 	/*
 	 * Cached details.
 	 */
@@ -220,6 +225,14 @@ public class Player extends Entity implements Data {
 		this.uid = details.getUID();
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		this.setTeleporting(true);
+	}
+	
+	/**
+	 * Gets the player's settings.
+	 * @return The player's settings.
+	 */
+	public Settings getSettings() {
+		return settings;
 	}
 	
 	/**

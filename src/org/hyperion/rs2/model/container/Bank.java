@@ -59,6 +59,11 @@ public class Bank {
 			return; // invalid packet, or client out of sync
 		}
 		int newId = item.getId(); // TODO deal with withdraw as notes!
+		if(player.getSettings().isWithdrawingAsNotes()) {
+			if(item.getDefinition().isNoteable()) {
+				newId = item.getDefinition().getNotedId();
+			}
+		}
 		ItemDefinition def = ItemDefinition.forId(newId);
 		if(def.isStackable()) {
 			if(player.getInventory().freeSlots() <= 0 && player.getInventory().getById(newId) == null) {
