@@ -368,7 +368,9 @@ public class Container {
 		int total = 0;
 		for(int i = 0; i < items.length; i++) {
 			if(items[i] != null) {
-				total += items[i].getCount();
+				if(items[i].getId() == id) {
+					total += items[i].getCount();
+				}
 			}
 		}
 		return total;
