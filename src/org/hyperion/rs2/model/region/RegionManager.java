@@ -27,6 +27,7 @@ public class RegionManager {
 	/**
 	 * The lower bound that splits the region in half.
 	 */
+	@SuppressWarnings("unused")
 	private static final int LOWER_BOUND = REGION_SIZE / 2 - 1;
 	
 	/**
