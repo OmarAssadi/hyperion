@@ -332,4 +332,19 @@ public class Container {
 		set(toSlot, temp);
 	}
 
+	/**
+	 * Gets the total amount of an item, including the items in stacks.
+	 * @param id The id.
+	 * @return The amount.
+	 */
+	public int getCount(int id) {
+		int total = 0;
+		for(int i = 0; i < items.length; i++) {
+			if(items[i] != null) {
+				total += items[i].getCount();
+			}
+		}
+		return total;
+	}
+
 }

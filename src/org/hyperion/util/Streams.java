@@ -25,6 +25,26 @@ public class Streams {
 		}
 		out.write(0);
 	}
+	
+	/**
+	 * Reads a RuneScape string from the specified
+	 * <code>InputStream</code>.
+	 * @param in The input stream.
+	 * @return The string.
+	 * @throws IOException if an I/O error occurs, such as the stream closing.
+	 */
+	public static String readRS2String(InputStream in) throws IOException {
+		StringBuilder bldr = new StringBuilder();
+		while(true) {
+			int b = in.read();
+			if(b == -1 || b == 10) {
+				break;
+			} else {
+				bldr.append((char) ((byte) b));
+			}
+		}
+		return bldr.toString();
+	}
 
 	/**
 	 * Reads a null-terminated string from the specified

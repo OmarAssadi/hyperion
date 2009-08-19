@@ -52,7 +52,6 @@ public class ActionSender {
 		sendMessage("Welcome to RuneScape.");
 		sendMapRegion();
 		sendSidebarInterfaces();
-		sendSkills();
 		
 		InterfaceContainerListener inventoryListener = new InterfaceContainerListener(player, Inventory.INTERFACE);
 		player.getInventory().addListener(inventoryListener);

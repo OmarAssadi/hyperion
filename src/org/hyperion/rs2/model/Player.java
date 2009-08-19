@@ -494,8 +494,7 @@ public class Player extends Entity implements Data {
 			}
 		}
 		for(int i = 0; i < Skills.SKILL_COUNT; i++) {
-			skills.setLevel(i, buf.getUnsigned());
-			skills.setExperience(i, buf.getDouble());
+			skills.setSkill(i, buf.getUnsigned(), buf.getDouble());
 		}
 		for(int i = 0; i < Inventory.SIZE; i++) {
 			int id = buf.getUnsignedShort();

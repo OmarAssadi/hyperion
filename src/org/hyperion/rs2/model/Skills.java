@@ -109,6 +109,18 @@ public class Skills {
 	}
 	
 	/**
+	 * Sets a skill.
+	 * @param skill The skill id.
+	 * @param level The level.
+	 * @param exp The experience.
+	 */
+	public void setSkill(int skill, int level, double exp) {
+		levels[skill] = level;
+		exps[skill] = exp;
+		player.getActionSender().sendSkill(skill);
+	}
+	
+	/**
 	 * Sets a level.
 	 * @param skill The skill id.
 	 * @param level The level.

@@ -80,7 +80,7 @@ public class ItemOptionPacketHandler implements PacketHandler {
 			break;
 		case Bank.PLAYER_INVENTORY_INTERFACE:
 			if(slot >= 0 && slot < Inventory.SIZE) {
-				
+				Bank.deposit(player, slot, id, 1);
 			}
 			break;
 		}
