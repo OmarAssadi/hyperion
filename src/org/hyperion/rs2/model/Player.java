@@ -181,7 +181,7 @@ public class Player extends Entity implements Data {
 	/**
 	 * The player's equipment.
 	 */
-	private final Container equipment = new Container(Equipment.SIZE);
+	private final Container equipment = new Container(Container.Type.STANDARD, Equipment.SIZE);
 	
 	/**
 	 * The player's skill levels.
@@ -191,12 +191,12 @@ public class Player extends Entity implements Data {
 	/**
 	 * The player's inventory.
 	 */
-	private final Container inventory = new Container(Inventory.SIZE);
+	private final Container inventory = new Container(Container.Type.STANDARD, Inventory.SIZE);
 	
 	/**
 	 * The player's bank.
 	 */
-	private final Container bank = new Container(Bank.SIZE);
+	private final Container bank = new Container(Container.Type.ALWAYS_STACK, Bank.SIZE);
 	
 	/*
 	 * Cached details.

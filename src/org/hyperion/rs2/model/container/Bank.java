@@ -49,8 +49,10 @@ public class Bank {
 		} else if(transferAmount == 0) {
 			return; // invalid packet, or client out of sync
 		}
-		if(item.getDefinition().isStackable()) {
-			if(player.getBank().freeSlots() < 1 && player.getBank().getById(item.getId()) == null) {
+		boolean noted = item.getDefinition().isNoted();
+		if(item.getDefinition().isStackable() || noted) {
+			int bankedId = noted ? item.getDefinition().getNormalId() : item.getId();
+			if(player.getBank().freeSlots() < 1 && player.getBank().getById(bankedId) == null) {
 				player.getActionSender().sendMessage("Not enough room in your bank."); // TODO real messsage?
 			}
 			// we only need to remove from one stack
@@ -62,7 +64,7 @@ public class Bank {
 				newItem = new Item(item.getId(), newInventoryAmount);
 			}
 			player.getInventory().set(slot, newItem);
-			player.getBank().add(new Item(item.getId(), transferAmount));
+			player.getBank().add(new Item(bankedId, transferAmount));
 		} else {
 			if(player.getBank().freeSlots() < transferAmount) {
 				player.getActionSender().sendMessage("Not enough room in your bank."); // TODO real messsage?

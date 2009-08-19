@@ -13,6 +13,26 @@ import org.hyperion.rs2.model.Item;
  *
  */
 public class Container {
+	
+	/**
+	 * The type of container.
+	 * @author Graham Edgecombe
+	 *
+	 */
+	public enum Type {
+		
+		/**
+		 * A standard container such as inventory.
+		 */
+		STANDARD,
+		
+		/**
+		 * A container which always stacks, e.g. the bank, regardless of the
+		 * item.
+		 */
+		ALWAYS_STACK,
+		
+	}
 
 	/**
 	 * The capacity of this container.
@@ -30,10 +50,17 @@ public class Container {
 	private List<ContainerListener> listeners = new LinkedList<ContainerListener>();
 	
 	/**
+	 * The container type.
+	 */
+	private Type type;
+	
+	/**
 	 * Creates the container with the specified capacity.
+	 * @param type The type of this container.
 	 * @param capacity The capacity of this container.
 	 */
-	public Container(int capacity) {
+	public Container(Type type, int capacity) {
+		this.type = type;
 		this.capacity = capacity;
 		this.items = new Item[capacity];
 	}
@@ -108,7 +135,7 @@ public class Container {
 	 * <code>false</code> if not.
 	 */
 	public boolean add(Item item) {
-		if(item.getDefinition().isStackable()) {
+		if(item.getDefinition().isStackable() || type.equals(Type.ALWAYS_STACK)) {
 			for(int i = 0; i < items.length; i++) {
 				if(items[i] != null && items[i].getId() == item.getId()) {
 					set(i, new Item(items[i].getId(), items[i].getCount() + item.getCount()));
@@ -270,7 +297,7 @@ public class Container {
 	 */
 	public int remove(int preferredSlot, Item item) {
 		int removed = 0;
-		if(item.getDefinition().isStackable()) {
+		if(item.getDefinition().isStackable() || type.equals(Type.ALWAYS_STACK)) {
 			int slot = getSlotById(item.getId());
 			Item stack = get(slot);
 			if(stack.getCount() > item.getCount()) {
