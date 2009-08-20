@@ -90,11 +90,49 @@ public abstract class Entity {
 	private Region currentRegion;
 	
 	/**
+	 * The interacting entity.
+	 */
+	private Entity interactingEntity;
+	
+	/**
 	 * Creates the entity.
 	 */
 	public Entity() {
 		setLocation(DEFAULT_LOCATION);
 		this.lastKnownRegion = location;
+	}
+	
+	/**
+	 * Checks if this entity is interacting with another entity.
+	 * @return The entity interaction flag.
+	 */
+	public boolean isInteracting() {
+		return interactingEntity != null;
+	}
+	
+	/**
+	 * Sets the interacting entity.
+	 * @param entity The new entity to interact with.
+	 */
+	public void setInteractingEntity(Entity entity) {
+		this.interactingEntity = entity;
+		this.updateFlags.flag(UpdateFlag.FACE_ENTITY);
+	}
+	
+	/**
+	 * Resets the interacting entity.
+	 */
+	public void resetInteractingEntity() {
+		this.interactingEntity = null;
+		this.updateFlags.flag(UpdateFlag.FACE_ENTITY);
+	}
+	
+	/**
+	 * Gets the interacting entity.
+	 * @return The entity to interact with.
+	 */
+	public Entity getInteractingEntity() {
+		return interactingEntity;
 	}
 	
 	/**
@@ -325,5 +363,11 @@ public abstract class Entity {
 	public UpdateFlags getUpdateFlags() {
 		return updateFlags;
 	}
+
+	/**
+	 * Gets the client-side index of an entity.
+	 * @return The client-side index.
+	 */
+	public abstract int getClientIndex();
 
 }

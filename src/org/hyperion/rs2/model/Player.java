@@ -584,5 +584,10 @@ public class Player extends Entity implements Data {
 	public void removeFromRegion(Region region) {
 		region.removePlayer(this);
 	}
+
+	@Override
+	public int getClientIndex() {
+		return this.getIndex() + 32768;
+	}
 	
 }

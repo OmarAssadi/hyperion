@@ -3,6 +3,7 @@ package org.hyperion.rs2.task.impl;
 import java.util.Iterator;
 
 import org.hyperion.rs2.GameEngine;
+import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.NPC;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.World;
@@ -330,7 +331,8 @@ public class NPCUpdateTask implements Task {
 			packet.putInt(npc.getCurrentGraphic().getDelay());
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
-			
+			Entity entity = npc.getInteractingEntity();
+			packet.putShort(entity == null ? -1 : entity.getClientIndex());
 		}
 		if(npc.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
 			

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.hyperion.rs2.GameEngine;
 import org.hyperion.rs2.model.Appearance;
 import org.hyperion.rs2.model.ChatMessage;
+import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.World;
@@ -384,7 +385,8 @@ public class PlayerUpdateTask implements Task {
 				appendChatUpdate(block, otherPlayer);
 			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
-				
+				Entity entity = otherPlayer.getInteractingEntity();
+				block.putLEShort(entity == null ? -1 : entity.getClientIndex());
 			}
 			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
 				appendPlayerAppearanceUpdate(block, otherPlayer);

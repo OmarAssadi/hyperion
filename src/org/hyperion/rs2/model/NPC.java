@@ -41,4 +41,9 @@ public class NPC extends Entity {
 		region.removeNpc(this);
 	}
 
+	@Override
+	public int getClientIndex() {
+		return this.getIndex();
+	}
+
 }
