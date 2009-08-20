@@ -25,6 +25,11 @@ public class TestEntityList {
 		public void removeFromRegion(Region region) {
 			
 		}
+
+		@Override
+		public int getClientIndex() {
+			return 0;
+		}
 		
 	}
 	
