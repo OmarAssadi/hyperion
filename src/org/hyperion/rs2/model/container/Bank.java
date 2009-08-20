@@ -67,12 +67,12 @@ public class Bank {
 		ItemDefinition def = ItemDefinition.forId(newId);
 		if(def.isStackable()) {
 			if(player.getInventory().freeSlots() <= 0 && player.getInventory().getById(newId) == null) {
-				player.getActionSender().sendMessage("You don't have enough inventory space."); // TODO real message?
+				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
 			}
 		} else {
 			int free = player.getInventory().freeSlots();
 			if(transferAmount > free) {
-				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // TODO real message?
+				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
 				transferAmount = free;
 			}
 		}
@@ -112,7 +112,7 @@ public class Bank {
 		if(item.getDefinition().isStackable() || noted) {
 			int bankedId = noted ? item.getDefinition().getNormalId() : item.getId();
 			if(player.getBank().freeSlots() < 1 && player.getBank().getById(bankedId) == null) {
-				player.getActionSender().sendMessage("You don't have enough bank space."); // TODO real messsage?
+				player.getActionSender().sendMessage("You don't have enough space in your bank account."); // this is the real message
 			}
 			// we only need to remove from one stack
 			int newInventoryAmount = item.getCount() - transferAmount;
@@ -126,7 +126,7 @@ public class Bank {
 			player.getBank().add(new Item(bankedId, transferAmount));
 		} else {
 			if(player.getBank().freeSlots() < transferAmount) {
-				player.getActionSender().sendMessage("You don't have enough bank space."); // TODO real messsage?
+				player.getActionSender().sendMessage("You don't have enough space in your bank account."); // this is the real message
 			}
 			// we need to remove multiple items
 			for(int i = 0; i < transferAmount; i++) {

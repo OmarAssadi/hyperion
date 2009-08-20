@@ -23,12 +23,6 @@
 
 require("config.php");
 
-// initialize some constants
-define("dir_class","class/");
-define("dir_module","module/");
-define("dir_req","req/");
-define("dir_util","util/");
-
 /**
  * Main class that initializes all other classes
  *
@@ -58,7 +52,7 @@ class Hyperite
 	// load a given module
 	public function loadModule($module)
 	{
-			require(path_server.dir_class.$module.".php");
+			require(path_server.dir_module.$module."/".$module.".php");
 			if(class_exists($module))
 			{
 				$this->$module = new $module();

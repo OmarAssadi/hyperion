@@ -32,6 +32,20 @@ define("path_server","/");
  * Don't forget the trailing slash!
  */
 define("path_www","http://www.mywebsite.com/");
+
+
+// --- NOTHING PAST THIS POINT SHOULD NEED TO BE CHANGED ---
+
+/**
+ * Initialize some constants. These are only used internally and should
+ * not need to be changed.
+ */
+define("dir_tpl","tpl/");
+define("dir_class","class/");
+define("dir_module","module/");
+define("dir_req","req/");
+define("dir_util","util/");
+
 /**
  * Define priority classes.
  */
