@@ -17,19 +17,27 @@
 		<delete dir="bin"/>
 	</target>
 	<target name="test" depends="build">
-	    <junit haltonfailure="true" printsummary="yes">
-	        <classpath>
-	            <pathelement path="${toString:libs}"/>
-	            <pathelement path="bin"/>
-	        </classpath>
-	        <formatter type="plain" usefile="false"/>
-	        <batchtest>
-	            <fileset dir="bin">
-	                <include name="**/*Test*.class"/>
-	                <exclude name="**/*Test*$*.class"/>
-	            </fileset>
-	        </batchtest>
-	    </junit>
+		<junit haltonfailure="true" printsummary="yes">
+			<classpath>
+				<pathelement path="${toString:libs}"/>
+				<pathelement path="bin"/>
+			</classpath>
+			<formatter type="plain" usefile="false"/>
+			<batchtest>
+				<fileset dir="bin">
+					<include name="**/*Test*.class"/>
+					<exclude name="**/*Test*$*.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 	<target name="rebuild" depends="clean,build"/>
+	<target name="run">
+		<java classname="org.hyperion.Server">
+			<classpath>
+				<pathelement path="${toString:libs}"/>
+				<pathelement path="bin"/>
+		   	</classpath>
+		</java>
+	</target>
 </project>
