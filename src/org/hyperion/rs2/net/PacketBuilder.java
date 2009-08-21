@@ -385,4 +385,18 @@ public class PacketBuilder {
 		return this;
 	}
 
+	/**
+	 * Puts a byte or short.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putSmart(int val) {
+		if(val >= 128) {
+			putShort(val);
+		} else {
+			put((byte) val);
+		}
+		return this;
+	}
+
 }

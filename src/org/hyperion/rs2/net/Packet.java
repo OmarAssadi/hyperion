@@ -298,5 +298,18 @@ public class Packet {
 			is[offset + i] = payload.get();
 		}
 	}
+	
+	/**
+	 * Gets a smart.
+	 * @return The smart.
+	 */
+	public int getSmart() {
+		int peek = payload.get(payload.position());
+		if(peek < 128) {
+			return get();
+		} else {
+			return getShort();
+		}
+	}
 
 }
