@@ -150,6 +150,11 @@ public class Player extends Entity implements Data {
 	private String name;
 	
 	/**
+	 * The name expressed as a long.
+	 */
+	private long nameLong;
+	
+	/**
 	 * The UID, i.e. number in <code>random.dat</code>.
 	 */
 	private final int uid;
@@ -221,10 +226,19 @@ public class Player extends Entity implements Data {
 		this.inCipher = details.getInCipher();
 		this.outCipher = details.getOutCipher();
 		this.name = details.getName();
+		this.nameLong = NameUtils.nameToLong(this.name);
 		this.password = details.getPassword();
 		this.uid = details.getUID();
 		this.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 		this.setTeleporting(true);
+	}
+	
+	/**
+	 * Gets the player's name expressed as a long.
+	 * @return The player's name expressed as a long.
+	 */
+	public long getNameAsLong() {
+		return nameLong;
 	}
 	
 	/**
@@ -489,6 +503,7 @@ public class Player extends Entity implements Data {
 	@Override
 	public void deserialize(IoBuffer buf) {
 		this.name = IoBufferUtils.getRS2String(buf);
+		this.nameLong = NameUtils.nameToLong(this.name);
 		this.password = IoBufferUtils.getRS2String(buf);
 		this.rights = Player.Rights.getRights(buf.getUnsigned());
 		this.members = buf.getUnsigned() == 1 ? true : false;

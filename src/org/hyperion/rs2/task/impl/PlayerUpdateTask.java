@@ -8,6 +8,7 @@ import org.hyperion.rs2.model.ChatMessage;
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Player;
+import org.hyperion.rs2.model.UpdateFlags;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.container.Container;
@@ -16,7 +17,6 @@ import org.hyperion.rs2.model.container.Equipment.EquipmentType;
 import org.hyperion.rs2.net.Packet;
 import org.hyperion.rs2.net.PacketBuilder;
 import org.hyperion.rs2.task.Task;
-import org.hyperion.rs2.util.NameUtils;
 
 /**
  * A task which creates and sends the player update block.
@@ -323,32 +323,34 @@ public class PlayerUpdateTask implements Task {
 			 * Calculate the bitmask.
 			 */
 			int mask = 0;
+			final UpdateFlags flags = otherPlayer.getUpdateFlags();
+			
 			// TODO mask 0x400
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
+			if(flags.get(UpdateFlag.GRAPHICS)) {
 				mask |= 0x100;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
+			if(flags.get(UpdateFlag.ANIMATION)) {
 				mask |= 0x8;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
+			if(flags.get(UpdateFlag.FORCED_CHAT)) {
 				mask |= 0x4;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT) && !noChat) {
+			if(flags.get(UpdateFlag.CHAT) && !noChat) {
 				mask |= 0x80;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
+			if(flags.get(UpdateFlag.FACE_ENTITY)) {
 				mask |= 0x1;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
+			if(flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
 				mask |= 0x10;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE)) {
+			if(flags.get(UpdateFlag.FACE_COORDINATE)) {
 				mask |= 0x2;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT)) {
+			if(flags.get(UpdateFlag.HIT)) {
 				mask |= 0x20;
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+			if(flags.get(UpdateFlag.HIT_2)) {
 				mask |= 0x200;
 			}
 			
@@ -372,32 +374,32 @@ public class PlayerUpdateTask implements Task {
 			/*
 			 * Append the appropriate updates.
 			 */
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.GRAPHICS)) {
+			if(flags.get(UpdateFlag.GRAPHICS)) {
 				appendGraphicsUpdate(block, otherPlayer);
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.ANIMATION)) {
+			if(flags.get(UpdateFlag.ANIMATION)) {
 				appendAnimationUpdate(block, otherPlayer);
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FORCED_CHAT)) {
+			if(flags.get(UpdateFlag.FORCED_CHAT)) {
 				
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.CHAT) && !noChat) {
+			if(flags.get(UpdateFlag.CHAT) && !noChat) {
 				appendChatUpdate(block, otherPlayer);
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_ENTITY)) {
+			if(flags.get(UpdateFlag.FACE_ENTITY)) {
 				Entity entity = otherPlayer.getInteractingEntity();
 				block.putLEShort(entity == null ? -1 : entity.getClientIndex());
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.APPEARANCE) || forceAppearance) {
+			if(flags.get(UpdateFlag.APPEARANCE) || forceAppearance) {
 				appendPlayerAppearanceUpdate(block, otherPlayer);
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.FACE_COORDINATE)) {
+			if(flags.get(UpdateFlag.FACE_COORDINATE)) {
 				
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT)) {
+			if(flags.get(UpdateFlag.HIT)) {
 				
 			}
-			if(otherPlayer.getUpdateFlags().get(UpdateFlag.HIT_2)) {
+			if(flags.get(UpdateFlag.HIT_2)) {
 				
 			}
 			
@@ -547,7 +549,7 @@ public class PlayerUpdateTask implements Task {
 		playerProps.putShort((short) 0x336); // turn 90 ccw
 		playerProps.putShort((short) 0x338); // run
 		
-		playerProps.putLong(NameUtils.nameToLong(otherPlayer.getName())); // player name
+		playerProps.putLong(otherPlayer.getNameAsLong()); // player name
 		playerProps.put((byte) player.getSkills().getCombatLevel()); // combat level
 		playerProps.putShort(0); // (skill-level instead of combat-level) player.getSkills().getTotalLevel()); // total level
 		
