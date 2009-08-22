@@ -88,9 +88,9 @@ public class World {
 	private EntityList<NPC> npcs = new EntityList<NPC>(Constants.MAX_NPCS);
 	
 	/**
-	 * The game object map.
+	 * The game object manager.
 	 */
-	private ObjectManager objectMap;
+	private ObjectManager objectManager;
 	
 	/**
 	 * The login server connector.
@@ -109,8 +109,8 @@ public class World {
 		backgroundLoader.submit(new Callable<Object>() {
 			@Override
 			public Object call() throws Exception {
-				objectMap = new ObjectManager();
-				objectMap.load();
+				objectManager = new ObjectManager();
+				objectManager.load();
 				return null;
 			}
 		});
@@ -243,7 +243,7 @@ public class World {
 	 * @return The object map.
 	 */
 	public ObjectManager getObjectMap() {
-		return objectMap;
+		return objectManager;
 	}
 	
 	/**

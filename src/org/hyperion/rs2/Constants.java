@@ -95,5 +95,10 @@ public class Constants {
 		'7', '8', '9', ' ', '!', '?', '.', ',', ':', ';', '(', ')', '-',
 		'&', '*', '\\', '\'', '@', '#', '+', '=', '\243', '$', '%', '"',
 		'[', ']' };
+	
+	/**
+	 * The maximum amount of items in a stack.
+	 */
+	public static final int MAX_ITEMS = Integer.MAX_VALUE;
 
 }

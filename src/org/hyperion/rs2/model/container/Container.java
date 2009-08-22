@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.model.Item;
 
 /**
@@ -138,6 +139,10 @@ public class Container {
 		if(item.getDefinition().isStackable() || type.equals(Type.ALWAYS_STACK)) {
 			for(int i = 0; i < items.length; i++) {
 				if(items[i] != null && items[i].getId() == item.getId()) {
+					int totalCount = item.getCount() + items[i].getCount();
+					if(totalCount >= Constants.MAX_ITEMS || totalCount < 1) {
+						return false;
+					}
 					set(i, new Item(items[i].getId(), items[i].getCount() + item.getCount()));
 					return true;
 				}

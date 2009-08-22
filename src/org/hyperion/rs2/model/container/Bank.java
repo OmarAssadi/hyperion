@@ -77,15 +77,18 @@ public class Bank {
 				transferAmount = free;
 			}
 		}
-		// all items in the bank are stacked, makes it very easy!
-		int newAmount = item.getCount() - transferAmount;
-		if(newAmount <= 0) {
-			player.getBank().set(slot, null);
-		} else {
-			player.getBank().set(slot, new Item(item.getId(), newAmount));
-		}
 		// now add it to inv
-		player.getInventory().add(new Item(newId, transferAmount));
+		if(player.getInventory().add(new Item(newId, transferAmount))) {
+			// all items in the bank are stacked, makes it very easy!
+			int newAmount = item.getCount() - transferAmount;
+			if(newAmount <= 0) {
+				player.getBank().set(slot, null);
+			} else {
+				player.getBank().set(slot, new Item(item.getId(), newAmount));
+			}
+		} else {
+			player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
+		}
 	}
 	
 	/**
@@ -123,21 +126,27 @@ public class Bank {
 			} else {
 				newItem = new Item(item.getId(), newInventoryAmount);
 			}
-			player.getInventory().set(slot, newItem);
-			player.getBank().add(new Item(bankedId, transferAmount));
+			if(!player.getBank().add(new Item(bankedId, transferAmount))) {
+				player.getActionSender().sendMessage("You don't have enough space in your bank account."); // this is the real message
+			} else {
+				player.getInventory().set(slot, newItem);
+			}
 		} else {
 			if(player.getBank().freeSlots() < transferAmount) {
 				player.getActionSender().sendMessage("You don't have enough space in your bank account."); // this is the real message
 			}
-			// we need to remove multiple items
-			for(int i = 0; i < transferAmount; i++) {
-				if(i == 0) {
-					player.getInventory().set(slot, null);
-				} else {
-					player.getInventory().set(player.getInventory().getSlotById(item.getId()), null);
+			if(!player.getBank().add(new Item(item.getId(), transferAmount))) {
+				player.getActionSender().sendMessage("You don't have enough space in your bank account."); // this is the real message
+			} else {
+				// we need to remove multiple items
+				for(int i = 0; i < transferAmount; i++) {
+					if(i == 0) {
+						player.getInventory().set(slot, null);
+					} else {
+						player.getInventory().set(player.getInventory().getSlotById(item.getId()), null);
+					}
 				}
 			}
-			player.getBank().add(new Item(item.getId(), transferAmount));
 		}
 	}
 
