@@ -398,5 +398,19 @@ public class PacketBuilder {
 		}
 		return this;
 	}
+	
+	/**
+	 * Puts a byte or short for signed use.
+	 * @param val The value.
+	 * @return The PacketBuilder instance, for chaining.
+	 */
+	public PacketBuilder putSignedSmart(int val) {
+		if(val >= 128) {
+			putShort((val + 49152));
+		} else {
+			put((byte) (val + 64));
+		}
+		return this;
+	}
 
 }
