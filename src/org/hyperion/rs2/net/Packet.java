@@ -306,9 +306,22 @@ public class Packet {
 	public int getSmart() {
 		int peek = payload.get(payload.position());
 		if(peek < 128) {
-			return get();
+			return (get() & 0xFF);
 		} else {
-			return getShort();
+			return (getShort() & 0xFFFF) - 32768;
+		}
+	}
+	
+	/**
+	 * Gets a signed smart.
+	 * @return The signed smart.
+	 */
+	public int getSignedSmart() {
+		int peek = payload.get(payload.position());
+		if(peek < 128) {
+			return ((get() & 0xFF) - 64);
+		} else {
+			return ((getShort() & 0xFFFF) - 49152);
 		}
 	}
 
