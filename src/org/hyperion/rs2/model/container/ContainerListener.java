@@ -17,6 +17,13 @@ public interface ContainerListener {
 	/**
 	 * Called when a group of items are changed.
 	 * @param container The container.
+	 * @param slots The slots that were changed.
+	 */
+	public void itemsChanged(Container container, int[] slots);
+	
+	/**
+	 * Called when all the items change.
+	 * @param container The container.
 	 */
 	public void itemsChanged(Container container);
 

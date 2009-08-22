@@ -38,12 +38,16 @@ public class TestContainer implements ContainerListener {
 			public void itemChanged(Container container, int slot) {}
 			@Override
 			public void itemsChanged(Container container) {}
+			@Override
+			public void itemsChanged(Container container, int[] slots) {}
 		};
 		ContainerListener listener2 = new ContainerListener() {
 			@Override
 			public void itemChanged(Container container, int slot) {}
 			@Override
 			public void itemsChanged(Container container) {}
+			@Override
+			public void itemsChanged(Container container, int[] slots) {}
 		};
 		container.addListener(listener1);
 		container.addListener(listener2);
@@ -61,6 +65,8 @@ public class TestContainer implements ContainerListener {
 			public void itemChanged(Container container, int slot) {}
 			@Override
 			public void itemsChanged(Container container) {}
+			@Override
+			public void itemsChanged(Container container, int[] slots) {}
 		};
 		container.addListener(listener);
 		assertEquals(1, container.getListeners().size());
@@ -73,6 +79,8 @@ public class TestContainer implements ContainerListener {
 			public void itemChanged(Container container, int slot) {}
 			@Override
 			public void itemsChanged(Container container) {}
+			@Override
+			public void itemsChanged(Container container, int[] slots) {}
 		};
 		container.addListener(listener);
 		container.removeListener(listener);
@@ -86,12 +94,16 @@ public class TestContainer implements ContainerListener {
 			public void itemChanged(Container container, int slot) {}
 			@Override
 			public void itemsChanged(Container container) {}
+			@Override
+			public void itemsChanged(Container container, int[] slots) {}
 		};
 		ContainerListener listener2 = new ContainerListener() {
 			@Override
 			public void itemChanged(Container container, int slot) {}
 			@Override
 			public void itemsChanged(Container container) {}
+			@Override
+			public void itemsChanged(Container container, int[] slots) {}
 		};
 		container.addListener(listener1);
 		container.addListener(listener2);
@@ -195,6 +207,12 @@ public class TestContainer implements ContainerListener {
 
 	@Override
 	public void itemsChanged(Container container) {
+		assertEquals(this.container, container);
+		this.itemsChangedFired = true;
+	}
+	
+	@Override
+	public void itemsChanged(Container container, int[] slots) {
 		assertEquals(this.container, container);
 		this.itemsChangedFired = true;
 	}

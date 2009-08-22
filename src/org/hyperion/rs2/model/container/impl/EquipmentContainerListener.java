@@ -36,4 +36,9 @@ public class EquipmentContainerListener implements ContainerListener {
 		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
 	}
 
+	@Override
+	public void itemsChanged(Container container, int[] slots) {
+		player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+	}
+
 }

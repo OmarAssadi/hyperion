@@ -44,4 +44,9 @@ public class InterfaceContainerListener implements ContainerListener {
 		player.getActionSender().sendUpdateItems(interfaceId, container.toArray());
 	}
 
+	@Override
+	public void itemsChanged(Container container, int[] slots) {
+		player.getActionSender().sendUpdateItems(interfaceId, slots, container.toArray());
+	}
+
 }

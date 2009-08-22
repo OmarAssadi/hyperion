@@ -236,6 +236,36 @@ public class ActionSender {
 		player.write(bldr.toPacket());
 		return this;
 	}
+	
+	/**
+	 * Sends a packet to update multiple (but not all) items.
+	 * @param interfaceId The interface id.
+	 * @param slots The slots.
+	 * @param items The item array.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendUpdateItems(int interfaceId, int[] slots, Item[] items) {
+		PacketBuilder bldr = new PacketBuilder(34, Type.VARIABLE_SHORT).putShort(interfaceId);
+		for(int i = 0; i < slots.length; i++) {
+			Item item = items[slots[i]];
+			bldr.putSmart(slots[i]);
+			if(item != null) {
+				bldr.putShort(item.getId() + 1);
+				int count = item.getCount();
+				if(count > 254) {
+					bldr.put((byte) 255);
+					bldr.putInt(count);
+				} else {
+					bldr.put((byte) count);
+				}
+			} else {
+				bldr.putShort(0);
+				bldr.put((byte) 0);
+			}
+		}
+		player.write(bldr.toPacket());
+		return this;
+	}
 
 	/**
 	 * Sends the enter amount interface.

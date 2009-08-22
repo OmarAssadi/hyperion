@@ -391,8 +391,17 @@ public class Container {
 	 */
 	public void swap(int fromSlot, int toSlot) {
 		Item temp = get(fromSlot);
-		set(fromSlot, get(toSlot));
-		set(toSlot, temp);
+		boolean b = firingEvents;
+		firingEvents = false;
+		try {
+			set(fromSlot, get(toSlot));
+			set(toSlot, temp);
+			if(b) {
+				fireItemsChanged(new int[] { fromSlot, toSlot });
+			}
+		} finally {
+			firingEvents = b;
+		}
 	}
 
 	/**
@@ -473,6 +482,16 @@ public class Container {
 	public void fireItemsChanged() {
 		for(ContainerListener listener : listeners) {
 			listener.itemsChanged(this);
+		}
+	}
+	
+	/**
+	 * Fires an items changed event.
+	 * @param slots The slots that changed.
+	 */
+	public void fireItemsChanged(int[] slots) {
+		for(ContainerListener listener : listeners) {
+			listener.itemsChanged(this, slots);
 		}
 	}
 
