@@ -392,7 +392,7 @@ public class PacketBuilder {
 	 */
 	public PacketBuilder putSmart(int val) {
 		if(val >= 128) {
-			putShort(val);
+			putShort((val + 32768));
 		} else {
 			put((byte) val);
 		}

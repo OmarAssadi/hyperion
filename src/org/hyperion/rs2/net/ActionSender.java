@@ -219,7 +219,7 @@ public class ActionSender {
 	 */
 	public ActionSender sendUpdateItem(int interfaceId, int slot, Item item) {
 		PacketBuilder bldr = new PacketBuilder(34, Type.VARIABLE_SHORT);
-		bldr.putShort(interfaceId).putSmart((byte) slot);
+		bldr.putShort(interfaceId).putSmart(slot);
 		if(item != null) {
 			bldr.putShort(item.getId() + 1);
 			int count = item.getCount();
