@@ -46,55 +46,48 @@ public class Bank {
 	 * @param amount The amount of the item to deposit.
 	 */
 	public static void withdraw(Player player, int slot, int id, int amount) {
-		boolean inventoryFiringEvents = player.getInventory().isFiringEvents();
-		player.getInventory().setFiringEvents(false);
-		try {
-			Item item = player.getBank().get(slot);
-			if(item == null) {
-				return; // invalid packet, or client out of sync
+		Item item = player.getBank().get(slot);
+		if(item == null) {
+			return; // invalid packet, or client out of sync
+		}
+		if(item.getId() != id) {
+			return; // invalid packet, or client out of sync
+		}
+		int transferAmount = item.getCount();
+		if(transferAmount >= amount) {
+			transferAmount = amount;
+		} else if(transferAmount == 0) {
+			return; // invalid packet, or client out of sync
+		}
+		int newId = item.getId(); // TODO deal with withdraw as notes!
+		if(player.getSettings().isWithdrawingAsNotes()) {
+			if(item.getDefinition().isNoteable()) {
+				newId = item.getDefinition().getNotedId();
 			}
-			if(item.getId() != id) {
-				return; // invalid packet, or client out of sync
-			}
-			int transferAmount = item.getCount();
-			if(transferAmount >= amount) {
-				transferAmount = amount;
-			} else if(transferAmount == 0) {
-				return; // invalid packet, or client out of sync
-			}
-			int newId = item.getId(); // TODO deal with withdraw as notes!
-			if(player.getSettings().isWithdrawingAsNotes()) {
-				if(item.getDefinition().isNoteable()) {
-					newId = item.getDefinition().getNotedId();
-				}
-			}
-			ItemDefinition def = ItemDefinition.forId(newId);
-			if(def.isStackable()) {
-				if(player.getInventory().freeSlots() <= 0 && player.getInventory().getById(newId) == null) {
-					player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
-				}
-			} else {
-				int free = player.getInventory().freeSlots();
-				if(transferAmount > free) {
-					player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
-					transferAmount = free;
-				}
-			}
-			// now add it to inv
-			if(player.getInventory().add(new Item(newId, transferAmount))) {
-				// all items in the bank are stacked, makes it very easy!
-				int newAmount = item.getCount() - transferAmount;
-				if(newAmount <= 0) {
-					player.getBank().set(slot, null);
-				} else {
-					player.getBank().set(slot, new Item(item.getId(), newAmount));
-				}
-				player.getInventory().fireItemsChanged();
-			} else {
+		}
+		ItemDefinition def = ItemDefinition.forId(newId);
+		if(def.isStackable()) {
+			if(player.getInventory().freeSlots() <= 0 && player.getInventory().getById(newId) == null) {
 				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
 			}
-		} finally {
-			player.getInventory().setFiringEvents(inventoryFiringEvents);
+		} else {
+			int free = player.getInventory().freeSlots();
+			if(transferAmount > free) {
+				player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
+				transferAmount = free;
+			}
+		}
+		// now add it to inv
+		if(player.getInventory().add(new Item(newId, transferAmount))) {
+			// all items in the bank are stacked, makes it very easy!
+			int newAmount = item.getCount() - transferAmount;
+			if(newAmount <= 0) {
+				player.getBank().set(slot, null);
+			} else {
+				player.getBank().set(slot, new Item(item.getId(), newAmount));
+			}
+		} else {
+			player.getActionSender().sendMessage("You don't have enough inventory space to withdraw that many."); // this is the real message
 		}
 	}
 	

@@ -179,10 +179,19 @@ public class Container {
 		} else {
 			int slots = freeSlots();
 			if(slots >= item.getCount()) {
-				for(int i = 0; i < item.getCount(); i++) {
-					set(freeSlot(), new Item(item.getId()));
+				boolean b = firingEvents;
+				firingEvents = false;
+				try {
+					for(int i = 0; i < item.getCount(); i++) {
+						set(freeSlot(), new Item(item.getId()));
+					}
+					if(b) {
+						fireItemsChanged();
+					}
+					return true;
+				} finally {
+					firingEvents = b;
 				}
-				return true;
 			} else {
 				return false;
 			}
