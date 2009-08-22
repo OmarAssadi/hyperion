@@ -31,15 +31,30 @@ public class EventManager {
 	 * @param event The event to submit.
 	 */
 	public void submit(final Event event) {
+		submit(event, event.getDelay());
+	}
+	
+	/**
+	 * Schedules an event to run after the specified delay.
+	 * @param event The event.
+	 * @param delay The delay.
+	 */
+	private void submit(final Event event, final long delay) {
 		engine.scheduleLogic(new Runnable() {
 			@Override
 			public void run() {
+				long start = System.currentTimeMillis();
 				if(event.isRunning()) {
-					submit(event);
 					event.execute();
 				}
+				long elapsed = System.currentTimeMillis() - start;
+				long remaining = event.getDelay() - elapsed;
+				if(remaining <= 0) {
+					remaining = 0;
+				}
+				submit(event, remaining);
 			}
-		}, event.getDelay(), TimeUnit.MILLISECONDS);
+		}, delay, TimeUnit.MILLISECONDS);
 	}
 
 }
