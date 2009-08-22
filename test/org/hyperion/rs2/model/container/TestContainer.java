@@ -144,14 +144,11 @@ public class TestContainer implements ContainerListener {
 	@Test
 	public void testAdd() {
 		container.addListener(this);
-		for(int i = 0; i < CAP; i++) {
-			assertTrue(container.add(new Item(995 + (slot * 2))));
-			assertTrue(itemChangedFired);
-			assertEquals(i, slot);
-			this.itemChangedFired = false;
-			this.slot = -1;
-		}
-		assertFalse(container.add(new Item(995 + (CAP + 1) * 2)));
+		assertTrue(container.add(new Item(995)));
+		assertTrue(itemChangedFired);
+		assertEquals(0, slot);
+		this.itemChangedFired = false;
+		this.slot = -1;
 	}
 
 	@Test
