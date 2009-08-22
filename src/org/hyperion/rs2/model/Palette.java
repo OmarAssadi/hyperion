@@ -33,24 +33,59 @@ public class Palette {
 	 */
 	public static final int DIRECTION_CW_270 = 3;
 	
+	/**
+	 * Represents a tile to copy in the palette.
+	 * @author Graham Edgecombe
+	 *
+	 */
 	public static class Tile {
 		
+		/**
+		 * X coordinate.
+		 */
 		private int x;
 		
+		/**
+		 * Y coordinate.
+		 */
 		private int y;
 		
+		/**
+		 * Z coordinate.
+		 */
 		private int z;
 		
+		/**
+		 * Rotation.
+		 */
 		private int rot;
 		
+		/**
+		 * Creates a tile.
+		 * @param x The x coordinate.
+		 * @param y The y coordinate.
+		 */
 		public Tile(int x, int y) {
 			this(x, y, 0);
 		}
 		
+		/**
+		 * Creates a tile.
+		 * @param x The x coordinate.
+		 * @param y The y coordinate.
+		 * @param z The z coordinate.
+		 */
 		public Tile(int x, int y, int z) {
 			this(x, y, z, DIRECTION_NORMAL);
 		}
 		
+		/**
+		 * Creates a tile.
+		 * @param x The x coordinate.
+		 * @param y The y coordinate.
+		 * @param z The z coordinate.
+		 * @param rot The rotation.
+		 */
 		public Tile(int x, int y, int z, int rot) {
 			this.x = x;
 			this.y = y;
@@ -58,18 +93,34 @@ public class Palette {
 			this.rot = rot;
 		}
 		
+		/**
+		 * Gets the x coordinate.
+		 * @return The x coordinate.
+		 */
 		public int getX() {
 			return x / 8;
 		}
 		
+		/**
+		 * Gets the y coordinate.
+		 * @return The y coordinate.
+		 */
 		public int getY() {
 			return y / 8;
 		}
 		
+		/**
+		 * Gets the z coordinate.
+		 * @return The z coordinate.
+		 */
 		public int getZ() {
 			return z % 4;
 		}
 		
+		/**
+		 * Gets the rotation.
+		 * @return The rotation.
+		 */
 		public int getRotation() {
 			return rot % 4;
 		}
