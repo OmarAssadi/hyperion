@@ -56,6 +56,11 @@ public class Container {
 	private Type type;
 	
 	/**
+	 * Firing events flag.
+	 */
+	private boolean firingEvents = true;
+	
+	/**
 	 * Creates the container with the specified capacity.
 	 * @param type The type of this container.
 	 * @param capacity The capacity of this container.
@@ -64,6 +69,23 @@ public class Container {
 		this.type = type;
 		this.capacity = capacity;
 		this.items = new Item[capacity];
+	}
+	
+	/**
+	 * Sets the firing events flag.
+	 * @param firingEvents The flag.
+	 */
+	public void setFiringEvents(boolean firingEvents) {
+		this.firingEvents = firingEvents;
+	}
+	
+	/**
+	 * Checks the firing events flag.
+	 * @return <code>true</code> if events are fired, <code>false</code> if
+	 * not.
+	 */
+	public boolean isFiringEvents() {
+		return firingEvents;
 	}
 	
 	/**
@@ -111,8 +133,8 @@ public class Container {
 				newIndex++;
 			}
 		}
-		for(ContainerListener listener : listeners) {
-			listener.itemsChanged(this);
+		if(firingEvents) {
+			fireItemsChanged();
 		}
 	}
 	
@@ -222,8 +244,8 @@ public class Container {
 	 */
 	public void set(int index, Item item) {
 		items[index] = item;
-		for(ContainerListener listener : listeners) {
-			listener.itemChanged(this, index);
+		if(firingEvents) {
+			fireItemChanged(index);
 		}
 	}
 	
@@ -254,8 +276,8 @@ public class Container {
 	 */
 	public void clear() {
 		items = new Item[items.length];
-		for(ContainerListener listener : listeners) {
-			listener.itemsChanged(this);
+		if(firingEvents) {
+			fireItemsChanged();
 		}
 	}
 
@@ -421,6 +443,25 @@ public class Container {
 		}
 		// now fill in the target slot
 		items[toSlot] = from;
+		if(firingEvents) {
+			fireItemsChanged();
+		}
+	}
+	
+	/**
+	 * Fires an item changed event.
+	 * @param slot The slot that changed.
+	 */
+	public void fireItemChanged(int slot) {
+		for(ContainerListener listener : listeners) {
+			listener.itemChanged(this, slot);
+		}
+	}
+	
+	/**
+	 * Fires an items changed event.
+	 */
+	public void fireItemsChanged() {
 		for(ContainerListener listener : listeners) {
 			listener.itemsChanged(this);
 		}
