@@ -241,7 +241,7 @@ public class Packet {
 	 * @return A type A byte.
 	 */
 	public byte getByteA() {
-		return (byte) (128 - get());
+		return (byte) (get() - 128);
 	}
 	
 	/**
