@@ -32,6 +32,7 @@ public class Bank {
 	 * @param player The player to open the bank for.
 	 */
 	public static void open(Player player) {
+		player.getBank().shift();
 		player.getActionSender().sendInventoryInterface(5292, 5063);
 		player.getInterfaceState().addListener(player.getBank(), new InterfaceContainerListener(player, 5382));
 		player.getInterfaceState().addListener(player.getInventory(), new InterfaceContainerListener(player, 5064));
