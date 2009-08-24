@@ -277,8 +277,6 @@ public class World {
 				if(code != 2) {
 					PacketBuilder bldr = new PacketBuilder();
 					bldr.put((byte) code);
-					bldr.put((byte) 0);
-					bldr.put((byte) 0);
 					pd.getSession().write(bldr.toPacket()).addListener(new IoFutureListener<IoFuture>() {
 						@Override
 						public void operationComplete(IoFuture future) {
