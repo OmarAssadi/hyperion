@@ -23,17 +23,35 @@ public class WoodcuttingAction extends HarvestingAction {
 	 *
 	 */
 	public static enum Axe {
-								
+		
+		/**
+		 * Rune axe.
+		 */
 		RUNE(1359, 41, 867),
 		
+		/**
+		 * Adamant axe.
+		 */
 		ADAMANT(1357, 31, 869),
 		
+		/**
+		 * Mithril axe.
+		 */
 		MITHRIL(1355, 21, 871),
 		
+		/**
+		 * Steel axe.
+		 */
 		STEEL(1353, 6, 875),
 		
+		/**
+		 * Iron axe.
+		 */
 		IRON(1349, 1, 877),
 		
+		/**
+		 * Bronze axe.
+		 */
 		BRONZE(1351, 1, 879);
 		
 		/**
@@ -213,11 +231,11 @@ public class WoodcuttingAction extends HarvestingAction {
 		private double experience;
 		
 		/**
-		 * Creates the 
-		 * @param log
-		 * @param level
-		 * @param experience
-		 * @param objects
+		 * Creates the tree.
+		 * @param log The log id.
+		 * @param level The required level.
+		 * @param experience The experience per log.
+		 * @param objects The object ids.
 		 */
 		private Tree(int log, int level, double experience, int[] objects) {
 			this.objects = objects;
