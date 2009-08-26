@@ -23,18 +23,18 @@ public class WoodcuttingAction extends HarvestingAction {
 	 *
 	 */
 	public static enum Axe {
-		
-		BRONZE(1351, 1, 879),
-		
-		IRON(1349, 1, 877),
-		
-		STEEL(1353, 6, 875),
-		
-		MITHRIL(1355, 21, 871),
+								
+		RUNE(1359, 41, 867),
 		
 		ADAMANT(1357, 31, 869),
 		
-		RUNE(1359, 41, 867);
+		MITHRIL(1355, 21, 871),
+		
+		STEEL(1353, 6, 875),
+		
+		IRON(1349, 1, 877),
+		
+		BRONZE(1351, 1, 879);
 		
 		/**
 		 * The id.
