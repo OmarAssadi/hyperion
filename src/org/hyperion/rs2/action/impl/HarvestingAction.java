@@ -6,7 +6,6 @@ import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.ItemDefinition;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
-import org.hyperion.rs2.model.Skills;
 
 /**
  * <p>A harvesting action is a resource-gathering action, which includes, but
@@ -79,6 +78,12 @@ public abstract class HarvestingAction extends Action {
 	public abstract double getExperience();
 	
 	/**
+	 * Gets the skill.
+	 * @return The skill.
+	 */
+	public abstract int getSkill();
+	
+	/**
 	 * Gets the animation.
 	 * @return The animation.
 	 */
@@ -114,7 +119,7 @@ public abstract class HarvestingAction extends Action {
 					player.getInventory().add(item);
 					ItemDefinition def = item.getDefinition();
 					player.getActionSender().sendMessage("You get some " + def.getName() + ".");
-					player.getSkills().addExperience(Skills.WOODCUTTING, getExperience());
+					player.getSkills().addExperience(getSkill(), getExperience());
 				}
 			} else {
 				stop();

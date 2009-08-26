@@ -347,4 +347,9 @@ public class WoodcuttingAction extends HarvestingAction {
 		return Animation.create(axe.getAnimation());
 	}
 
+	@Override
+	public int getSkill() {
+		return Skills.WOODCUTTING;
+	}
+
 }
