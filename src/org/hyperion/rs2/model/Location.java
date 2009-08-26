@@ -133,6 +133,20 @@ public class Location {
 		return deltaX <= 14 && deltaX >= -15 && deltaY <= 14 && deltaY >= -15;
 	}
 	
+	/**
+	 * Checks if this location is within interaction range of another.
+	 * @param other The other location.
+	 * @return <code>true</code> if the location is in range,
+	 * <code>false</code> if not.
+	 */
+	public boolean isWithinInteractionDistance(Location other) {
+		if(z != other.z) {
+			return false;
+		}
+		int deltaX = other.x - x, deltaY = other.y - y;
+		return deltaX <= 2 && deltaX >= -3 && deltaY <= 2 && deltaY >= -3;
+	}
+	
 	@Override
 	public int hashCode() {
 		return z << 30 | x << 15 | y;

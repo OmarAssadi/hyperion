@@ -225,8 +225,8 @@ public class Skills {
 		if(levelDiff > 0) {
 			levels[skill] += levelDiff;
 			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
-			player.getActionSender().sendSkill(skill);
 		}
+		player.getActionSender().sendSkill(skill);
 	}
 
 }

@@ -95,11 +95,50 @@ public abstract class Entity {
 	private Entity interactingEntity;
 	
 	/**
+	 * The face location.
+	 */
+	private Location face;
+	
+	/**
 	 * Creates the entity.
 	 */
 	public Entity() {
 		setLocation(DEFAULT_LOCATION);
 		this.lastKnownRegion = location;
+	}
+	
+	/**
+	 * Makes this entity face a location.
+	 * @param location The location to face.
+	 */
+	public void face(Location location) {
+		this.face = location;
+		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
+	}
+	
+	/**
+	 * Checks if this entity is facing a location.
+	 * @return The entity face flag.
+	 */
+	public boolean isFacing() {
+		return face != null;
+	}
+	
+	/**
+	 * Resets the facing location.
+	 */
+	public void resetFace() {
+		this.face = null;
+		this.updateFlags.flag(UpdateFlag.FACE_COORDINATE);
+	}
+	
+	/**
+	 * Gets the face location.
+	 * @return The face location, or <code>null</code> if the entity is not
+	 * facing.
+	 */
+	public Location getFaceLocation() {
+		return face;
 	}
 	
 	/**

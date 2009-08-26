@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hyperion.rs2.GameEngine;
 import org.hyperion.rs2.model.Entity;
+import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.NPC;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.UpdateFlags;
@@ -314,7 +315,9 @@ public class NPCUpdateTask implements Task {
 		if(flags.get(UpdateFlag.TRANSFORM)) {
 			mask |= 0x2;
 		}
-		// TODO mask 0x4
+		if(flags.get(UpdateFlag.FACE_COORDINATE)) {
+			mask |= 0x4;
+		}
 		
 		/*
 		 * And write the mask.
@@ -344,6 +347,16 @@ public class NPCUpdateTask implements Task {
 		}
 		if(flags.get(UpdateFlag.TRANSFORM)) {
 			
+		}
+		if(flags.get(UpdateFlag.FACE_COORDINATE)) {
+			Location loc = npc.getFaceLocation();
+			if(loc == null) {
+				packet.putLEShort(0);
+				packet.putLEShort(0);
+			} else {
+				packet.putLEShort(loc.getX() * 2 + 1);
+				packet.putLEShort(loc.getY() * 2 + 1);
+			}
 		}
 	}
 

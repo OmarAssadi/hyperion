@@ -494,5 +494,39 @@ public class Container {
 			listener.itemsChanged(this, slots);
 		}
 	}
+	
+	/**
+	 * Checks if the container contains the specified item.
+	 * @param id The item id.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean contains(int id) {
+		return getSlotById(id) != -1;
+	}
+
+	/**
+	 * Checks if there is room in the inventory for an item.
+	 * @param item The item.
+	 * @return <code>true</code> if so, <code>false</code> if not.
+	 */
+	public boolean hasRoomFor(Item item) {
+		if(item.getDefinition().isStackable() || type.equals(Type.ALWAYS_STACK)) {
+			for(int i = 0; i < items.length; i++) {
+				if(items[i] != null && items[i].getId() == item.getId()) {
+					int totalCount = item.getCount() + items[i].getCount();
+					if(totalCount >= Constants.MAX_ITEMS || totalCount < 1) {
+						return false;
+					}
+					return true;
+				}
+			}
+			int slot = freeSlot();
+			return slot != -1;
+		} else {
+			int slots = freeSlots();
+			return slots >= item.getCount();
+		}
+		
+	}
 
 }

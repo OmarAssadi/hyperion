@@ -71,6 +71,8 @@ public class ActionQueue {
 		if(currentAction != null) {
 			if(currentAction.isRunning()) {
 				return;
+			} else {
+				currentAction = null;
 			}
 		}
 		if(queuedActions.size() > 0) {

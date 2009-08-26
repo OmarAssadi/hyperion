@@ -7,6 +7,7 @@ import org.hyperion.rs2.model.Appearance;
 import org.hyperion.rs2.model.ChatMessage;
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Item;
+import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.UpdateFlags;
 import org.hyperion.rs2.model.World;
@@ -394,7 +395,14 @@ public class PlayerUpdateTask implements Task {
 				appendPlayerAppearanceUpdate(block, otherPlayer);
 			}
 			if(flags.get(UpdateFlag.FACE_COORDINATE)) {
-				
+				Location loc = otherPlayer.getFaceLocation();
+				if(loc == null) {
+					block.putLEShortA(0);
+					block.putLEShort(0);
+				} else {
+					block.putLEShortA(loc.getX() * 2 + 1);
+					block.putLEShort(loc.getY() * 2 + 1);
+				}
 			}
 			if(flags.get(UpdateFlag.HIT)) {
 				
