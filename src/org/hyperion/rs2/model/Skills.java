@@ -93,8 +93,8 @@ public class Skills {
 		final int prayer = getLevelForExperience(5);
 		final int ranged = getLevelForExperience(4);
 		final int magic = getLevelForExperience(6);
-		int combatLevel = 3;
-		combatLevel = (int) ((defence + hp + Math.floor(prayer / 2)) * 0.25) + 1;
+		int combatLevel = 3;	
+		combatLevel = (int) ((defence + hp + Math.floor(prayer / 2)) * 0.2535) + 1;
 		final double melee = (attack + strength) * 0.325;
 		final double ranger = Math.floor(ranged * 1.5) * 0.325;
 		final double mage = Math.floor(magic * 1.5) * 0.325;

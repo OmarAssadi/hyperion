@@ -40,6 +40,11 @@ public class WoodcuttingAction extends HarvestingAction {
 		MITHRIL(1355, 21, 871),
 		
 		/**
+		 * Black axe.
+		 */
+		BLACK(1361, 6, 873),
+		
+		/**
 		 * Steel axe.
 		 */
 		STEEL(1353, 6, 875),

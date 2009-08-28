@@ -64,6 +64,10 @@ public class CommandPacketHandler implements PacketHandler {
 				}
 			} else if(command.equals("bank")) {
 				Bank.open(player);
+			} else if(command.equals("max")) {
+				for(int i = 0; i < 21; i++) {
+					player.getSkills().setExperience(i, 13034431);
+				}
 			}
 		} catch(Exception ex) {
 			player.getActionSender().sendMessage("Error while processing command.");

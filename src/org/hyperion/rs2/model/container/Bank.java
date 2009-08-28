@@ -145,11 +145,11 @@ public class Bank {
 				} else {
 					// we need to remove multiple items
 					for(int i = 0; i < transferAmount; i++) {
-						if(i == 0) {
+						/* if(i == 0) {
 							player.getInventory().set(slot, null);
-						} else {
+						} else { */
 							player.getInventory().set(player.getInventory().getSlotById(item.getId()), null);
-						}
+						// }
 					}
 					player.getInventory().fireItemsChanged();
 				}

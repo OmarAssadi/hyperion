@@ -87,7 +87,7 @@ public class Constants {
 		'[', ']', '|', '?', '/', '`' };
 	
 	/**
-	 * Packed text translate teable.
+	 * Packed text translate table.
 	 */
 	public static final char XLATE_TABLE[] = { ' ', 'e', 't', 'a', 'o', 'i', 'h', 'n',
 		's', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'f', 'g', 'p', 'b',
