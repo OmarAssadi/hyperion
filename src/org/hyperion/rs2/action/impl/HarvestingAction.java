@@ -90,6 +90,12 @@ public abstract class HarvestingAction extends Action {
 	public abstract Animation getAnimation();
 	
 	/**
+	 * Gets reward type.
+	 * @return <code>true/false</code> Whether items are rewarded periodically during the action.
+	 */
+	public abstract boolean getPeriodicRewards();
+	
+	/**
 	 * The total number of cycles.
 	 */
 	private int totalCycles;
@@ -98,6 +104,18 @@ public abstract class HarvestingAction extends Action {
 	 * The number of remaining cycles.
 	 */
 	private int cycles;
+	
+	/**
+	 * Grants the player his or her reward.
+	 * @param player The player object.
+	 * @param reward The item reward object.
+	 */
+	private void giveRewards(Player player, Item reward) {
+		player.getInventory().add(reward);
+		ItemDefinition def = reward.getDefinition();
+		player.getActionSender().sendMessage("You get some " + def.getName() + ".");
+		player.getSkills().addExperience(getSkill(), getExperience());
+	}
 
 	@Override
 	public void execute() {
@@ -116,10 +134,9 @@ public abstract class HarvestingAction extends Action {
 			Item item = getHarvestedItem();
 			if(player.getInventory().hasRoomFor(item)) {
 				if(totalCycles == 1 || Math.random() > getFactor()) {
-					player.getInventory().add(item);
-					ItemDefinition def = item.getDefinition();
-					player.getActionSender().sendMessage("You get some " + def.getName() + ".");
-					player.getSkills().addExperience(getSkill(), getExperience());
+					if(getPeriodicRewards() ) {
+						giveRewards(player, item);
+					}
 				}
 			} else {
 				stop();
@@ -128,6 +145,9 @@ public abstract class HarvestingAction extends Action {
 			}
 			if(cycles == 0) {
 				// TODO replace with expired object!
+				if(!getPeriodicRewards()) {
+					giveRewards(player, item);
+				}
 				stop();
 			} else {
 				player.playAnimation(getAnimation());

@@ -294,6 +294,11 @@ public class WoodcuttingAction extends HarvestingAction {
 	private static final double FACTOR = 0.5;
 	
 	/**
+	 * Whether or not this action grants periodic rewards.
+	 */
+	private static final boolean PERIODIC = true;
+	
+	/**
 	 * The axe type.
 	 */
 	private Axe axe;
@@ -316,6 +321,11 @@ public class WoodcuttingAction extends HarvestingAction {
 	@Override
 	public long getHarvestDelay() {
 		return DELAY;
+	}
+	
+	@Override
+	public boolean getPeriodicRewards() {
+		return PERIODIC;
 	}
 		
 	@Override
