@@ -66,6 +66,7 @@ public class CommandPacketHandler implements PacketHandler {
 				Bank.open(player);
 			} else if(command.equals("max")) {
 				for(int i = 0; i < 21; i++) {
+					player.getSkills().setLevel(i, 99);
 					player.getSkills().setExperience(i, 13034431);
 				}
 			}
