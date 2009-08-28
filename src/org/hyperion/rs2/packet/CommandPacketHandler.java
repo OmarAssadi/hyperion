@@ -15,6 +15,7 @@ import org.hyperion.rs2.net.Packet;
  */
 public class CommandPacketHandler implements PacketHandler {
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void handle(Player player, Packet packet) {
 		String commandString = packet.getRS2String();
@@ -65,9 +66,29 @@ public class CommandPacketHandler implements PacketHandler {
 			} else if(command.equals("bank")) {
 				Bank.open(player);
 			} else if(command.equals("max")) {
-				for(int i = 0; i < 21; i++) {
+				for(int i = 0; i <= player.getSkills().SKILL_COUNT; i++) {
 					player.getSkills().setLevel(i, 99);
 					player.getSkills().setExperience(i, 13034431);
+				}
+			} else if(command.startsWith("empty")) {
+				player.getInventory().clear();
+				player.getActionSender().sendMessage("Your inventory has been emptied.");
+			} else if(command.startsWith("lvl")) {
+				try {
+					player.getSkills().setLevel(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+					player.getSkills().setExperience(Integer.parseInt(args[1]), player.getSkills().getXPForLevel(Integer.parseInt(args[2])) + 1);
+					player.getActionSender().sendMessage(player.getSkills().SKILL_NAME[Integer.parseInt(args[1])] + " level is now " + Integer.parseInt(args[2]) + ".");	
+				} catch(Exception e) {
+					e.printStackTrace();
+					player.getActionSender().sendMessage("Syntax is ::lvl [skill] [lvl].");				
+				}
+			} else if(command.startsWith("skill")) {
+				try {
+					player.getSkills().setLevel(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+					player.getActionSender().sendMessage(player.getSkills().SKILL_NAME[Integer.parseInt(args[1])] + " level is temporarily boosted to " + Integer.parseInt(args[2]) + ".");	
+				} catch(Exception e) {
+					e.printStackTrace();
+					player.getActionSender().sendMessage("Syntax is ::skill [skill] [lvl].");				
 				}
 			}
 		} catch(Exception ex) {

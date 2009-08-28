@@ -82,10 +82,18 @@ public class Skills {
 	}
 	
 	/**
+	 * Gets the experience for a requested level.
+	 * @param lvl The level we're getting the experience amount for.
+	 * @return Minimum experience required for that level.
+	 */
+	
+	/**
 	 * Gets the combat level.
 	 * @return The combat level.
+	 * @author Scu11
 	 */
 	public int getCombatLevel() {
+		/*
 		final int attack = getLevelForExperience(0);
 		final int defence = getLevelForExperience(1);
 		final int strength = getLevelForExperience(2);
@@ -105,6 +113,31 @@ public class Skills {
 		} else if (mage >= melee && mage >= ranger) {
 			combatLevel += mage;
 		}
+		return combatLevel;
+		*/
+		int combatLevel = 3;
+        int mag = (int)((double)(getLevelForExperience(4)) * 1.5);
+        int ran = (int)((double)(getLevelForExperience(6)) * 1.5);
+        int attstr = (int)((double)(getLevelForExperience(0)) + (double)(getLevelForExperience(2)));
+        if (ran > attstr && ran > mag) {
+            combatLevel = (int)(((double)(getLevelForExperience(1)) * 0.25)
+            + ((double)(getLevelForExperience(3)) * 0.25)
+            + ((double)(getLevelForExperience(5)) * 0.125)
+            + ((double)(getLevelForExperience(6)) * 0.4875));
+        }
+        else if (mag > attstr && ran < mag) {
+            combatLevel = (int)(((double)(getLevelForExperience(1)) * 0.25)
+            + ((double)(getLevelForExperience(3)) * 0.25)
+            + ((double)(getLevelForExperience(5)) * 0.125)
+            + ((double)(getLevelForExperience(4)) * 0.4875));
+        }
+        else {
+            combatLevel = (int)(((double)(getLevelForExperience(1)) * 0.25)
+            + ((double)(getLevelForExperience(3)) * 0.25)
+            + ((double)(getLevelForExperience(5)) * 0.125)
+            + ((double)(getLevelForExperience(0)) * 0.325)
+            + ((double)(getLevelForExperience(2)) * 0.325));
+        }
 		return combatLevel;
 	}
 	
@@ -205,6 +238,25 @@ public class Skills {
 		}
 		return 99;
 	}
+	
+	/**
+	 * Gets a experience from the level.
+	 * @param level The level.
+	 * @return The experience.
+	 */
+	public int getXPForLevel(int level) {
+		int points = 0;
+		int output = 0;
+		for (int lvl = 1; lvl <= level; lvl++) {
+			points += Math.floor(lvl + 300.0 * Math.pow(2.0, lvl / 7.0));
+			if (lvl >= level) {
+				return output;
+			}
+			output = (int)Math.floor(points / 4);
+		}
+		return 0;
+	}
+	
 	/**
 	 * Gets experience.
 	 * @param skill The skill id.
