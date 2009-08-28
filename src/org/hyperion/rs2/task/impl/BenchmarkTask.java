@@ -22,7 +22,7 @@ public class BenchmarkTask implements Task {
 	/**
 	 * Sample count.
 	 */
-	private static final int SAMPLES = 130;
+	private static final int SAMPLES = 100;
 	
 	/**
 	 * A list of samples.
@@ -48,12 +48,12 @@ public class BenchmarkTask implements Task {
 		task.execute(context);
 		long elapsed = System.nanoTime() - start;
 		samples.add(elapsed);
-		long total = 0;
-		if(samples.size() == SAMPLES) {
+		if(samples.size() >= SAMPLES) {
+			long total = 0;
 			for(long sample : samples){
 				total += sample;
 			}
-			logger.info(((double) total / (double) samples.size()) + " nanoseconds (average over " + samples.size() + " samples)");
+			logger.info((((double) total / (double) samples.size() / 1000000D)) + " milliseconds (average over " + samples.size() + " samples)");
 			samples.clear();
 		}
 	}
