@@ -136,8 +136,13 @@ public class Skills {
 	 * @param exp The experience.
 	 */
 	public void setExperience(int skill, double exp) {
+		int oldLvl = getLevelForExperience(skill);
 		exps[skill] = exp;
 		player.getActionSender().sendSkill(skill);
+		int newLvl = getLevelForExperience(skill);
+		if(oldLvl != newLvl) {
+			player.getUpdateFlags().flag(UpdateFlag.APPEARANCE);
+		}
 	}
 	
 	/**

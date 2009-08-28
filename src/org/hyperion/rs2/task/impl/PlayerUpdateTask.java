@@ -558,8 +558,8 @@ public class PlayerUpdateTask implements Task {
 		playerProps.putShort((short) 0x338); // run
 		
 		playerProps.putLong(otherPlayer.getNameAsLong()); // player name
-		playerProps.put((byte) player.getSkills().getCombatLevel()); // combat level
-		playerProps.putShort(0); // (skill-level instead of combat-level) player.getSkills().getTotalLevel()); // total level
+		playerProps.put((byte) otherPlayer.getSkills().getCombatLevel()); // combat level
+		playerProps.putShort(0); // (skill-level instead of combat-level) otherPlayer.getSkills().getTotalLevel()); // total level
 		
 		Packet propsPacket = playerProps.toPacket();
 		
