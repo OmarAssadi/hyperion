@@ -90,10 +90,8 @@ public class Skills {
 	/**
 	 * Gets the combat level.
 	 * @return The combat level.
-	 * @author Scu11
 	 */
 	public int getCombatLevel() {
-		/*
 		final int attack = getLevelForExperience(0);
 		final int defence = getLevelForExperience(1);
 		final int strength = getLevelForExperience(2);
@@ -113,32 +111,11 @@ public class Skills {
 		} else if (mage >= melee && mage >= ranger) {
 			combatLevel += mage;
 		}
-		return combatLevel;
-		*/
-		int combatLevel = 3;
-        int mag = (int)((double)(getLevelForExperience(4)) * 1.5);
-        int ran = (int)((double)(getLevelForExperience(6)) * 1.5);
-        int attstr = (int)((double)(getLevelForExperience(0)) + (double)(getLevelForExperience(2)));
-        if (ran > attstr && ran > mag) {
-            combatLevel = (int)(((double)(getLevelForExperience(1)) * 0.25)
-            + ((double)(getLevelForExperience(3)) * 0.25)
-            + ((double)(getLevelForExperience(5)) * 0.125)
-            + ((double)(getLevelForExperience(6)) * 0.4875));
-        }
-        else if (mag > attstr && ran < mag) {
-            combatLevel = (int)(((double)(getLevelForExperience(1)) * 0.25)
-            + ((double)(getLevelForExperience(3)) * 0.25)
-            + ((double)(getLevelForExperience(5)) * 0.125)
-            + ((double)(getLevelForExperience(4)) * 0.4875));
-        }
-        else {
-            combatLevel = (int)(((double)(getLevelForExperience(1)) * 0.25)
-            + ((double)(getLevelForExperience(3)) * 0.25)
-            + ((double)(getLevelForExperience(5)) * 0.125)
-            + ((double)(getLevelForExperience(0)) * 0.325)
-            + ((double)(getLevelForExperience(2)) * 0.325));
-        }
-		return combatLevel;
+		if(combatLevel <= 126) {
+			return combatLevel;
+		} else {
+			return 126;
+		}
 	}
 	
 	/**
