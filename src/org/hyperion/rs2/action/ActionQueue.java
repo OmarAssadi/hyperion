@@ -31,6 +31,14 @@ public class ActionQueue {
 	private Action currentAction = null;
 	
 	/**
+	 * Get the current action.
+	 * @return The current action.
+	 */
+	public Action getCurrentAction() {
+		return currentAction;
+	}
+	
+	/**
 	 * Cancels all queued action events.
 	 */
 	public void cancelQueuedActions() {
