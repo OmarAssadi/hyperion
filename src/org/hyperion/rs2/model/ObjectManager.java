@@ -13,11 +13,6 @@ import java.nio.channels.FileChannel.MapMode;
 public class ObjectManager {
 	
 	/**
-	 * The maximum number of allowed objects.
-	 */
-	public static final int MAX_OBJECTS = 1280618;
-	
-	/**
 	 * Loads the objects in the map.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -25,7 +20,7 @@ public class ObjectManager {
 		RandomAccessFile raf = new RandomAccessFile("data/worldmap.bin", "r");
 		try {
 			ByteBuffer bb = raf.getChannel().map(MapMode.READ_ONLY, 0, raf.length());
-			for(int i = 0; i < MAX_OBJECTS; i++) {
+			while(bb.remaining() >= 9) {
 				int id = bb.getShort() & 0xFFFF;
 				int x = bb.getShort() & 0xFFFF;
 				int y = bb.getShort() & 0xFFFF;
