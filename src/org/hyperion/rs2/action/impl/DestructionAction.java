@@ -29,6 +29,11 @@ public abstract class DestructionAction extends Action {
 		return QueuePolicy.NEVER;
 	}
 	
+	@Override
+	public WalkablePolicy getWalkablePolicy() {
+		return WalkablePolicy.WALKABLE;
+	}
+	
 	/**
 	 * Gets the destruction delay.
 	 * @return The delay between consecutive destructions.

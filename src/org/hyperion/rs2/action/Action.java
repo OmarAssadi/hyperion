@@ -29,6 +29,26 @@ public abstract class Action extends Event {
 		NEVER,
 		
 	}
+	
+	/**
+	 * A queue policy determines whether the action can occur while walking.
+	 * @author Graham Edgecombe
+	 * @author Brett Russell
+	 *
+	 */
+	public enum WalkablePolicy {
+		
+		/**
+		 * This indicates actions may occur while walking.
+		 */
+		WALKABLE,
+		
+		/**
+		 * This indicates actions cannot occur while walking.
+		 */
+		NON_WALKABLE,
+		
+	}
 
 	/**
 	 * The <code>Player</code> associated with this ActionEvent.
@@ -58,6 +78,12 @@ public abstract class Action extends Event {
 	 * @return The queue policy of this action.
 	 */
 	public abstract QueuePolicy getQueuePolicy();
+	
+	/**
+	 * Gets the WalkablePolicy of this action.
+	 * @return The walkable policy of this action.
+	 */
+	public abstract WalkablePolicy getWalkablePolicy();
 	
 	@Override
 	public void stop() {

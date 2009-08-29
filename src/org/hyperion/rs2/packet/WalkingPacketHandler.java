@@ -18,9 +18,7 @@ public class WalkingPacketHandler implements PacketHandler {
 		}
 
 		player.getWalkingQueue().reset();
-		if(player.getActionQueue().getCurrentAction() != null) {
-			player.getActionQueue().cancelQueuedActions();
-		}
+		player.getActionQueue().clearNonWalkableActions();
 
 		final int steps = (size - 5) / 2;
 		final int[][] path = new int[steps][2];

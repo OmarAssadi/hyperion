@@ -31,14 +31,6 @@ public class ActionQueue {
 	private Action currentAction = null;
 	
 	/**
-	 * Get the current action.
-	 * @return The current action.
-	 */
-	public Action getCurrentAction() {
-		return currentAction;
-	}
-	
-	/**
 	 * Cancels all queued action events.
 	 */
 	public void cancelQueuedActions() {
@@ -70,6 +62,31 @@ public class ActionQueue {
 		}
 		queuedActions.add(action);
 		processNextAction();
+	}
+	
+	/**
+	 * Purges actions in the queue with a <code>WalkablePolicy</code> of <code>NON_WALKABLE</code>.
+	 */
+	public void clearNonWalkableActions() {
+		if(currentAction != null) {
+			switch(currentAction.getWalkablePolicy()) {
+			case WALKABLE:
+				break;
+			case NON_WALKABLE:
+				currentAction.stop();
+				currentAction = null;
+				break;
+			}
+		}
+		for(Action actionEvent : queuedActions) {
+			switch(actionEvent.getWalkablePolicy()) {
+			case WALKABLE:
+				break;
+			case NON_WALKABLE:
+				actionEvent.stop();
+				break;
+			}
+		}
 	}
 
 	/**

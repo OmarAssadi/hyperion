@@ -30,6 +30,11 @@ public abstract class ProducingAction extends Action {
 		return QueuePolicy.ALWAYS;
 	}
 	
+	@Override
+	public WalkablePolicy getWalkablePolicy() {
+		return WalkablePolicy.NON_WALKABLE;
+	}
+	
 	/**
 	 * Gets the production delay.
 	 * @return The delay between consecutive productions.

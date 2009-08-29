@@ -42,6 +42,11 @@ public abstract class HarvestingAction extends Action {
 		return QueuePolicy.NEVER;
 	}
 	
+	@Override
+	public WalkablePolicy getWalkablePolicy() {
+		return WalkablePolicy.NON_WALKABLE;
+	}
+	
 	/**
 	 * Called when the action is initialized.
 	 */
