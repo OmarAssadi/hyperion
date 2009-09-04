@@ -1,7 +1,6 @@
 package org.hyperion.rs2.action.impl;
 
 import org.hyperion.rs2.action.Action;
-import org.hyperion.rs2.action.impl.ProspectingAction.Node;
 import org.hyperion.rs2.model.ItemDefinition;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
@@ -39,26 +38,18 @@ public abstract class InspectAction extends Action {
     public abstract void init();
     
     /**
-     * Reward upon inspection completion.
-     * @return
-     */
-    public abstract Node getInspectItem();
-    
-    /**
      * Inspection time consumption.
      * @return
      */
     public abstract long getInspectDelay();
+    
     
     /**
      * Rewards to give the player.
      * @param player
      * @param node
      */
-    private void giveRewards(Player player, Node node) {
-        player.getActionSender().sendMessage("This rock contains "
-                + ItemDefinition.forId(node.getOreId()).getName().toLowerCase().replaceAll("ore", "").trim() + ".");
-    }
+    public abstract void giveRewards(Player player);
 
     @Override
     public void execute() {        
@@ -70,7 +61,7 @@ public abstract class InspectAction extends Action {
                 player.face(location);
             }
         } else {
-            giveRewards(player, getInspectItem());
+            giveRewards(player);
             stop();
         }
     }

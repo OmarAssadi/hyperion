@@ -65,7 +65,7 @@ public class ObjectOptionPacketHandler implements PacketHandler {
         int y = packet.getLEShort() & 0xFFFF;
         int x = packet.getShortA() & 0xFFFF;
         Location loc = Location.create(x, y, player.getLocation().getZ());
-        ProspectingAction.Node node = ProspectingAction.Node.forId(id);
+        Node node = Node.forId(id);
         if(node != null && player.getLocation().isWithinInteractionDistance(loc)) {
             player.getActionQueue().addAction(new ProspectingAction(player, loc, node));
             return;
