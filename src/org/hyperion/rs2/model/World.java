@@ -163,7 +163,7 @@ public class World {
 		} else {
 			this.engine = engine;
 			this.eventManager = new EventManager(engine);
-			this.registerEvents();
+			this.registerGlobalEvents();
 			this.loadConfiguration();
 		}
 	}
@@ -217,7 +217,7 @@ public class World {
 	/**
 	 * Registers global events such as updating.
 	 */
-	private void registerEvents() {
+	private void registerGlobalEvents() {
 		submit(new UpdateEvent());
 		submit(new CleanupEvent());
 	}

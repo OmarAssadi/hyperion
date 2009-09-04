@@ -3,6 +3,7 @@ package org.hyperion.rs2.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hyperion.rs2.model.Damage.Hit;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.region.Region;
 
@@ -28,6 +29,26 @@ public abstract class Entity {
 	 * The current location.
 	 */
 	private Location location;
+	
+	/**
+	 * The entity's first stored hit for updates.
+	 */
+	private transient Damage damage = new Damage();
+	
+	/**
+	 * The entity's state of life.
+	 */
+	private boolean isDead;
+	
+	/**
+	 * The entity's combat state.
+	 */
+	private boolean isInCombat = false;
+	
+	/**
+	 * Auto-retaliation setting.
+	 */
+	private boolean isAutoRetaliating;
 	
 	/**
 	 * The teleportation target.
@@ -100,6 +121,11 @@ public abstract class Entity {
 	private Location face;
 	
 	/**
+	 * Entity's combat aggressor state.
+	 */
+	private boolean isAggressor;
+	
+	/**
 	 * Creates the entity.
 	 */
 	public Entity() {
@@ -107,6 +133,69 @@ public abstract class Entity {
 		this.lastKnownRegion = location;
 	}
 	
+	/**
+	 * Set the entity's combat state.
+	 * @param isInCombat This entity's combat state.
+	 */
+	public void setInCombat(boolean isInCombat) {
+		this.isInCombat = isInCombat;
+	}
+
+	/**
+	 * Returns the combat state of this entity.
+	 * @return <code>boolean</code> The entity's combat state.
+	 */
+	public boolean isInCombat() {
+		return isInCombat;
+	}
+	
+	/**
+	 * Gets the entity's aggressor state.
+	 * @return boolean The entity's aggressor state.
+	 */
+	public boolean getAggressorState() {
+		return isAggressor;
+	}
+	
+	/**
+	 * Sets the aggressor state for this entity.
+	 */
+	public void setAggressorState(boolean b) {
+		isAggressor = b;
+	}
+	
+	/**
+	 * Set the entity's autoretaliation setting.
+	 * @param b <code>true/false</code> Whether or not this entity will autoretaliate when attacked.
+	 */
+	public void setAutoRetaliating(boolean b) {
+		this.isAutoRetaliating = b;
+	}
+
+	/**
+	 * Get this entity's autoretaliation setting.
+	 * @return <code>true</code> if autoretaliation is on, <code>false</code> if not.
+	 */
+	public boolean isAutoRetaliating() {
+		return isAutoRetaliating;
+	}
+
+	/**
+	 * Set the entity's state of life.
+	 * @param isDead Boolean
+	 */
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
+	}
+
+	/**
+	 * Is the entity dead?
+	 * @return
+	 */
+	public boolean isDead() {
+		return isDead;
+	}
+
 	/**
 	 * Makes this entity face a location.
 	 * @param location The location to face.
@@ -376,6 +465,13 @@ public abstract class Entity {
 	}
 	
 	/**
+	 * Deal a hit to the entity.
+	 * @param damage The damage to be done.
+	 * @param type The type of damage we are inflicting.
+	 */
+	public abstract void inflictDamage(int damage, Damage.HitType type);
+	
+	/**
 	 * Removes this entity from the specified region.
 	 * @param region The region.
 	 */
@@ -404,9 +500,18 @@ public abstract class Entity {
 	}
 
 	/**
+	 * Get this entity's hit1.
+	 * @return The entity's hits as <code>Hit</code> type.
+	 */
+	public Damage getDamage() {	
+		return damage;
+	}
+
+	/**
 	 * Gets the client-side index of an entity.
 	 * @return The client-side index.
 	 */
 	public abstract int getClientIndex();
+
 
 }

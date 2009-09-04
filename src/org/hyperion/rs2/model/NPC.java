@@ -1,5 +1,6 @@
 package org.hyperion.rs2.model;
 
+import org.hyperion.rs2.model.Damage.HitType;
 import org.hyperion.rs2.model.region.Region;
 
 /**
@@ -44,6 +45,12 @@ public class NPC extends Entity {
 	@Override
 	public int getClientIndex() {
 		return this.getIndex();
+	}
+
+	@Override
+	public void inflictDamage(int damage, HitType type) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

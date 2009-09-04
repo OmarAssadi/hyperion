@@ -48,6 +48,11 @@ public abstract class Action extends Event {
 		 */
 		NON_WALKABLE,
 		
+		/**
+		 * This indicates actions can continue while following.
+		 */
+		FOLLOW,
+		
 	}
 
 	/**

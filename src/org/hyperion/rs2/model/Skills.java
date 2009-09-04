@@ -174,6 +174,19 @@ public class Skills {
 	}
 	
 	/**
+	 * Detracts a given level a given amount.
+	 * @param skill The level to detract.
+	 * @param amount The amount to detract from the level.
+	 */
+	public void detractLevel(int skill, int amount) {
+		if(levels[skill] == 0) {
+			amount = 0;
+		}
+		levels[skill] = levels[skill] - amount;
+		player.getActionSender().sendSkill(skill);
+	}
+	
+	/**
 	 * Normalizes a level (adjusts it until it is at its normal value).
 	 * @param skill The skill to normalize.
 	 */

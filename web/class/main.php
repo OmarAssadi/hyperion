@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-require("config.php");
+require("../config.php");
 
 /**
  * Main class that initializes all other classes

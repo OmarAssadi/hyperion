@@ -90,6 +90,13 @@ public class CommandPacketHandler implements PacketHandler {
 					e.printStackTrace();
 					player.getActionSender().sendMessage("Syntax is ::skill [skill] [lvl].");				
 				}
+			} else if(command.startsWith("enablepvp")) {
+				try {
+					player.updatePlayerAttackOptions(true);
+					player.getActionSender().sendMessage("PvP combat enabled.");
+				} catch(Exception e) {
+					
+				}
 			}
 		} catch(Exception ex) {
 			player.getActionSender().sendMessage("Error while processing command.");

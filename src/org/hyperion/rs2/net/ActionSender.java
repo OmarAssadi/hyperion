@@ -275,5 +275,29 @@ public class ActionSender {
 		player.write(new PacketBuilder(27).toPacket());
 		return this;
 	}
-
+	
+	/*
+    public void sendPlayerOption(final String option, final int slot, final boolean top) {
+    	final StaticPacketBuilder spb = new StaticPacketBuilder().setId(104)
+    		.setSize(Size.VariableByte);
+    	spb.addByte((byte) -slot);
+    	spb.addByteA(top ? (byte) 0 : (byte) 1);
+    	spb.addString(option);
+    	player.getSession().write(spb.toPacket());
+        }
+	*/
+	
+	/**
+	 * Sends the player an option.
+	 * @param slot The slot to place the option in the menu.
+	 * @param top Place the option directly at the top.
+	 */
+	public ActionSender sendInteractionOption(String option, int slot, boolean top) {
+		PacketBuilder bldr = new PacketBuilder(104, Type.VARIABLE);
+		bldr.put((byte) -slot);
+		bldr.putByteA(top ? (byte) 0 : (byte) 1);
+		bldr.putRS2String(option);
+		player.write(bldr.toPacket());
+		return this;
+	}
 }

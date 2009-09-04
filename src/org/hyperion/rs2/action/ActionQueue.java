@@ -76,6 +76,10 @@ public class ActionQueue {
 				currentAction.stop();
 				currentAction = null;
 				break;
+			case FOLLOW:
+				currentAction.stop();
+				currentAction = null;
+				break;
 			}
 		}
 		for(Action actionEvent : queuedActions) {
@@ -83,6 +87,9 @@ public class ActionQueue {
 			case WALKABLE:
 				break;
 			case NON_WALKABLE:
+				actionEvent.stop();
+				break;
+			case FOLLOW:
 				actionEvent.stop();
 				break;
 			}

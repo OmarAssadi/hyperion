@@ -289,6 +289,20 @@ public class PlayerUpdateTask implements Task {
 		packet.putBits(5, yPos);
 		packet.putBits(5, xPos);
 	}
+	
+    private static void appendHit2Update(final Player p, final PacketBuilder updateBlock) {
+    	updateBlock.put((byte) p.getDamage().getHitDamage2());
+    	updateBlock.putByteS((byte) p.getDamage().getHitType2());
+    	updateBlock.put((byte) p.getSkills().getLevel(3));
+    	updateBlock.putByteC(p.getSkills().getLevelForExperience(3));
+    }
+
+    private static void appendHitUpdate(final Player p, final PacketBuilder updateBlock) {
+    	updateBlock.put((byte) p.getDamage().getHitDamage1());
+    	updateBlock.putByteA(p.getDamage().getHitType1());
+    	updateBlock.putByteC(p.getSkills().getLevel(3));
+    	updateBlock.put((byte) p.getSkills().getLevelForExperience(3));
+    }
 
 	/**
 	 * Updates a player.
@@ -405,10 +419,10 @@ public class PlayerUpdateTask implements Task {
 				}
 			}
 			if(flags.get(UpdateFlag.HIT)) {
-				
+				appendHitUpdate(otherPlayer, block);
 			}
 			if(flags.get(UpdateFlag.HIT_2)) {
-				
+				appendHit2Update(otherPlayer, block);
 			}
 			
 			/*

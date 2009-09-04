@@ -7,12 +7,15 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.hyperion.data.Data;
 import org.hyperion.rs2.action.ActionQueue;
+import org.hyperion.rs2.event.impl.DeathEvent;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.container.Bank;
 import org.hyperion.rs2.model.container.Container;
 import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.model.region.Region;
+import org.hyperion.rs2.model.Damage.Hit;
+import org.hyperion.rs2.model.Damage.HitType;
 import org.hyperion.rs2.net.ActionSender;
 import org.hyperion.rs2.net.ISAACCipher;
 import org.hyperion.rs2.net.Packet;
@@ -499,6 +502,41 @@ public class Player extends Entity implements Data {
 	public Container getInventory() {
 		return inventory;
 	}
+	
+	/**
+	 * Updates the players' options when in a PvP area.
+	 */
+	public void updatePlayerAttackOptions(boolean enable) {
+		if(enable) {
+			actionSender.sendInteractionOption("Attack", 1, true);
+			//actionSender.sendOverlay(381);
+		} else {
+			
+		}
+	}
+	
+	/**
+	 * Manages updateflags and HP modification when a hit occurs.
+	 */
+	public void inflictDamage(Hit inc) {
+		if(!getUpdateFlags().get(UpdateFlag.HIT)) {
+			Hit testHit = new Hit(1, HitType.NORMAL_DAMAGE);
+			getDamage().setHit1(testHit);
+			getUpdateFlags().flag(UpdateFlag.HIT);
+		} else {
+			if(!getUpdateFlags().get(UpdateFlag.HIT_2)) {
+				getDamage().setHit2(inc);
+				getUpdateFlags().flag(UpdateFlag.HIT_2);
+			}
+		}
+		skills.detractLevel(Skills.HITPOINTS, inc.getDamage());
+		if(skills.getLevel(Skills.HITPOINTS) <= 0) {
+			if(!this.isDead()) {
+				World.getWorld().submit(new DeathEvent(this));
+			}
+			this.setDead(true);
+		}
+	}
 
 	@Override
 	public void deserialize(IoBuffer buf) {
@@ -603,6 +641,12 @@ public class Player extends Entity implements Data {
 	@Override
 	public int getClientIndex() {
 		return this.getIndex() + 32768;
+	}
+
+	@Override
+	public void inflictDamage(int damage, HitType type) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
