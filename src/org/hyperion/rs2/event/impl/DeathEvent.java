@@ -34,6 +34,7 @@ public class DeathEvent extends Event {
 			entity.setDead(false);
 			entity.setTeleportTarget(Entity.DEFAULT_LOCATION);
 			p.getActionSender().sendMessage("Oh dear, you are dead!");
+			this.stop();
 		}
 	}
 

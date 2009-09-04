@@ -305,6 +305,11 @@ public class MiningAction extends HarvestingAction {
 	private Pickaxe pickaxe;
 	
 	/**
+	 * The cycle count.
+	 */
+	private int cycleCount = 0;
+	
+	/**
 	 * The node type.
 	 */
 	private Node node;
@@ -350,6 +355,8 @@ public class MiningAction extends HarvestingAction {
 			return;
 		}
 		player.getActionSender().sendMessage("You swing your pick at the rock...");
+		cycleCount = calculateCycles(player, node, pickaxe);
+		
 	}
 
 
@@ -374,7 +381,6 @@ public class MiningAction extends HarvestingAction {
 	
 	@Override
 	public int getCycles() {
-		final int cycleCount = calculateCycles(getPlayer(), node, pickaxe);
 		return cycleCount;
 	}
 

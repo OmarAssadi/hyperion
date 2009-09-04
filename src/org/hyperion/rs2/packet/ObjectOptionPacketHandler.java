@@ -1,5 +1,6 @@
 package org.hyperion.rs2.packet;
 
+import org.hyperion.rs2.action.impl.ProspectingAction;
 import org.hyperion.rs2.action.impl.WoodcuttingAction;
 import org.hyperion.rs2.action.impl.WoodcuttingAction.Tree;
 import org.hyperion.rs2.action.impl.MiningAction;
@@ -18,13 +19,16 @@ public class ObjectOptionPacketHandler implements PacketHandler {
 	/**
 	 * Option 1 opcode.
 	 */
-	private static final int OPTION_1 = 132;
+	private static final int OPTION_1 = 132, OPTION_2 = 252;
 
 	@Override
 	public void handle(Player player, Packet packet) {
 		switch(packet.getOpcode()) {
 		case OPTION_1:
 			handleOption1(player, packet);
+			break;
+		case OPTION_2:
+			handleOption2(player, packet);
 			break;
 		}
 	}
@@ -49,7 +53,24 @@ public class ObjectOptionPacketHandler implements PacketHandler {
 		if(node != null && player.getLocation().isWithinInteractionDistance(loc)) {
 			player.getActionQueue().addAction(new MiningAction(player, loc, node));
 		}
-		// TODO: prospecting
 	}
+	
+    /**
+     * Handles the option 2 packet.
+     * @param player The player.
+     * @param packet The packet.
+     */
+    private void handleOption2(Player player, Packet packet) {        
+        int id = packet.getLEShortA() & 0xFFFF;
+        int y = packet.getLEShort() & 0xFFFF;
+        int x = packet.getShortA() & 0xFFFF;
+        Location loc = Location.create(x, y, player.getLocation().getZ());
+        ProspectingAction.Node node = ProspectingAction.Node.forId(id);
+        if(node != null && player.getLocation().isWithinInteractionDistance(loc)) {
+            player.getActionQueue().addAction(new ProspectingAction(player, loc, node));
+            return;
+        }
+    }
+
 
 }
