@@ -33,8 +33,13 @@ public class PlayerOptionPacketHandler implements PacketHandler {
 		}
 	}
 
+	/**
+	 * Handles the first option on a player option menu.
+	 * @param player
+	 * @param packet
+	 */
 	private void option1(final Player player, Packet packet) {
-		int id = packet.getLEShort() / 256;
+		int id = packet.getShort() & 0xFFFF;
 		player.getActionSender().sendMessage("Attacking ID: " + id);
 		if(id < 0 || id >= Constants.MAX_PLAYERS) {
 			return;
@@ -45,6 +50,11 @@ public class PlayerOptionPacketHandler implements PacketHandler {
 		}
 	}
 	
+	/**
+	 * Handles the second option on a player option menu.
+	 * @param player
+	 * @param packet
+	 */
 	private void option2(Player player, Packet packet) {
 		int id = packet.getShort() & 0xFFFF;
 		if(id < 0 || id >= Constants.MAX_PLAYERS) {
@@ -52,6 +62,11 @@ public class PlayerOptionPacketHandler implements PacketHandler {
 		}
 	}
 	
+	/**
+	 * Handles the third option on a player option menu.
+	 * @param player
+	 * @param packet
+	 */
 	private void option3(Player player, Packet packet) {
 		int id = packet.getLEShortA() & 0xFFFF;
 		if(id < 0 || id >= Constants.MAX_PLAYERS) {
