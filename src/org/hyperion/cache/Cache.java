@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel.MapMode;
 import org.hyperion.cache.Cache;
 import org.hyperion.cache.CacheFile;
 import org.hyperion.cache.InvalidCacheException;
+import org.hyperion.cache.index.IndexTable;
 
 /**
  * Manages the game cache.
@@ -50,6 +51,11 @@ public class Cache implements Closeable {
 	private final RandomAccessFile[] indexFiles;
 	
 	/**
+	 * The index table.
+	 */
+	private final IndexTable indexTable;
+	
+	/**
 	 * Creates the cache.
 	 * @param directory The directory where the cache is stored.
 	 * @throws InvalidCacheException if the cache is corrupt or invalid.
@@ -73,9 +79,20 @@ public class Cache implements Closeable {
 			for(int i = 0; i < indexFiles.length; i++) {
 				indexFiles[i] = new RandomAccessFile(directory.getAbsolutePath() + "/main_file_cache.idx" + i, "r");
 			}
+			indexTable = new IndexTable(this);
 		} catch(FileNotFoundException ex) {
 			throw new InvalidCacheException(ex);
+		} catch(IOException ex) {
+			throw new InvalidCacheException(ex);
 		}
+	}
+	
+	/**
+	 * Gets the index table.
+	 * @return The index table.
+	 */
+	public IndexTable getIndexTable() {
+		return indexTable;
 	}
 	
 	/**

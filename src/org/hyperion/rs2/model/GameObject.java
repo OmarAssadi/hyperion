@@ -23,22 +23,22 @@ public class GameObject {
 	private int type;
 	
 	/**
-	 * The face.
+	 * The rotation.
 	 */
-	private int face;
+	private int rotation;
 	
 	/**
 	 * Creates the game object.
 	 * @param definition The definition.
 	 * @param location The location.
 	 * @param type The type.
-	 * @param face The face.
+	 * @param rotation The rotation.
 	 */
-	public GameObject(GameObjectDefinition definition, Location location, int type, int face) {
+	public GameObject(GameObjectDefinition definition, Location location, int type, int rotation) {
 		this.definition = definition;
 		this.location = location;
 		this.type = type;
-		this.face = face;
+		this.rotation = rotation;
 	}
 	
 	/**
@@ -66,11 +66,11 @@ public class GameObject {
 	}
 	
 	/**
-	 * Gets the face.
-	 * @return The face.
+	 * Gets the rotation.
+	 * @return The rotation.
 	 */
-	public int getFace() {
-		return face;
+	public int getRotation() {
+		return rotation;
 	}
 
 }
