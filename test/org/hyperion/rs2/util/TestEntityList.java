@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hyperion.rs2.model.Entity;
+import org.hyperion.rs2.model.Damage.HitType;
 import org.hyperion.rs2.model.region.Region;
 import org.hyperion.rs2.util.EntityList;
 import org.junit.Before;
@@ -29,6 +30,11 @@ public class TestEntityList {
 		@Override
 		public int getClientIndex() {
 			return 0;
+		}
+
+		@Override
+		public void inflictDamage(int damage, HitType type) {
+			
 		}
 		
 	}
