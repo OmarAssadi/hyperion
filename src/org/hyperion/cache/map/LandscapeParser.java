@@ -1,11 +1,9 @@
 package org.hyperion.cache.map;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import org.hyperion.cache.Cache;
-import org.hyperion.cache.InvalidCacheException;
 import org.hyperion.cache.index.impl.MapIndex;
 import org.hyperion.cache.util.ByteBufferUtils;
 import org.hyperion.cache.util.ZipUtils;
