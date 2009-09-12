@@ -17,17 +17,16 @@ public class ProspectingAction extends InspectAction {
      */
     private static final int DELAY = 3000;
     
+    /**
+     * Constructor.
+     * @param player
+     * @param location
+     * @param node
+     */
     public ProspectingAction(Player player, Location location, Node node) {
         super(player, location);
         this.node = node;
     }
-    
-    /**
-     * Represents types of nodes.
-     * @author Graham Edgecombe
-     *
-     */
-    
 
     @Override
     public long getInspectDelay() {

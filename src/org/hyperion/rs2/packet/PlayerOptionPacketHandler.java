@@ -40,7 +40,6 @@ public class PlayerOptionPacketHandler implements PacketHandler {
 	 */
 	private void option1(final Player player, Packet packet) {
 		int id = packet.getShort() & 0xFFFF;
-		player.getActionSender().sendMessage("Attacking ID: " + id);
 		if(id < 0 || id >= Constants.MAX_PLAYERS) {
 			return;
 		}

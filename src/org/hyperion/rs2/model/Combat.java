@@ -6,6 +6,7 @@ import org.hyperion.rs2.model.NPC;
 import org.hyperion.rs2.model.Damage;
 import org.hyperion.rs2.model.Damage.Hit;
 import org.hyperion.rs2.model.Damage.HitType;
+import org.hyperion.rs2.model.EntityCooldowns.CooldownFlags;
 
 /**
  * Handles the combat system.
@@ -40,7 +41,7 @@ public class Combat {
 	 * @param player The player for whose weapon we are getting the speed value.
 	 * @return A <code>double</code>-type value of the weapon speed.
 	 */
-	public static long getAttackSpeed(Entity entity) {
+	public static int getAttackSpeed(Entity entity) {
 		// TODO
 		// double attackSpeed = player.getEquipment().getWeaponSpeed();
 		return 2200;
@@ -106,8 +107,7 @@ public class Combat {
 		}
 		if(!source.isInCombat()) {
 			source.setInCombat(true);
-			//source.setInteractingEntity(victim);
-			source.face(victim.getLocation());
+			//source.setInteractingEntity(victim);  /
 			source.setAggressorState(true);
 		}
 	}
@@ -121,6 +121,7 @@ public class Combat {
 	public static void doAttack(Entity source, Entity victim, AttackType attackType) {
 		if(!canAttack(source, victim))
 			return;
+		source.getEntityCooldowns().flag(CooldownFlags.MELEE_SWING, getAttackSpeed(source), source);
 		source.face(victim.getLocation());
 		source.playAnimation(Animation.create(422, 1));
 		inflictDamage(victim, calculateHit(source, victim, attackType));

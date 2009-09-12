@@ -61,6 +61,11 @@ public abstract class Entity {
 	private final UpdateFlags updateFlags = new UpdateFlags();
 	
 	/**
+	 * The entity's cooldowns.
+	 */
+	private final EntityCooldowns cooldowns = new EntityCooldowns();
+	
+	/**
 	 * The list of local players.
 	 */
 	private final List<Player> localPlayers = new LinkedList<Player>();
@@ -497,6 +502,14 @@ public abstract class Entity {
 	 */
 	public UpdateFlags getUpdateFlags() {
 		return updateFlags;
+	}
+	
+	/**
+	 * Gets the cooldown flags.
+	 * @return The cooldown flags.
+	 */
+	public EntityCooldowns getEntityCooldowns() {
+		return cooldowns;
 	}
 
 	/**

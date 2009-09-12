@@ -7,6 +7,7 @@ import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Combat;
 import org.hyperion.rs2.model.Combat.AttackType;
+import org.hyperion.rs2.model.EntityCooldowns.CooldownFlags;
 
 /**
  * Handles an action for an attacking player.
@@ -32,7 +33,7 @@ public class AttackAction extends Action {
 	 * @param type The type of attack.
 	 */
 	public AttackAction(Player player, Entity victim) {
-		super(player, 0);
+		super(player, 10);
 		this.victim = victim;
 	}
 
@@ -51,14 +52,7 @@ public class AttackAction extends Action {
 	public void execute() {
 		final Player player = getPlayer();
 		if(Combat.canAttack(player, victim)) {
-			if(this.getDelay() == 0) {
-				this.setDelay(Combat.getAttackSpeed(player));
-				// init();
-				if(this.isRunning()) {
-					Combat.initiateCombat(victim, player);
-					Combat.doAttack(player, victim, type);
-				}
-			} else {
+			if(!player.getEntityCooldowns().get(CooldownFlags.MELEE_SWING)) {
 				Combat.initiateCombat(victim, player);
 				Combat.doAttack(player, victim, type);
 			}
