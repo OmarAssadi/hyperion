@@ -38,7 +38,7 @@ public class Palette {
 	 * @author Graham Edgecombe
 	 *
 	 */
-	public static class Tile {
+	public static class PaletteTile {
 		
 		/**
 		 * X coordinate.
@@ -65,7 +65,7 @@ public class Palette {
 		 * @param x The x coordinate.
 		 * @param y The y coordinate.
 		 */
-		public Tile(int x, int y) {
+		public PaletteTile(int x, int y) {
 			this(x, y, 0);
 		}
 		
@@ -75,7 +75,7 @@ public class Palette {
 		 * @param y The y coordinate.
 		 * @param z The z coordinate.
 		 */
-		public Tile(int x, int y, int z) {
+		public PaletteTile(int x, int y, int z) {
 			this(x, y, z, DIRECTION_NORMAL);
 		}
 		
@@ -86,7 +86,7 @@ public class Palette {
 		 * @param z The z coordinate.
 		 * @param rot The rotation.
 		 */
-		public Tile(int x, int y, int z, int rot) {
+		public PaletteTile(int x, int y, int z, int rot) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
@@ -130,7 +130,7 @@ public class Palette {
 	/**
 	 * The array of tiles.
 	 */
-	private Tile[][][] tiles = new Tile[13][13][4];
+	private PaletteTile[][][] tiles = new PaletteTile[13][13][4];
 	
 	/**
 	 * Gets a tile.
@@ -139,7 +139,7 @@ public class Palette {
 	 * @param z Z position.
 	 * @return The tile.
 	 */
-	public Tile getTile(int x, int y, int z) {
+	public PaletteTile getTile(int x, int y, int z) {
 		return tiles[x][y][z];
 	}
 	
@@ -150,7 +150,7 @@ public class Palette {
 	 * @param z Z position.
 	 * @param tile The tile.
 	 */
-	public void setTile(int x, int y, int z, Tile tile) {
+	public void setTile(int x, int y, int z, PaletteTile tile) {
 		tiles[x][y][z] = tile;
 	}
 

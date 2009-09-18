@@ -5,7 +5,7 @@ import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.Palette;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Skills;
-import org.hyperion.rs2.model.Palette.Tile;
+import org.hyperion.rs2.model.Palette.PaletteTile;
 import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.model.container.impl.EquipmentContainerListener;
@@ -79,7 +79,7 @@ public class ActionSender {
 		for(int z = 0; z < 4; z++) {
 			for(int x = 0; x < 13; x++) {
 				for(int y = 0; y < 13; y++) {
-					Tile tile = palette.getTile(x, y, z);
+					PaletteTile tile = palette.getTile(x, y, z);
 					bldr.putBits(1, tile != null ? 1 : 0);
 					if(tile != null) {
 						bldr.putBits(26, tile.getX() << 14 | tile.getY() << 3 | tile.getZ() << 24 | tile.getRotation() << 1);

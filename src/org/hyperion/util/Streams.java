@@ -69,9 +69,7 @@ public class Streams {
 	 * @throws IOException if an I/O error occurs, such as the stream closing.
 	 */
 	public static void writeLine(OutputStream out, String line) throws IOException {
-		for(byte b : (line + "\n").getBytes()) {
-			out.write(b);
-		}
+		out.write((line + "\n").getBytes());
 	}
 
 	/**
