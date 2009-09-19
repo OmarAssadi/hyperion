@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer;
  * @author Graham Edgecombe
  *
  */
-public interface Data {
+public interface Persistable {
 	
 	/**
 	 * Serializes the class into the specified buffer.
