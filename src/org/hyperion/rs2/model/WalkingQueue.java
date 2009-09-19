@@ -352,17 +352,17 @@ public class WalkingQueue {
 		 * changed, set the appropriate flag so the new map region packet
 		 * is sent.
 		 */
-		int localDiffX = entity.getLocation().getLocalX() - entity.getLastKnownRegion().getLocalX(entity.getLocation());
-		int localDiffY = entity.getLocation().getLocalY() - entity.getLastKnownRegion().getLocalY(entity.getLocation());
+		int diffX = entity.getLocation().getX() - entity.getLastKnownRegion().getRegionX() * 8;
+		int diffY = entity.getLocation().getY() - entity.getLastKnownRegion().getRegionY() * 8;
 		boolean changed = false;
-		if(localDiffX <= -32) {
+		if(diffX < 16) {
 			changed = true;
-		} else if(localDiffX >= 32) {
+		} else if(diffX >= 88) {
 			changed = true;
 		}
-		if(localDiffY <= -32) {
+		if(diffY < 16) {
 			changed = true;
-		} else if(localDiffY >= 32) {
+		} else if(diffY >= 88) {
 			changed = true;
 		}
 		if(changed) {
