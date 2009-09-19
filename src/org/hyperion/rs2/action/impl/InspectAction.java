@@ -1,7 +1,6 @@
 package org.hyperion.rs2.action.impl;
 
 import org.hyperion.rs2.action.Action;
-import org.hyperion.rs2.model.ItemDefinition;
 import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 

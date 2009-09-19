@@ -2,7 +2,6 @@ package org.hyperion.rs2.packet;
 
 import org.hyperion.rs2.Constants;
 import org.hyperion.rs2.action.impl.AttackAction;
-import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.net.Packet;

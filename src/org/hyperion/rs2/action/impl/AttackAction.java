@@ -2,8 +2,6 @@ package org.hyperion.rs2.action.impl;
 
 import org.hyperion.rs2.action.Action;
 import org.hyperion.rs2.model.Entity;
-import org.hyperion.rs2.model.Item;
-import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Combat;
 import org.hyperion.rs2.model.Combat.AttackType;

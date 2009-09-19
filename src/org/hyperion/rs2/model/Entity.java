@@ -3,7 +3,6 @@ package org.hyperion.rs2.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.hyperion.rs2.model.Damage.Hit;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.region.Region;
 

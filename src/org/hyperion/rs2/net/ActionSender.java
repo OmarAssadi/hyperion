@@ -10,6 +10,7 @@ import org.hyperion.rs2.model.container.Equipment;
 import org.hyperion.rs2.model.container.Inventory;
 import org.hyperion.rs2.model.container.impl.EquipmentContainerListener;
 import org.hyperion.rs2.model.container.impl.InterfaceContainerListener;
+import org.hyperion.rs2.model.container.impl.WeaponContainerListener;
 import org.hyperion.rs2.net.Packet.Type;
 
 /**
@@ -38,7 +39,7 @@ public class ActionSender {
 	 * @param inventoryInterfaceId The inventory interface id.
 	 * @return The action sender instance, for chaining.
 	 */
-	public ActionSender sendInventoryInterface(int interfaceId, int inventoryInterfaceId) {
+	public ActionSender sendInterfaceInventory(int interfaceId, int inventoryInterfaceId) {
 		player.getInterfaceState().interfaceOpened(interfaceId);
 		player.write(new PacketBuilder(248).putShortA(interfaceId).putShort(inventoryInterfaceId).toPacket());
 		return this;
@@ -62,6 +63,7 @@ public class ActionSender {
 		InterfaceContainerListener equipmentListener = new InterfaceContainerListener(player, Equipment.INTERFACE);
 		player.getEquipment().addListener(equipmentListener);
 		player.getEquipment().addListener(new EquipmentContainerListener(player));
+		player.getEquipment().addListener(new WeaponContainerListener(player));
 		
 		return this;
 	}
@@ -276,27 +278,45 @@ public class ActionSender {
 		return this;
 	}
 	
-	/*
-    public void sendPlayerOption(final String option, final int slot, final boolean top) {
-    	final StaticPacketBuilder spb = new StaticPacketBuilder().setId(104)
-    		.setSize(Size.VariableByte);
-    	spb.addByte((byte) -slot);
-    	spb.addByteA(top ? (byte) 0 : (byte) 1);
-    	spb.addString(option);
-    	player.getSession().write(spb.toPacket());
-        }
-	*/
-	
 	/**
 	 * Sends the player an option.
 	 * @param slot The slot to place the option in the menu.
-	 * @param top Place the option directly at the top.
+	 * @param top Flag which indicates the item should be placed at the top.
+	 * @return The action sender instance, for chaining.
 	 */
 	public ActionSender sendInteractionOption(String option, int slot, boolean top) {
 		PacketBuilder bldr = new PacketBuilder(104, Type.VARIABLE);
 		bldr.put((byte) -slot);
 		bldr.putByteA(top ? (byte) 0 : (byte) 1);
 		bldr.putRS2String(option);
+		player.write(bldr.toPacket());
+		return this;
+	}
+
+	/**
+	 * Sends a string.
+	 * @param id The interface id.
+	 * @param string The string.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendString(int id, String string) {
+		PacketBuilder bldr = new PacketBuilder(126, Type.VARIABLE_SHORT);
+		bldr.putRS2String(string);
+		bldr.putShortA(id);
+		player.write(bldr.toPacket());
+		return this;
+	}
+	
+	/**
+	 * Sends a model in an interface.
+	 * @param id The interface id.
+	 * @param zoom The zoom.
+	 * @param model The model id.
+	 * @return The action sender instance, for chaining.
+	 */
+	public ActionSender sendInterfaceModel(int id, int zoom, int model) {
+		PacketBuilder bldr = new PacketBuilder(246);
+		bldr.putLEShort(id).putShort(zoom).putShort(model);
 		player.write(bldr.toPacket());
 		return this;
 	}

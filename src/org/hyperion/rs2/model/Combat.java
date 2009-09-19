@@ -2,8 +2,6 @@ package org.hyperion.rs2.model;
 
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Player;
-import org.hyperion.rs2.model.NPC;
-import org.hyperion.rs2.model.Damage;
 import org.hyperion.rs2.model.Damage.Hit;
 import org.hyperion.rs2.model.Damage.HitType;
 import org.hyperion.rs2.model.EntityCooldowns.CooldownFlags;

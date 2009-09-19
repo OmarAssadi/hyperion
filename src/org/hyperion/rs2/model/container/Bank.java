@@ -33,7 +33,7 @@ public class Bank {
 	 */
 	public static void open(Player player) {
 		player.getBank().shift();
-		player.getActionSender().sendInventoryInterface(5292, 5063);
+		player.getActionSender().sendInterfaceInventory(5292, 5063);
 		player.getInterfaceState().addListener(player.getBank(), new InterfaceContainerListener(player, 5382));
 		player.getInterfaceState().addListener(player.getInventory(), new InterfaceContainerListener(player, 5064));
 	}
