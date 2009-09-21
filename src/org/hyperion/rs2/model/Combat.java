@@ -33,7 +33,7 @@ public class Combat {
 		 */
 		MAGIC,
 	}
-	
+
 	/**
 	 * Get the attackers' weapon speed.
 	 * @param player The player for whose weapon we are getting the speed value.
@@ -53,12 +53,10 @@ public class Combat {
 	 */
 	public static boolean canAttack(Entity source, Entity victim) {
 		// PvP combat, PvE not supported (yet)
+		if(victim.isDead() || source.isDead())
+			return false;
 		if((source instanceof Player) && (victim instanceof Player)) {
-			Player pSource = (Player) source;
-			Player pVictim = (Player) victim;
-			// TODO implement attackable zones - using new trigger system?
-			if(pVictim.isDead() || pSource.isDead())
-				return false;
+			// attackable zones, etc
 		}
 		return true;
 	}
@@ -68,10 +66,10 @@ public class Combat {
 	 * @param recipient The entity taking the damage.
 	 * @param damage The damage to be done.
 	 */
-	public static void inflictDamage(Entity recipient, Hit damage) {
-		if(recipient instanceof Player) {
+	public static void inflictDamage(Entity recipient, Entity aggressor, Hit damage) {
+		if((recipient instanceof Player) && (aggressor != null)) {
 			Player p = (Player) recipient;
-			p.inflictDamage(damage);
+			p.inflictDamage(damage, aggressor);
 			p.playAnimation(Animation.create(434, 2));
 		}
 	}
@@ -90,27 +88,6 @@ public class Combat {
 	}
 	
 	/**
-	 * Put the victim in combat and trigger their autoretaliation.
-	 * @param victim The victim entity.
-	 * @param source The source entity.
-	 */
-	public static void initiateCombat(Entity victim, Entity source) {
-		if(!victim.isInCombat()) {
-			victim.setInCombat(true);
-			victim.setAggressorState(false);
-			if(victim.isAutoRetaliating()) {
-				//victim.setInteractingEntity(source);
-				victim.face(source.getLocation());
-			}
-		}
-		if(!source.isInCombat()) {
-			source.setInCombat(true);
-			//source.setInteractingEntity(victim);  /
-			source.setAggressorState(true);
-		}
-	}
-	
-	/**
 	 * Carries out a single attack.
 	 * @param source The entity source of the attack.
 	 * @param victim The entity victim of the attack.
@@ -119,9 +96,8 @@ public class Combat {
 	public static void doAttack(Entity source, Entity victim, AttackType attackType) {
 		if(!canAttack(source, victim))
 			return;
-		source.getEntityCooldowns().flag(CooldownFlags.MELEE_SWING, getAttackSpeed(source), source);
-		source.face(victim.getLocation());
+		source.setInteractingEntity(victim);
 		source.playAnimation(Animation.create(422, 1));
-		inflictDamage(victim, calculateHit(source, victim, attackType));
+		inflictDamage(victim, source, calculateHit(source, victim, attackType));
 	}
 }

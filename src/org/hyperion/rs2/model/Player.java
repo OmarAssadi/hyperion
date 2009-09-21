@@ -7,6 +7,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.hyperion.data.Persistable;
 import org.hyperion.rs2.action.ActionQueue;
+import org.hyperion.rs2.action.impl.AttackAction;
 import org.hyperion.rs2.event.impl.DeathEvent;
 import org.hyperion.rs2.model.UpdateFlags.UpdateFlag;
 import org.hyperion.rs2.model.container.Bank;
@@ -517,11 +518,11 @@ public class Player extends Entity implements Persistable {
 	
 	/**
 	 * Manages updateflags and HP modification when a hit occurs.
+	 * @param source The Entity dealing the blow.
 	 */
-	public void inflictDamage(Hit inc) {
+	public void inflictDamage(Hit inc, Entity source) {
 		if(!getUpdateFlags().get(UpdateFlag.HIT)) {
-			Hit testHit = new Hit(1, HitType.NORMAL_DAMAGE);
-			getDamage().setHit1(testHit);
+			getDamage().setHit1(inc);
 			getUpdateFlags().flag(UpdateFlag.HIT);
 		} else {
 			if(!getUpdateFlags().get(UpdateFlag.HIT_2)) {
@@ -530,12 +531,24 @@ public class Player extends Entity implements Persistable {
 			}
 		}
 		skills.detractLevel(Skills.HITPOINTS, inc.getDamage());
+		if((source instanceof Entity) && (source != null)) {
+			this.setInCombat(true);
+			this.setAggressorState(false);
+			if(this.isAutoRetaliating()) {
+				this.face(source.getLocation());
+				this.getActionQueue().addAction(new AttackAction(this, source));
+			}
+		}
 		if(skills.getLevel(Skills.HITPOINTS) <= 0) {
 			if(!this.isDead()) {
 				World.getWorld().submit(new DeathEvent(this));
 			}
 			this.setDead(true);
 		}
+	}
+	
+	public void inflictDamage(Hit inc) {
+		this.inflictDamage(inc, null);
 	}
 
 	@Override

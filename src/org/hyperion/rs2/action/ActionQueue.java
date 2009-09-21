@@ -38,7 +38,8 @@ public class ActionQueue {
 			actionEvent.stop();
 		}
 		queuedActions.clear();
-		currentAction.stop();
+		if(currentAction != null)
+			currentAction.stop();
 		currentAction = null;
 	}
 	

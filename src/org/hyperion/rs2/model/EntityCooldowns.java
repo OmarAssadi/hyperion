@@ -1,4 +1,5 @@
 package org.hyperion.rs2.model;
+
 import java.util.BitSet;
 
 import org.hyperion.rs2.event.impl.CooldownEvent;

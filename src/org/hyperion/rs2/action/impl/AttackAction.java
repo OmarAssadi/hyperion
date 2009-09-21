@@ -31,7 +31,7 @@ public class AttackAction extends Action {
 	 * @param type The type of attack.
 	 */
 	public AttackAction(Player player, Entity victim) {
-		super(player, 10);
+		super(player, 500);
 		this.victim = victim;
 	}
 
@@ -51,8 +51,10 @@ public class AttackAction extends Action {
 		final Player player = getPlayer();
 		if(Combat.canAttack(player, victim)) {
 			if(!player.getEntityCooldowns().get(CooldownFlags.MELEE_SWING)) {
-				Combat.initiateCombat(victim, player);
+				player.setInCombat(true);
+				player.setAggressorState(true);
 				Combat.doAttack(player, victim, type);
+				player.getEntityCooldowns().flag(CooldownFlags.MELEE_SWING, Combat.getAttackSpeed(player), player);
 			}
 		} else {
 			this.stop();

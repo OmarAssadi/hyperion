@@ -379,6 +379,7 @@ public class World {
 	 * @param player The player to unregister.
 	 */
 	public void unregister(final Player player) {
+		player.getActionQueue().cancelQueuedActions();
 		player.destroy();
 		player.getSession().close(false);
 		players.remove(player);
