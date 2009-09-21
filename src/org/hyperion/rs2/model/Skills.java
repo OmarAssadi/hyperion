@@ -182,6 +182,9 @@ public class Skills {
 		if(levels[skill] == 0) {
 			amount = 0;
 		}
+		if(amount > levels[skill]) {
+			amount = levels[skill];
+		}
 		levels[skill] = levels[skill] - amount;
 		player.getActionSender().sendSkill(skill);
 	}

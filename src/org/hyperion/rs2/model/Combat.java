@@ -1,5 +1,7 @@
 package org.hyperion.rs2.model;
 
+import java.util.Map;
+
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Damage.Hit;
@@ -32,6 +34,36 @@ public class Combat {
 		 * Magic-based attacks.
 		 */
 		MAGIC,
+	}
+	
+	public static class CombatSession {
+		private double stamp;
+		private Map<Entity, Integer> participants;
+		
+		public CombatSession(Entity participant, double stamp) {
+			this.stamp = stamp;
+			participants.put(participant, 0);
+		}
+		
+		public double getStamp() {
+			return stamp;
+		}
+		
+		public Map<Entity, Integer> getParticipants() {
+			return participants;
+		}
+		
+		public void addParticipant(Entity participant) {
+			participants.put(participant, 0);
+		}
+		
+		public void updateParticipantDamage(Entity participant, int damage) {
+			participants.put(participant, participants.get(participant)+damage);
+		}
+		
+		public void removeParticipant(Entity participant) {
+			participants.remove(participant);
+		}
 	}
 
 	/**
@@ -75,14 +107,25 @@ public class Combat {
 	}
 	
 	/**
-	 * Calculates the damage a single hit will do.
+	 * Calculates the damage a single hit by a player will do.
 	 * @param source The attacking entity.
 	 * @param victim The defending entity.
 	 * @return An <code>int</code> representing the damage done.
 	 */
-	public static Hit calculateHit(Entity source, Entity victim, AttackType attack) {
-		int verdict = 1;
+	public static Hit calculatePlayerHit(Entity source, Entity victim, AttackType attack) {
+		int verdict = 0;
 		HitType hit = HitType.NORMAL_DAMAGE;
+		if(victim instanceof Player) {
+			Player v = (Player) victim;
+			// calculations here
+			verdict = 3;
+			if(verdict >= v.getSkills().getLevel(Skills.HITPOINTS)) {
+				verdict = v.getSkills().getLevel(Skills.HITPOINTS);
+			}
+		}
+		if(verdict == 0) {
+			hit = HitType.NO_DAMAGE;
+		}
 		Hit thisAttack = new Hit(verdict, hit);
 		return thisAttack;
 	}
@@ -98,6 +141,6 @@ public class Combat {
 			return;
 		source.setInteractingEntity(victim);
 		source.playAnimation(Animation.create(422, 1));
-		inflictDamage(victim, source, calculateHit(source, victim, attackType));
+		inflictDamage(victim, source, calculatePlayerHit(source, victim, attackType));
 	}
 }

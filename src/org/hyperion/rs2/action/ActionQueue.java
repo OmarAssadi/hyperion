@@ -89,9 +89,11 @@ public class ActionQueue {
 				break;
 			case NON_WALKABLE:
 				actionEvent.stop();
+				queuedActions.remove(actionEvent);
 				break;
 			case FOLLOW:
 				actionEvent.stop();
+				queuedActions.remove(actionEvent);
 				break;
 			}
 		}
