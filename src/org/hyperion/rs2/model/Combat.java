@@ -37,21 +37,36 @@ public class Combat {
 		MAGIC,
 	}
 	
+	public static class CombatSession {
+		private int damage = 0;
+		private long timestamp = 0;
+		
+		public CombatSession() {
+			
+		}
+		
+		public int getDamage() {
+			return this.damage;
+		}
+	}
+	
 	/**
 	 * Represents an instance of combat, where Entity is an assailant and Integer is the sum of their damage done. This is mapped to every victim in combat,
 	 * and used to determine drops.
 	 * @author Brett Russell
 	 */
-	public static class CombatSession {
+	public static class CollectiveCombatSession {
 		private long stamp;
-		private Map<Entity, Integer> damageMap;
+		private Map<Entity, CombatSession> damageMap;
 		private Set<Entity> names = damageMap.keySet();
 		private boolean isActive;
+		private Entity victim;
 		
-		public CombatSession() {
+		public CollectiveCombatSession(Entity victim) {
 			java.util.Date date = new java.util.Date();
 			this.stamp = date.getTime();
 			this.isActive = true;
+			this.victim = victim;
 		}
 		
 		/**
@@ -75,7 +90,7 @@ public class Combat {
 			
 			while(itr.hasNext()) {
 				Entity currentEntity = itr.next();
-				damageDone = damageMap.get(currentEntity);
+				damageDone = damageMap.get(currentEntity).getDamage();
 				if(damageDone > currentHighest) {
 					currentHighest = damageDone;
 					top = currentEntity;
@@ -88,7 +103,7 @@ public class Combat {
 		 * Returns the Map of this session's participants. If you would want it, that is...
 		 * @return A Map of the participants and their damage done.
 		 */
-		public Map<Entity, Integer> getDamageCharts() {
+		public Map<Entity, CombatSession> getDamageCharts() {
 			return damageMap;
 		}
 		
@@ -97,16 +112,8 @@ public class Combat {
 		 * @param participant The participant to add.
 		 */
 		public void addParticipant(Entity participant) {
-			damageMap.put(participant, 0);
-		}
-		
-		/**
-		 * Update a participant's damage.
-		 * @param participant The participant to update.
-		 * @param damage The damage amount to add to their total.
-		 */
-		public void updateParticipantDamage(Entity participant, int damage) {
-			damageMap.put(participant, damageMap.get(participant) + damage);
+			// TODO CombatSession
+			damageMap.put(participant, null);
 		}
 		
 		/**
@@ -123,6 +130,14 @@ public class Combat {
 		 */
 		public void setState(boolean b) {
 			this.isActive = b;
+		}
+		
+		/**
+		 * Determine the active state of this session.
+		 * @return The active state as a <code>boolean</code> value.
+		 */
+		public boolean getIsActive() {
+			return this.isActive;
 		}
 	}
 
@@ -188,6 +203,11 @@ public class Combat {
 		}
 		Hit thisAttack = new Hit(verdict, hit);
 		return thisAttack;
+	}
+	
+	
+	public static void initiateCombat(Entity source, Entity victim) {
+		
 	}
 	
 	/**
