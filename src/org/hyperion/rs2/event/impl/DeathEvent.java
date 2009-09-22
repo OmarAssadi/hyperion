@@ -30,7 +30,7 @@ public class DeathEvent extends Event {
 	public void execute() {
 		if(entity instanceof Player) {
 			Player p = (Player) entity;
-			p.getSkills().setLevel(Skills.HITPOINTS, p.getSkills().getLevelForExperience(Skills.HITPOINTS)+1);
+			p.getSkills().setLevel(Skills.HITPOINTS, p.getSkills().getLevelForExperience(Skills.HITPOINTS));
 			entity.setDead(false);
 			entity.setTeleportTarget(Entity.DEFAULT_LOCATION);
 			p.getActionSender().sendMessage("Oh dear, you are dead!");

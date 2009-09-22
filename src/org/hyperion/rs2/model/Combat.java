@@ -1,12 +1,13 @@
 package org.hyperion.rs2.model;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.Player;
 import org.hyperion.rs2.model.Damage.Hit;
 import org.hyperion.rs2.model.Damage.HitType;
-import org.hyperion.rs2.model.EntityCooldowns.CooldownFlags;
 
 /**
  * Handles the combat system.
@@ -36,33 +37,92 @@ public class Combat {
 		MAGIC,
 	}
 	
+	/**
+	 * Represents an instance of combat, where Entity is an assailant and Integer is the sum of their damage done. This is mapped to every victim in combat,
+	 * and used to determine drops.
+	 * @author Brett Russell
+	 */
 	public static class CombatSession {
-		private double stamp;
-		private Map<Entity, Integer> participants;
+		private long stamp;
+		private Map<Entity, Integer> damageMap;
+		private Set<Entity> names = damageMap.keySet();
+		private boolean isActive;
 		
-		public CombatSession(Entity participant, double stamp) {
-			this.stamp = stamp;
-			participants.put(participant, 0);
+		public CombatSession() {
+			java.util.Date date = new java.util.Date();
+			this.stamp = date.getTime();
+			this.isActive = true;
 		}
 		
-		public double getStamp() {
+		/**
+		 * Gets the timestamp for this object (when the session began).
+		 * @return The timestamp.
+		 */
+		public long getStamp() {
 			return stamp;
 		}
 		
-		public Map<Entity, Integer> getParticipants() {
-			return participants;
+		/**
+		 * Gets the entity with the highest damage count this session.
+		 * @return The entity with the highest damage count.
+		 */
+		public Entity getTopDamage() {
+			Entity top = null;
+			int damageDone = 0;
+			int currentHighest = 0;
+			
+			Iterator<Entity> itr = names.iterator();
+			
+			while(itr.hasNext()) {
+				Entity currentEntity = itr.next();
+				damageDone = damageMap.get(currentEntity);
+				if(damageDone > currentHighest) {
+					currentHighest = damageDone;
+					top = currentEntity;
+				}
+			}
+			return top;
 		}
 		
+		/**
+		 * Returns the Map of this session's participants. If you would want it, that is...
+		 * @return A Map of the participants and their damage done.
+		 */
+		public Map<Entity, Integer> getDamageCharts() {
+			return damageMap;
+		}
+		
+		/**
+		 * Adds a participant to this session.
+		 * @param participant The participant to add.
+		 */
 		public void addParticipant(Entity participant) {
-			participants.put(participant, 0);
+			damageMap.put(participant, 0);
 		}
 		
+		/**
+		 * Update a participant's damage.
+		 * @param participant The participant to update.
+		 * @param damage The damage amount to add to their total.
+		 */
 		public void updateParticipantDamage(Entity participant, int damage) {
-			participants.put(participant, participants.get(participant)+damage);
+			damageMap.put(participant, damageMap.get(participant) + damage);
 		}
 		
+		/**
+		 * Remove a participant.
+		 * @param participant The participant to remove.
+		 */
 		public void removeParticipant(Entity participant) {
-			participants.remove(participant);
+			damageMap.remove(participant);
+		}
+		
+		/**
+		 * Sets this sessions active state.
+		 * @param state A <code>boolean</code> value representing the state.
+		 */
+		public void setState(boolean b) {
+			this.isActive = b;
 		}
 	}
 
