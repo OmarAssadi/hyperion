@@ -1,7 +1,7 @@
 plugins {
-	id 'com.github.johnrengelman.shadow' version '6.1.0'
-	id 'application'
-	id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'application'
+    id 'java'
 }
 
 ext {
@@ -11,9 +11,17 @@ ext {
 group = 'org.hyperion'
 version = '1.0.1'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-	implementation fileTree(dir: 'lib', include: ['*.jar'], exclude: ['junit-4.6.jar'])
-	testImplementation files('lib/junit-4.6.jar')
+    implementation 'org.apache.mina:mina-core:2.0.0-M6'
+    implementation 'org.apache.commons:commons-compress:1.0'
+    implementation 'org.python:jython:2.2.1'
+    implementation 'org.slf4j:slf4j-api:1.5.8'
+    implementation 'org.slf4j:slf4j-jdk14:1.5.8'
+    testImplementation 'junit:junit:4.6'
 }
 
 compileJava {
