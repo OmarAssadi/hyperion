@@ -43,10 +43,11 @@ public class EventManager {
 		engine.scheduleLogic(new Runnable() {
 			@Override
 			public void run() {
-				long start = System.currentTimeMillis();
-				if(event.isRunning()) {
-					event.execute();
+				if(!event.isRunning()) {
+					return;
 				}
+				long start = System.currentTimeMillis();
+				event.execute();
 				long elapsed = System.currentTimeMillis() - start;
 				long remaining = event.getDelay() - elapsed;
 				if(remaining <= 0) {
