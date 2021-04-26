@@ -10,7 +10,7 @@ import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.hyperion.rs2.GenericWorldLoader;
 import org.hyperion.rs2.WorldLoader;
-import org.hyperion.util.CommonConstants;
+import org.hyperion.util.NetworkConstants;
 
 /**
  * The login server.
@@ -62,8 +62,8 @@ public class LoginServer {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public LoginServer bind() throws IOException {
-		logger.info("Binding to port : " + CommonConstants.LOGIN_PORT + "...");
-		acceptor.bind(new InetSocketAddress(CommonConstants.LOGIN_PORT));
+		logger.info("Binding to port : " + NetworkConstants.LOGIN_PORT + "...");
+		acceptor.bind(new InetSocketAddress(NetworkConstants.LOGIN_PORT));
 		return this;
 	}
 	

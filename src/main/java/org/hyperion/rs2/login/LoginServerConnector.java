@@ -18,7 +18,7 @@ import org.hyperion.rs2.model.PlayerDetails;
 import org.hyperion.rs2.model.World;
 import org.hyperion.rs2.util.IoBufferUtils;
 import org.hyperion.rs2.util.NameUtils;
-import org.hyperion.util.CommonConstants;
+import org.hyperion.util.NetworkConstants;
 import org.hyperion.util.login.LoginCodecFactory;
 import org.hyperion.util.login.LoginPacket;
 
@@ -98,8 +98,8 @@ public class LoginServerConnector extends IoHandlerAdapter {
 	public void connect(final String password, final int node) {
 		this.password = password;
 		this.node = node;
-		logger.info("Connecting to login server : " + address + ":" + CommonConstants.LOGIN_PORT + "...");
-		ConnectFuture cf = connector.connect(new InetSocketAddress(address, CommonConstants.LOGIN_PORT));
+		logger.info("Connecting to login server : " + address + ":" + NetworkConstants.LOGIN_PORT + "...");
+		ConnectFuture cf = connector.connect(new InetSocketAddress(address, NetworkConstants.LOGIN_PORT));
 		cf.awaitUninterruptibly();
 		if(!cf.isConnected() && (session == null || !session.isConnected())) {
 			logger.severe("Connection to login server failed. Retrying...");

@@ -1,5 +1,6 @@
 package org.hyperion.rs2.net;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import org.hyperion.rs2.net.ondemand.OnDemandPool;
 import org.hyperion.rs2.net.ondemand.OnDemandRequest;
 import org.hyperion.rs2.util.IoBufferUtils;
 import org.hyperion.rs2.util.NameUtils;
+import org.hyperion.util.NetworkConstants;
 
 /**
  * Login protocol decoding class.
@@ -253,89 +255,91 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 					in.rewind();
 					return false;
 				}
-				
-				/*
-				 * We now read the encrypted block opcode (although in most
-				 * 317 clients and this server the RSA is disabled) and
-				 * check it is equal to 10.
-				 */
-				int blockOpcode = in.get() & 0xFF;
-				if(blockOpcode != 10) {
-					logger.info("Invalid login block opcode : " + blockOpcode);
-					session.close(false);
-					in.rewind();
-					return false;
-				}
 
-				/*
-				 * We read the client's session key.
-				 */
-				long clientKey = in.getLong();
-				
-				/*
-				 * And verify it has the correct server session key.
-				 */
-				long serverKey = (Long) session.getAttribute("serverKey");
-				long reportedServerKey = in.getLong();
-				if(reportedServerKey != serverKey) {
-					logger.info("Server key mismatch (expected : " + serverKey + ", reported : " + reportedServerKey + ")");
-					session.close(false);
-					in.rewind();
-					return false;
-				}
-				
-				/*
-				 * The UID, found in random.dat in newer clients and
-				 * uid.dat in older clients is a way of identifying a
-				 * computer.
-				 * 
-				 * However, some clients send a hardcoded or random UID,
-				 * making it useless in the private server scene.
-				 */
-				int uid = in.getInt();
-				
-				/*
-				 * We read and format the name and passwords.
-				 */
-				String name = NameUtils.formatName(IoBufferUtils.getRS2String(in));
-				String pass = IoBufferUtils.getRS2String(in);
-				logger.info("Login request : username=" + name + " password=" + pass);
-				
-				/*
-				 * And setup the ISAAC cipher which is used to encrypt and
-				 * decrypt opcodes.
-				 * 
-				 * However, without RSA, this is rendered useless anyway.
-				 */
-				int[] sessionKey = new int[4];
-				sessionKey[0] = (int) (clientKey >> 32);
-				sessionKey[1] = (int) clientKey;
-				sessionKey[2] = (int) (serverKey >> 32);
-				sessionKey[3] = (int) serverKey;
-				
-				session.removeAttribute("state");
-				session.removeAttribute("serverKey");
-				session.removeAttribute("size");
-				session.removeAttribute("encryptSize");
-				
-				ISAACCipher inCipher = new ISAACCipher(sessionKey);
-				for(int i = 0; i < 4; i++) {
-					sessionKey[i] += 50;
-				}
-				ISAACCipher outCipher = new ISAACCipher(sessionKey);
-				
-				/*
-				 * Now, the login has completed, and we do the appropriate
-				 * things to fire off the chain of events which will load
-				 * and check the saved games etc.
-				 */
-				session.getFilterChain().remove("protocol");
-				session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(RS2CodecFactory.GAME));
-				
-				PlayerDetails pd = new PlayerDetails(session, name, pass, uid, inCipher, outCipher);
-				World.getWorld().load(pd);
-			}
-			break;
+                /*
+                 * We now read the encrypted block opcode and
+                 * check it is equal to 10.
+                 */
+                final byte[] rsaPayload = new byte[encryptSize];
+                in.get(rsaPayload);
+                final IoBuffer rsaBuffer = IoBuffer.wrap(new BigInteger(rsaPayload).modPow(NetworkConstants.RSA_EXPONENT, NetworkConstants.RSA_MODULUS).toByteArray());
+                int blockOpcode = rsaBuffer.get() & 0xFF;
+                if (blockOpcode != 10) {
+                    logger.info("Invalid login block opcode : " + blockOpcode);
+                    session.close(false);
+                    in.rewind();
+                    return false;
+                }
+
+                /*
+                 * We read the client's session key.
+                 */
+                long clientKey = rsaBuffer.getLong();
+
+                /*
+                 * And verify it has the correct server session key.
+                 */
+                long serverKey = (Long) session.getAttribute("serverKey");
+                long reportedServerKey = rsaBuffer.getLong();
+                if(reportedServerKey != serverKey) {
+                    logger.info("Server key mismatch (expected : " + serverKey + ", reported : " + reportedServerKey + ")");
+                    session.close(false);
+                    in.rewind();
+                    return false;
+                }
+
+                /*
+                 * The UID, found in random.dat in newer clients and
+                 * uid.dat in older clients is a way of identifying a
+                 * computer.
+                 *
+                 * However, some clients send a hardcoded or random UID,
+                 * making it useless in the private server scene.
+                 */
+                int uid = rsaBuffer.getInt();
+
+                /*
+                 * We read and format the name and passwords.
+                 */
+                String name = NameUtils.formatName(IoBufferUtils.getRS2String(rsaBuffer));
+                String pass = IoBufferUtils.getRS2String(rsaBuffer);
+                logger.info("Login request : username=" + name + " password=" + pass);
+
+                /*
+                 * And setup the ISAAC cipher which is used to encrypt and
+                 * decrypt opcodes.
+                 *
+                 * However, without RSA, this is rendered useless anyway.
+                 */
+                int[] sessionKey = new int[4];
+                sessionKey[0] = (int) (clientKey >> 32);
+                sessionKey[1] = (int) clientKey;
+                sessionKey[2] = (int) (serverKey >> 32);
+                sessionKey[3] = (int) serverKey;
+
+                session.removeAttribute("state");
+                session.removeAttribute("serverKey");
+                session.removeAttribute("size");
+                session.removeAttribute("encryptSize");
+
+                ISAACCipher inCipher = new ISAACCipher(sessionKey);
+                for(int i = 0; i < 4; i++) {
+                    sessionKey[i] += 50;
+                }
+                ISAACCipher outCipher = new ISAACCipher(sessionKey);
+
+                /*
+                 * Now, the login has completed, and we do the appropriate
+                 * things to fire off the chain of events which will load
+                 * and check the saved games etc.
+                 */
+                session.getFilterChain().remove("protocol");
+                session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(RS2CodecFactory.GAME));
+
+                PlayerDetails pd = new PlayerDetails(session, name, pass, uid, inCipher, outCipher);
+                World.getWorld().load(pd);
+            }
+            break;
 		}
 		in.rewind();
 		return false;
