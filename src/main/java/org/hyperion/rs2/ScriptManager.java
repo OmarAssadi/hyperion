@@ -1,21 +1,26 @@
 package org.hyperion.rs2;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manages server scripts.
+ *
  * @author blakeman8192
- * 
+ * @author Omar Assadi
  */
 public class ScriptManager {
 	
@@ -35,12 +40,12 @@ public class ScriptManager {
 	/**
 	 * The ScriptEngineManager.
 	 */
-	private ScriptEngineManager mgr;
+	private final ScriptEngineManager mgr;
 
 	/**
 	 * The JavaScript Engine.
 	 */
-	private ScriptEngine jsEngine;
+	private final ScriptEngine jsEngine;
 
 	/**
 	 * The logger for this manager.
@@ -78,24 +83,46 @@ public class ScriptManager {
 	 * @param dirPath The path of the directory to load the JavaScript source files
 	 * from.
 	 */
-	public void loadScripts(String dirPath) {
-		File dir = new File(dirPath);
-		if (dir.exists() && dir.isDirectory()) {
-			File[] children = dir.listFiles();
-			for (File child : children) {
-				if (child.isFile() && child.getName().endsWith(".js"))
-					try {
-						jsEngine.eval(new InputStreamReader(
-								new FileInputStream(child)));
-					} catch (ScriptException ex) {
-						logger.log(Level.SEVERE, "Unable to load script!", ex);
-					} catch (FileNotFoundException ex) {
-						logger.log(Level.SEVERE, "Unable to find script!", ex);
-					}
-				else if (child.isDirectory())
-					loadScripts(child.getPath());
-			}
-		}
+	public void loadScripts(final String dirPath) throws IOException {
+        final Path scriptsDir = Paths.get(dirPath);
+        if (!Files.exists(scriptsDir)) {
+            Files.createDirectories(scriptsDir);
+        }
+        if (!Files.isDirectory(scriptsDir)) {
+            throw new IOException("Scripts directory: [dirPath=" + dirPath + "] " +
+                "is not a directory! Unable to read scripts");
+        }
+        final Path bootstrapPath = scriptsDir.resolve("bootstrap.js");
+        if (!Files.exists(bootstrapPath)) {
+            throw new FileNotFoundException("Unable to find script bootstrap in the " +
+                "scripts directory! Unable load scripts [dirPath=" + dirPath + "]");
+        }
+
+        try {
+            jsEngine.eval(new InputStreamReader(Files.newInputStream(bootstrapPath)));
+        } catch (final ScriptException e) {
+            logger.log(Level.SEVERE, "An error occurred while bootstrapping " +
+                "scripts! Unable to load scripts.", e);
+            return;
+        }
+        Files.walkFileTree(scriptsDir, new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                final var fileName = file.getFileName().toString();
+                if (!fileName.endsWith(".js") || fileName.equalsIgnoreCase("bootstrap.js")) {
+                    return FileVisitResult.CONTINUE;
+                }
+                logger.log(Level.FINE, "Loading script: " + fileName);
+                try {
+                    jsEngine.eval(new InputStreamReader(Files.newInputStream(file)));
+                } catch (ScriptException ex) {
+                    logger.log(Level.SEVERE, "Unable to load script!", ex);
+                } catch (FileNotFoundException ex) {
+                    logger.log(Level.SEVERE, "Unable to find script!", ex);
+                }
+                return FileVisitResult.CONTINUE;
+            }
+        });
 	}
 
 }

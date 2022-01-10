@@ -6,6 +6,7 @@ plugins {
 
 ext {
     appMainClass = 'org.hyperion.Server'
+    graalVersion = '21.3.0'
 }
 
 group = 'org.hyperion'
@@ -22,6 +23,9 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.5.8'
     implementation 'org.slf4j:slf4j-jdk14:1.5.8'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
+    implementation "org.graalvm.sdk:graal-sdk:$graalVersion"
+    implementation "org.graalvm.js:js:$graalVersion"
+    implementation "org.graalvm.js:js-scriptengine:$graalVersion"
     testImplementation 'junit:junit:4.6'
 }
 
@@ -30,6 +34,8 @@ java {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
+
+applicationDefaultJvmArgs = ["-Dpolyglot.js.nashorn-compat=true"]
 
 application {
     mainClass = appMainClass

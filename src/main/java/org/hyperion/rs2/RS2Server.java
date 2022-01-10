@@ -67,7 +67,7 @@ public class RS2Server {
 	 * Starts the <code>GameEngine</code>.
 	 * @throws ExecutionException if an error occured during background loading.
 	 */
-	public void start() throws ExecutionException {
+	public void start() throws ExecutionException, IOException {
 		ScriptManager.getScriptManager().loadScripts(Constants.SCRIPTS_DIRECTORY);
 		if(World.getWorld().getBackgroundLoader().getPendingTaskAmount() > 0) {
 			logger.info("Waiting for pending background loading tasks...");
