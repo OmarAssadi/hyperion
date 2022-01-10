@@ -5,16 +5,16 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task which stops the game engine.
- * @author Graham Edgecombe
  *
+ * @author Graham Edgecombe
  */
 public class DeathTask implements Task {
 
-	@Override
-	public void execute(GameEngine context) {
-		if(context.isRunning()) {
-			context.stop();
-		}
-	}
+    @Override
+    public void execute(final GameEngine context) {
+        if (context.isRunning()) {
+            context.stop();
+        }
+    }
 
 }

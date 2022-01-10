@@ -14,41 +14,41 @@ import org.hyperion.rs2.task.impl.SessionOpenedTask;
 /**
  * The <code>ConnectionHandler</code> processes incoming events from MINA,
  * submitting appropriate tasks to the <code>GameEngine</code>.
- * @author Graham Edgecombe
  *
+ * @author Graham Edgecombe
  */
 public class ConnectionHandler extends IoHandlerAdapter {
-	
-	/**
-	 * The <code>GameEngine</code> instance.
-	 */
-	private final GameEngine engine = World.getWorld().getEngine();
 
-	@Override
-	public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-		session.closeOnFlush();
-	}
+    /**
+     * The <code>GameEngine</code> instance.
+     */
+    private final GameEngine engine = World.getWorld().getEngine();
 
-	@Override
-	public void messageReceived(IoSession session, Object message) throws Exception {
-		engine.pushTask(new SessionMessageTask(session, (Packet) message));
-	}
+    @Override
+    public void sessionOpened(final IoSession session) throws Exception {
+        session.setAttribute("remote", session.getRemoteAddress());
+        session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(RS2CodecFactory.LOGIN));
+        engine.pushTask(new SessionOpenedTask(session));
+    }
 
-	@Override
-	public void sessionClosed(IoSession session) throws Exception {
-		engine.pushTask(new SessionClosedTask(session));
-	}
+    @Override
+    public void sessionClosed(final IoSession session) throws Exception {
+        engine.pushTask(new SessionClosedTask(session));
+    }
 
-	@Override
-	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-		session.closeOnFlush();
-	}
+    @Override
+    public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
+        session.closeOnFlush();
+    }
 
-	@Override
-	public void sessionOpened(IoSession session) throws Exception {
-		session.setAttribute("remote", session.getRemoteAddress());
-		session.getFilterChain().addFirst("protocol", new ProtocolCodecFilter(RS2CodecFactory.LOGIN));
-		engine.pushTask(new SessionOpenedTask(session));
-	}
+    @Override
+    public void exceptionCaught(final IoSession session, final Throwable throwable) throws Exception {
+        session.closeOnFlush();
+    }
+
+    @Override
+    public void messageReceived(final IoSession session, final Object message) throws Exception {
+        engine.pushTask(new SessionMessageTask(session, (Packet) message));
+    }
 
 }

@@ -5,17 +5,17 @@ import org.hyperion.rs2.net.Packet;
 
 /**
  * A packet sent when the player enters a custom amount for banking etc.
- * @author Graham Edgecombe
  *
+ * @author Graham Edgecombe
  */
 public class EnterAmountPacketHandler implements PacketHandler {
 
-	@Override
-	public void handle(Player player, Packet packet) {
-		int amount = packet.getInt();
-		if(player.getInterfaceState().isEnterAmountInterfaceOpen()) {
-			player.getInterfaceState().closeEnterAmountInterface(amount);
-		}
-	}
+    @Override
+    public void handle(final Player player, final Packet packet) {
+        final int amount = packet.getInt();
+        if (player.getInterfaceState().isEnterAmountInterfaceOpen()) {
+            player.getInterfaceState().closeEnterAmountInterface(amount);
+        }
+    }
 
 }

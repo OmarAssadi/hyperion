@@ -26,17 +26,17 @@ public final class NetworkConstants {
     public static final int LOGIN_PORT = 43596;
 
     static {
-        try (PemReader pemReader = new PemReader(new FileReader("data/rsa-private.pem"))) {
-            PemObject pem = pemReader.readPemObject();
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pem.getContent());
+        try (final PemReader pemReader = new PemReader(new FileReader("data/rsa-private.pem"))) {
+            final PemObject pem = pemReader.readPemObject();
+            final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pem.getContent());
 
             Security.addProvider(new BouncyCastleProvider());
-            KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
+            final KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
 
-            RSAPrivateKey privateKey = (RSAPrivateKey) factory.generatePrivate(keySpec);
+            final RSAPrivateKey privateKey = (RSAPrivateKey) factory.generatePrivate(keySpec);
             RSA_MODULUS = privateKey.getModulus();
             RSA_EXPONENT = privateKey.getPrivateExponent();
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             throw new ExceptionInInitializerError(new IOException("Error parsing rsa-private.pem", exception));
         }
     }

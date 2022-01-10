@@ -23,67 +23,67 @@ import java.util.logging.Logger;
  * @author Omar Assadi
  */
 public class ScriptManager {
-	
-	/**
-	 * The singleton of this class.
-	 */
-	private static final ScriptManager INSTANCE = new ScriptManager();
-	
-	/**
-	 * Gets the ScriptManager singleton.
-	 * @return The ScriptManager singleton.
-	 */
-	public static ScriptManager getScriptManager() {
-		return INSTANCE;
-	}
 
-	/**
-	 * The ScriptEngineManager.
-	 */
-	private final ScriptEngineManager mgr;
+    /**
+     * The singleton of this class.
+     */
+    private static final ScriptManager INSTANCE = new ScriptManager();
+    /**
+     * The ScriptEngineManager.
+     */
+    private final ScriptEngineManager mgr;
+    /**
+     * The JavaScript Engine.
+     */
+    private final ScriptEngine jsEngine;
+    /**
+     * The logger for this manager.
+     */
+    private final Logger logger = Logger.getLogger(this.toString());
 
-	/**
-	 * The JavaScript Engine.
-	 */
-	private final ScriptEngine jsEngine;
+    /**
+     * Creates the script manager.
+     */
+    private ScriptManager() {
+        mgr = new ScriptEngineManager();
+        jsEngine = mgr.getEngineByName("JavaScript");
+        logger.info("Loading scripts...");
+    }
 
-	/**
-	 * The logger for this manager.
-	 */
-	private final Logger logger = Logger.getLogger(this.toString());
+    /**
+     * Gets the ScriptManager singleton.
+     *
+     * @return The ScriptManager singleton.
+     */
+    public static ScriptManager getScriptManager() {
+        return INSTANCE;
+    }
 
-	/**
-	 * Creates the script manager.
-	 */
-	private ScriptManager() {
-		mgr = new ScriptEngineManager();
-		jsEngine = mgr.getEngineByName("JavaScript");
-		logger.info("Loading scripts...");
-	}
+    /**
+     * Invokes a JavaScript function.
+     *
+     * @param identifier The identifier of the function.
+     * @param args       The function arguments.
+     */
+    public void invoke(final String identifier, final Object... args) {
+        final Invocable invEngine = (Invocable) jsEngine;
+        try {
+            invEngine.invokeFunction(identifier, args);
+        } catch (final NoSuchMethodException ex) {
+            logger.log(Level.WARNING, "No such method: " + identifier, ex);
+        } catch (final ScriptException ex) {
+            logger.log(Level.WARNING, "ScriptException thrown!", ex);
+        }
+    }
 
-	/**
-	 * Invokes a JavaScript function.
-	 * @param identifier The identifier of the function.
-	 * @param args The function arguments.
-	 */
-	public void invoke(String identifier, Object... args) {
-		Invocable invEngine = (Invocable) jsEngine;
-		try {
-			invEngine.invokeFunction(identifier, args);
-		} catch (NoSuchMethodException ex) {
-			logger.log(Level.WARNING, "No such method: " + identifier, ex);
-		} catch (ScriptException ex) {
-			logger.log(Level.WARNING, "ScriptException thrown!", ex);
-		}
-	}
-
-	/**
-	 * Loads JavaScript files into the JavaScript ScriptEngine from the argued
-	 * path.
-	 * @param dirPath The path of the directory to load the JavaScript source files
-	 * from.
-	 */
-	public void loadScripts(final String dirPath) throws IOException {
+    /**
+     * Loads JavaScript files into the JavaScript ScriptEngine from the argued
+     * path.
+     *
+     * @param dirPath The path of the directory to load the JavaScript source files
+     *                from.
+     */
+    public void loadScripts(final String dirPath) throws IOException {
         final Path scriptsDir = Paths.get(dirPath);
         if (!Files.exists(scriptsDir)) {
             Files.createDirectories(scriptsDir);
@@ -115,14 +115,14 @@ public class ScriptManager {
                 logger.log(Level.FINE, "Loading script: " + fileName);
                 try {
                     jsEngine.eval(new InputStreamReader(Files.newInputStream(file)));
-                } catch (ScriptException ex) {
+                } catch (final ScriptException ex) {
                     logger.log(Level.SEVERE, "Unable to load script!", ex);
-                } catch (FileNotFoundException ex) {
+                } catch (final FileNotFoundException ex) {
                     logger.log(Level.SEVERE, "Unable to find script!", ex);
                 }
                 return FileVisitResult.CONTINUE;
             }
         });
-	}
+    }
 
 }

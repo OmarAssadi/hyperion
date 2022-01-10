@@ -1,15 +1,15 @@
 package org.hyperion.util;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
+
 import java.io.FileWriter;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Security;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.io.pem.PemObject;
-import org.bouncycastle.util.io.pem.PemWriter;
 
 /**
  * An RSA key generator.
@@ -42,26 +42,26 @@ public final class RsaKeyGenerator {
      *
      * @param args The application arguments.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
 
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
+        final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
         keyPairGenerator.initialize(BIT_COUNT);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        final KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        final RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        final RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
-        try (PemWriter writer = new PemWriter(new FileWriter(PRIVATE_KEY_FILE))) {
+        try (final PemWriter writer = new PemWriter(new FileWriter(PRIVATE_KEY_FILE))) {
             writer.writeObject(new PemObject("RSA PRIVATE KEY", privateKey.getEncoded()));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Failed to write private key to " + PRIVATE_KEY_FILE);
             e.printStackTrace();
         }
 
-        try (PemWriter writer = new PemWriter(new FileWriter(PUBLIC_KEY_FILE))) {
+        try (final PemWriter writer = new PemWriter(new FileWriter(PUBLIC_KEY_FILE))) {
             writer.writeObject(new PemObject("PUBLIC KEY", publicKey.getEncoded()));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Failed to write public key to " + PUBLIC_KEY_FILE);
             e.printStackTrace();
         }

@@ -5,18 +5,19 @@ import org.hyperion.rs2.model.Location;
 import org.hyperion.rs2.model.Player;
 
 public abstract class InspectAction extends Action {
-    
+
     /**
      * The location.
      */
-    private Location location;
+    private final Location location;
 
     /**
      * Constructor.
+     *
      * @param player
      * @param location
      */
-    public InspectAction(Player player, Location location) {
+    public InspectAction(final Player player, final Location location) {
         super(player, 0);
         this.location = location;
     }
@@ -30,33 +31,14 @@ public abstract class InspectAction extends Action {
     public WalkablePolicy getWalkablePolicy() {
         return WalkablePolicy.NON_WALKABLE;
     }
-    
-    /**
-     * Initialization method.
-     */
-    public abstract void init();
-    
-    /**
-     * Inspection time consumption.
-     * @return
-     */
-    public abstract long getInspectDelay();
-    
-    
-    /**
-     * Rewards to give the player.
-     * @param player
-     * @param node
-     */
-    public abstract void giveRewards(Player player);
 
     @Override
-    public void execute() {        
+    public void execute() {
         final Player player = getPlayer();
-        if(this.getDelay() == 0) {
+        if (this.getDelay() == 0) {
             this.setDelay(getInspectDelay());
             init();
-            if(this.isRunning()) {
+            if (this.isRunning()) {
                 player.face(location);
             }
         } else {
@@ -64,5 +46,25 @@ public abstract class InspectAction extends Action {
             stop();
         }
     }
+
+    /**
+     * Inspection time consumption.
+     *
+     * @return
+     */
+    public abstract long getInspectDelay();
+
+    /**
+     * Initialization method.
+     */
+    public abstract void init();
+
+    /**
+     * Rewards to give the player.
+     *
+     * @param player
+     * @param node
+     */
+    public abstract void giveRewards(Player player);
 
 }

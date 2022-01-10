@@ -7,27 +7,28 @@ import org.hyperion.rs2.task.Task;
 
 /**
  * A task that is executed when a player has logged in.
- * @author Graham Edgecombe
  *
+ * @author Graham Edgecombe
  */
 public class SessionLoginTask implements Task {
 
-	/**
-	 * The player.
-	 */
-	private Player player;
-	
-	/**
-	 * Creates the session login task.
-	 * @param player The player that logged in.
-	 */
-	public SessionLoginTask(Player player) {
-		this.player = player;
-	}
+    /**
+     * The player.
+     */
+    private final Player player;
 
-	@Override
-	public void execute(GameEngine context) {
-		World.getWorld().register(player);
-	}
+    /**
+     * Creates the session login task.
+     *
+     * @param player The player that logged in.
+     */
+    public SessionLoginTask(final Player player) {
+        this.player = player;
+    }
+
+    @Override
+    public void execute(final GameEngine context) {
+        World.getWorld().register(player);
+    }
 
 }

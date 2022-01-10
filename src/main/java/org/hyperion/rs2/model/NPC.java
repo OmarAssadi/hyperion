@@ -5,52 +5,54 @@ import org.hyperion.rs2.model.region.Region;
 
 /**
  * <p>Represents a non-player character in the in-game world.</p>
- * @author Graham Edgecombe
  *
+ * @author Graham Edgecombe
  */
 public class NPC extends Entity {
-	
-	/**
-	 * The definition.
-	 */
-	private final NPCDefinition definition;
-	
-	/**
-	 * Creates the NPC with the specified definition.
-	 * @param definition The definition.
-	 */
-	public NPC(NPCDefinition definition) {
-		super();
-		this.definition = definition;
-	}
-	
-	/**
-	 * Gets the NPC definition.
-	 * @return The NPC definition.
-	 */
-	public NPCDefinition getDefinition() {
-		return definition;
-	}
 
-	@Override
-	public void addToRegion(Region region) {
-		region.addNpc(this);
-	}
+    /**
+     * The definition.
+     */
+    private final NPCDefinition definition;
 
-	@Override
-	public void removeFromRegion(Region region) {
-		region.removeNpc(this);
-	}
+    /**
+     * Creates the NPC with the specified definition.
+     *
+     * @param definition The definition.
+     */
+    public NPC(final NPCDefinition definition) {
+        super();
+        this.definition = definition;
+    }
 
-	@Override
-	public int getClientIndex() {
-		return this.getIndex();
-	}
+    /**
+     * Gets the NPC definition.
+     *
+     * @return The NPC definition.
+     */
+    public NPCDefinition getDefinition() {
+        return definition;
+    }
 
-	@Override
-	public void inflictDamage(int damage, HitType type) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void removeFromRegion(final Region region) {
+        region.removeNpc(this);
+    }
+
+    @Override
+    public void addToRegion(final Region region) {
+        region.addNpc(this);
+    }
+
+    @Override
+    public void inflictDamage(final int damage, final HitType type) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public int getClientIndex() {
+        return this.getIndex();
+    }
 
 }
