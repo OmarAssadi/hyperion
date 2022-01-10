@@ -92,13 +92,13 @@ public class UpdateSession {
 	 */
 	private void serve() {
 		if(request == null) {
-			session.close(false);
+			session.closeOnFlush();
 			return;
 		}
 		logger.fine("Serving " + type + " request : " + request.getPath());
 		Response resp = RequestHandler.handle(request);
 		if(resp == null) {
-			session.close(false);
+			session.closeOnFlush();
 			return;
 		}
 		
@@ -120,7 +120,7 @@ public class UpdateSession {
 		session.write(ib).addListener(new IoFutureListener<IoFuture>() {
 			@Override
 			public void operationComplete(IoFuture arg0) {
-				session.close(false);
+				session.closeOnFlush();
 			}
 		});
 	}
@@ -132,7 +132,7 @@ public class UpdateSession {
 	private void readHttpPath(String line) {
 		String[] parts = line.split(" ");
 		if(parts.length != 3) {
-			session.close(false);
+			session.closeOnFlush();
 		} else {
 			request = new Request(parts[1].trim());
 		}
@@ -147,7 +147,7 @@ public class UpdateSession {
 		if(line.startsWith(START)) {
 			request = new Request(line.substring(START.length()).trim());
 		} else {
-			session.close(false);
+			session.closeOnFlush();
 		}
 		serve();
 	}

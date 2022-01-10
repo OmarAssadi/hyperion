@@ -2,6 +2,7 @@ package org.hyperion.rs2.model;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -157,7 +158,7 @@ public class World {
 	 * @throws InstantiationException if a class could not be created.
 	 * @throws IllegalStateException if the world is already initialised.
 	 */
-	public void init(GameEngine engine) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public void init(GameEngine engine) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		if(this.engine != null) {
 			throw new IllegalStateException("The world has already been initialised.");
 		} else {
@@ -175,7 +176,7 @@ public class World {
 	 * @throws IllegalAccessException if a class could not be accessed.
 	 * @throws InstantiationException if a class could not be created.
 	 */
-	private void loadConfiguration() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	private void loadConfiguration() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		FileInputStream fis = new FileInputStream("data/configuration.cfg");
 		try {
 			ConfigurationParser p = new ConfigurationParser(fis);
@@ -183,7 +184,7 @@ public class World {
 			if(mappings.containsKey("worldLoader")) {
 				String worldLoaderClass = mappings.get("worldLoader");
 				Class<?> loader = Class.forName(worldLoaderClass);
-				this.loader = (WorldLoader) loader.newInstance();
+				this.loader = (WorldLoader) loader.getDeclaredConstructor().newInstance();
 				logger.fine("WorldLoader set to : " + worldLoaderClass);
 			} else {
 				this.loader = new GenericWorldLoader();
@@ -199,7 +200,7 @@ public class World {
 					if(loadedHandlers.containsKey(handlerClass)) {
 						handlerInstance = loadedHandlers.get(loadedHandlers.get(handlerClass));
 					} else {
-						handlerInstance = handlerClass.newInstance();
+						handlerInstance = handlerClass.getDeclaredConstructor().newInstance();
 					}
 					PacketManager.getPacketManager().bind(id, (PacketHandler) handlerInstance);
 					logger.fine("Bound " + handler.getValue() + " to opcode : " + id);
@@ -209,7 +210,7 @@ public class World {
 				connector = new LoginServerConnector(mappings.get("loginServer"));
 				connector.connect(mappings.get("nodePassword"), Integer.parseInt(mappings.get("nodeId")));
 			}
-		} finally {
+        } finally {
 			fis.close();
 		}
 	}
@@ -280,7 +281,7 @@ public class World {
 					pd.getSession().write(bldr.toPacket()).addListener(new IoFutureListener<IoFuture>() {
 						@Override
 						public void operationComplete(IoFuture future) {
-							future.getSession().close(false);
+							future.getSession().closeOnFlush();
 						}
 					});
 				} else {
@@ -333,7 +334,7 @@ public class World {
 			@Override
 			public void operationComplete(IoFuture future) {
 				if(fReturnCode != 2) {
-					player.getSession().close(false);
+					player.getSession().closeOnFlush();
 				} else {
 					player.getActionSender().sendLogin();
 				}
@@ -382,7 +383,7 @@ public class World {
 	public void unregister(final Player player) {
 		player.getActionQueue().cancelQueuedActions();
 		player.destroy();
-		player.getSession().close(false);
+		player.getSession().closeOnFlush();
 		players.remove(player);
 		logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
 		engine.submitWork(new Runnable() {

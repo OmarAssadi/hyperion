@@ -22,9 +22,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 public final class NetworkConstants {
 
     public static final BigInteger RSA_MODULUS;
-
     public static final BigInteger RSA_EXPONENT;
-
     public static final int LOGIN_PORT = 43596;
 
     static {

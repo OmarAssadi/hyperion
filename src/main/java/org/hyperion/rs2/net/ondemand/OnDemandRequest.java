@@ -77,7 +77,7 @@ public class OnDemandRequest {
 				session.write(bldr.toPacket());
 			}
 		} catch(IOException ex) {
-			session.close(false);
+			session.closeOnFlush();
 		}
 	}
 

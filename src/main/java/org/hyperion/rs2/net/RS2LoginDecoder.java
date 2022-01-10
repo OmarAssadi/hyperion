@@ -122,7 +122,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 					return true;
 				default:
 					logger.info("Invalid opcode : " + opcode);
-					session.close(false);
+					session.closeOnFlush();
 					break;
 				}
 			} else {
@@ -167,7 +167,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 				int loginOpcode = in.get() & 0xFF;
 				if(loginOpcode != 16 && loginOpcode != 18) {
 					logger.info("Invalid login opcode : " + loginOpcode);
-					session.close(false);
+					session.closeOnFlush();
 					in.rewind();
 					return false;
 				}
@@ -187,7 +187,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 				 */
 				if(loginEncryptSize <= 0) {
 					logger.info("Encrypted packet size zero or negative : " + loginEncryptSize);
-					session.close(false);
+					session.closeOnFlush();
 					in.rewind();
 					return false;
 				}
@@ -208,7 +208,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 				int magicId = in.get() & 0xFF;
 				if(magicId != 255) {
 					logger.info("Incorrect magic id : " + magicId);
-					session.close(false);
+					session.closeOnFlush();
 					in.rewind();
 					return false;
 				}
@@ -220,7 +220,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 				int version = in.getShort() & 0xFFFF;
 				if(version != Server.VERSION) {
 					logger.info("Incorrect version : " + version);
-					session.close(false);
+					session.closeOnFlush();
 					in.rewind();
 					return false;
 				}
@@ -251,7 +251,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
 				int reportedSize = in.get() & 0xFF;
 				if(reportedSize != encryptSize) {
 					logger.info("Packet size mismatch (expected : " + encryptSize + ", reported : " + reportedSize + ")");
-					session.close(false);
+					session.closeOnFlush();
 					in.rewind();
 					return false;
 				}
@@ -266,7 +266,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
                 int blockOpcode = rsaBuffer.get() & 0xFF;
                 if (blockOpcode != 10) {
                     logger.info("Invalid login block opcode : " + blockOpcode);
-                    session.close(false);
+                    session.closeOnFlush();
                     in.rewind();
                     return false;
                 }
@@ -283,7 +283,7 @@ public class RS2LoginDecoder extends CumulativeProtocolDecoder {
                 long reportedServerKey = rsaBuffer.getLong();
                 if(reportedServerKey != serverKey) {
                     logger.info("Server key mismatch (expected : " + serverKey + ", reported : " + reportedServerKey + ")");
-                    session.close(false);
+                    session.closeOnFlush();
                     in.rewind();
                     return false;
                 }

@@ -1,6 +1,7 @@
 package org.hyperion.rs2;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
@@ -45,7 +46,7 @@ public class RS2Server {
 	 * @throws IllegalAccessException if a class loaded by the world was not accessible.
 	 * @throws InstantiationException if a class loaded by the world was not created.
 	 */
-	public RS2Server() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	public RS2Server() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		World.getWorld().init(engine);
 		acceptor.setHandler(new ConnectionHandler());
 		//acceptor.getFilterChain().addFirst("throttleFilter", new ConnectionThrottleFilter());

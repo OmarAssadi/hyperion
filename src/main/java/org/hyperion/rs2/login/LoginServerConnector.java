@@ -125,7 +125,7 @@ public class LoginServerConnector extends IoHandlerAdapter {
 
 	@Override
 	public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-		session.close(false);
+		session.closeOnFlush();
 		throwable.printStackTrace();
 	}
 
@@ -160,7 +160,7 @@ public class LoginServerConnector extends IoHandlerAdapter {
 					authenticated = true;
 					logger.info("Authenticated as node : World-" + node + ".");
 				} else {
-					session.close(false);
+					session.closeOnFlush();
 					logger.severe("Login server authentication error : " + code + ". Check your password and node id.");
 				}
 				break;

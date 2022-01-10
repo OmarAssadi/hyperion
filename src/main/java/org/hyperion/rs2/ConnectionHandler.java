@@ -26,7 +26,7 @@ public class ConnectionHandler extends IoHandlerAdapter {
 
 	@Override
 	public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-		session.close(false);
+		session.closeOnFlush();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class ConnectionHandler extends IoHandlerAdapter {
 
 	@Override
 	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-		session.close(false);
+		session.closeOnFlush();
 	}
 
 	@Override

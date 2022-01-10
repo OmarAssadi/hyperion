@@ -71,7 +71,7 @@ public class PacketManager {
 			packetHandlers[packet.getOpcode()].handle((Player) session.getAttribute("player"), packet);
 		} catch(Exception ex) {
 			logger.log(Level.SEVERE, "Exception handling packet.", ex);
-			session.close(false);
+			session.closeOnFlush();
 		}
 	}
 
