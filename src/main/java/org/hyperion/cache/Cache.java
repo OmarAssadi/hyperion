@@ -1,17 +1,14 @@
 package org.hyperion.cache;
 
+import org.hyperion.cache.index.IndexTable;
+
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel.MapMode;
-
-import org.hyperion.cache.Cache;
-import org.hyperion.cache.CacheFile;
-import org.hyperion.cache.InvalidCacheException;
-import org.hyperion.cache.index.IndexTable;
 
 /**
  * Manages the game cache.
@@ -65,12 +62,12 @@ public class Cache implements Closeable {
 			int count = 0;
 			for(int i = 0; i < 255; i++) {
 				File indexFile = new File(directory.getAbsolutePath() + "/main_file_cache.idx" + i);
-				if(!indexFile.exists()) {
-					break;
-				} else {
+				if (indexFile.exists()) {
 					count++;
+				} else {
+					break;
 				}
-			}
+            }
 			if(count == 0) {
 				throw new InvalidCacheException("No index files present.");
 			}
@@ -80,12 +77,10 @@ public class Cache implements Closeable {
 				indexFiles[i] = new RandomAccessFile(directory.getAbsolutePath() + "/main_file_cache.idx" + i, "r");
 			}
 			indexTable = new IndexTable(this);
-		} catch(FileNotFoundException ex) {
-			throw new InvalidCacheException(ex);
-		} catch(IOException ex) {
+		} catch (final IOException ex) {
 			throw new InvalidCacheException(ex);
 		}
-	}
+    }
 	
 	/**
 	 * Gets the index table.
@@ -168,7 +163,7 @@ public class Cache implements Closeable {
 			cycles++;
 			currentBlock = nextBlockId;
 		}
-		return new CacheFile(cache, file, (ByteBuffer) fileBuffer.flip());
+		return new CacheFile(cache, file, (ByteBuffer) ((Buffer) fileBuffer).flip());
 	}
 
 	/**
