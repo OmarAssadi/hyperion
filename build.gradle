@@ -17,16 +17,16 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.apache.mina:mina-core:2.0.0-M6'
-    implementation 'org.apache.commons:commons-compress:1.0'
-    implementation 'org.python:jython:2.2.1'
-    implementation 'org.slf4j:slf4j-api:1.5.8'
-    implementation 'org.slf4j:slf4j-jdk14:1.5.8'
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
+    implementation 'org.apache.mina:mina-core:2.1.5'
+    implementation 'org.apache.commons:commons-compress:1.21'
+    implementation 'org.python:jython:2.7.2'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.slf4j:slf4j-jdk14:1.7.32'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.69'
     implementation "org.graalvm.sdk:graal-sdk:$graalVersion"
     implementation "org.graalvm.js:js:$graalVersion"
     implementation "org.graalvm.js:js-scriptengine:$graalVersion"
-    testImplementation 'junit:junit:4.6'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 java {
