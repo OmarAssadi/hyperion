@@ -15,6 +15,13 @@ import java.util.logging.Logger;
 public final class Server {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private Server() {
+
+    }
+
+    /**
      * The protocol version.
      */
     public static final int VERSION = 317;

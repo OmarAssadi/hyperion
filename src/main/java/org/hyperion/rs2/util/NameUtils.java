@@ -10,6 +10,13 @@ import org.hyperion.rs2.Constants;
 public final class NameUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private NameUtils() {
+
+    }
+
+    /**
      * Checks if a name is valid.
      *
      * @param s The name.

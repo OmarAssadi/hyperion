@@ -16,6 +16,10 @@ import java.util.zip.GZIPInputStream;
  */
 public final class ZipUtils {
 
+    private ZipUtils() {
+
+    }
+
     /**
      * Unzips a cache file.
      *

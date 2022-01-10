@@ -10,6 +10,13 @@ import org.hyperion.rs2.Constants;
 public final class TextUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private TextUtils() {
+
+    }
+
+    /**
      * Unpacks text.
      *
      * @param packedData The packet text.

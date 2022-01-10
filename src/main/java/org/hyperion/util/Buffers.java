@@ -10,6 +10,13 @@ import java.nio.ByteBuffer;
 public final class Buffers {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private Buffers() {
+
+    }
+
+    /**
      * Reads a null terminated string from a byte buffer.
      *
      * @param buffer The buffer.

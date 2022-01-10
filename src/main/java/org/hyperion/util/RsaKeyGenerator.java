@@ -22,6 +22,13 @@ import java.security.interfaces.RSAPublicKey;
 public final class RsaKeyGenerator {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private RsaKeyGenerator() {
+
+    }
+
+    /**
      * The bit count.
      * <strong>Note:</strong> 2048 bits and above are not compatible with the client without modifications
      */

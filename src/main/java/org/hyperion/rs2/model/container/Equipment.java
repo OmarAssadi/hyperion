@@ -14,6 +14,13 @@ import java.util.Map;
 public final class Equipment {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private Equipment() {
+
+    }
+
+    /**
      * The size of the equipment container.
      */
     public static final int SIZE = 14;

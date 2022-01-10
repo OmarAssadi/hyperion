@@ -8,6 +8,13 @@ package org.hyperion.rs2.util;
 public final class DirectionUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private DirectionUtils() {
+
+    }
+
+    /**
      * Finds a direction.
      *
      * @param dx X difference.

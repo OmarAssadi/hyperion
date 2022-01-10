@@ -13,6 +13,13 @@ import org.hyperion.rs2.model.container.impl.InterfaceContainerListener;
 public final class Bank {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private Bank() {
+
+    }
+
+    /**
      * The bank size.
      */
     public static final int SIZE = 352;

@@ -10,6 +10,13 @@ import org.apache.mina.core.buffer.IoBuffer;
 public final class IoBufferUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private IoBufferUtils() {
+
+    }
+
+    /**
      * Reads a RuneScape string from a buffer.
      *
      * @param buf The buffer.

@@ -14,6 +14,12 @@ import java.util.Set;
  */
 public final class Combat {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private Combat() {
+
+    }
 
     /**
      * Get the attackers' weapon speed.

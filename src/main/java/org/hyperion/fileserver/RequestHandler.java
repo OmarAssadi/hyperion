@@ -18,6 +18,10 @@ import java.util.zip.CRC32;
  */
 public final class RequestHandler {
 
+    private RequestHandler() {
+
+    }
+
     /**
      * The absolute path of the files directory.
      */

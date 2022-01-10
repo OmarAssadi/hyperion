@@ -10,6 +10,13 @@ import java.nio.ByteBuffer;
 public final class ByteBufferUtils {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private ByteBufferUtils() {
+
+    }
+
+    /**
      * Gets a smart.
      *
      * @param buf The buffer.

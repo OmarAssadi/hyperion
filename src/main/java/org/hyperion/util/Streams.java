@@ -13,6 +13,13 @@ import java.io.OutputStream;
 public final class Streams {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private Streams() {
+
+    }
+
+    /**
      * Writes a null-terminated string to the specified
      * <code>OutputStream</code>.
      *
@@ -91,5 +98,4 @@ public final class Streams {
         }
         return bldr.toString().trim();
     }
-
 }

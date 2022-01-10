@@ -8,6 +8,13 @@ package org.hyperion.rs2;
 public final class Constants {
 
     /**
+     * Private constructor to prevent instantiation.
+     */
+    private Constants() {
+
+    }
+
+    /**
      * The directory for the engine scripts.
      */
     public static final String SCRIPTS_DIRECTORY = "./data/scripts/";
