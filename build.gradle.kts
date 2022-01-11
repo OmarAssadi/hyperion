@@ -17,9 +17,6 @@ val junitVersion = "5.8.2"
 dependencies {
     implementation("org.apache.mina:mina-core:2.1.5")
     implementation("org.apache.commons:commons-compress:1.21")
-    implementation("org.python:jython:2.7.2")
-    implementation("org.slf4j:slf4j-api:1.7.32")
-    implementation("org.slf4j:slf4j-jdk14:1.7.32")
     implementation("org.bouncycastle:bcprov-jdk15on:1.69")
     implementation("org.graalvm.sdk:graal-sdk:$graalVersion")
     implementation("org.graalvm.js:js:$graalVersion")
