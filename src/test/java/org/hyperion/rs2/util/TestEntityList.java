@@ -3,20 +3,20 @@ package org.hyperion.rs2.util;
 import org.hyperion.rs2.model.Damage.HitType;
 import org.hyperion.rs2.model.Entity;
 import org.hyperion.rs2.model.region.Region;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestEntityList {
 
     private EntityList<EntityStub> list;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         list = new EntityList<>(10);
     }

@@ -2,13 +2,13 @@ package org.hyperion.rs2.model.container;
 
 import org.hyperion.rs2.model.Item;
 import org.hyperion.rs2.model.ItemDefinition;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestContainer implements ContainerListener {
 
@@ -19,12 +19,12 @@ public class TestContainer implements ContainerListener {
     private boolean itemsChangedFired = false;
     private int slot = -1;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() throws Exception {
         ItemDefinition.init();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         container = new Container(Container.Type.STANDARD, CAP);
         itemChangedFired = false;

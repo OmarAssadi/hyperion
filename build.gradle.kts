@@ -12,6 +12,7 @@ repositories {
 }
 
 val graalVersion = "21.3.0"
+val junitVersion = "5.8.2"
 
 dependencies {
     implementation("org.apache.mina:mina-core:2.1.5")
@@ -23,12 +24,19 @@ dependencies {
     implementation("org.graalvm.sdk:graal-sdk:$graalVersion")
     implementation("org.graalvm.js:js:$graalVersion")
     implementation("org.graalvm.js:js-scriptengine:$graalVersion")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+tasks {
+    test {
+        useJUnitPlatform()
     }
 }
 
