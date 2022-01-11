@@ -38,12 +38,12 @@ public class ConnectionHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
-        session.closeOnFlush();
+        session.close(false);
     }
 
     @Override
     public void exceptionCaught(final IoSession session, final Throwable throwable) throws Exception {
-        session.closeOnFlush();
+        session.close(false);
     }
 
     @Override

@@ -80,7 +80,7 @@ public class OnDemandRequest {
                 session.write(bldr.toPacket());
             }
         } catch (final IOException ex) {
-            session.closeOnFlush();
+            session.close(false);
         }
     }
 

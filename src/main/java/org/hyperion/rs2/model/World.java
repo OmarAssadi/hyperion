@@ -255,7 +255,7 @@ public class World {
             } else {
                 final PacketBuilder bldr = new PacketBuilder();
                 bldr.put((byte) code);
-                pd.getSession().write(bldr.toPacket()).addListener(future -> future.getSession().closeOnFlush());
+                pd.getSession().write(bldr.toPacket()).addListener(future -> future.getSession().close(false));
             }
         });
     }
@@ -302,7 +302,7 @@ public class World {
             if (fReturnCode == 2) {
                 player.getActionSender().sendLogin();
             } else {
-                player.getSession().closeOnFlush();
+                player.getSession().close(false);
             }
         });
         if (returnCode == 2) {
@@ -352,7 +352,7 @@ public class World {
     public void unregister(final Player player) {
         player.getActionQueue().cancelQueuedActions();
         player.destroy();
-        player.getSession().closeOnFlush();
+        player.getSession().close(false);
         players.remove(player);
         logger.info("Unregistered player : " + player + " [online=" + players.size() + "]");
         engine.submitWork(() -> {

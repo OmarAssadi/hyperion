@@ -69,7 +69,7 @@ public class UpdateSession {
         if (line.startsWith(START)) {
             request = new Request(line.substring(START.length()).trim());
         } else {
-            session.closeOnFlush();
+            session.close(false);
         }
         serve();
     }
@@ -84,7 +84,7 @@ public class UpdateSession {
         if (parts.length == 3) {
             request = new Request(parts[1].trim());
         } else {
-            session.closeOnFlush();
+            session.close(false);
         }
     }
 
@@ -93,13 +93,13 @@ public class UpdateSession {
      */
     private void serve() {
         if (request == null) {
-            session.closeOnFlush();
+            session.close(false);
             return;
         }
         logger.fine("Serving " + type + " request : " + request.getPath());
         final Response resp = RequestHandler.handle(request);
         if (resp == null) {
-            session.closeOnFlush();
+            session.close(false);
             return;
         }
 
@@ -118,7 +118,7 @@ public class UpdateSession {
         final IoBuffer ib = IoBuffer.allocate(bb.remaining() + headerBytes.length);
         ib.put(headerBytes).put(bb);
         ib.flip();
-        session.write(ib).addListener(arg0 -> session.closeOnFlush());
+        session.write(ib).addListener(arg0 -> session.close(false));
     }
 
     /**

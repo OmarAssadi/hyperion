@@ -15,7 +15,9 @@ val graalVersion = "21.3.0"
 val junitVersion = "5.8.2"
 
 dependencies {
-    implementation("org.apache.mina:mina-core:2.1.5")
+    implementation("org.apache.mina:mina-core:2.0.16") // 2.0.17 and beyond seem to have compatibility issues, need to look into
+    implementation("org.slf4j:slf4j-api:1.7.32")
+    implementation("org.slf4j:slf4j-jdk14:1.7.32")
     implementation("org.apache.commons:commons-compress:1.21")
     implementation("org.bouncycastle:bcprov-jdk15on:1.69")
     implementation("org.graalvm.sdk:graal-sdk:$graalVersion")

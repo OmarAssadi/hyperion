@@ -45,7 +45,7 @@ public class LoginConnectionHandler extends IoHandlerAdapter {
 
     @Override
     public void exceptionCaught(final IoSession session, final Throwable throwable) throws Exception {
-        session.closeOnFlush();
+        session.close(false);
         throwable.printStackTrace();
     }
 
@@ -80,7 +80,7 @@ public class LoginConnectionHandler extends IoHandlerAdapter {
             resp.flip();
             session.write(new LoginPacket(LoginPacket.AUTH_RESPONSE, resp));
         } else {
-            session.closeOnFlush();
+            session.close(false);
         }
     }
 
