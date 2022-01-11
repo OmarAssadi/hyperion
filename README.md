@@ -4,7 +4,80 @@ The `develop` and `main` branches contain minor modifications to the code. If yo
 interested in the original Hyperion, please see the `original` branch, which is a direct
 migration of the SVN repository.
 
----
+## Setup Guide
+
+This version of Hyperion has RSA enabled. In order to connect to the server, you will
+need to generate the keys and add them to your client. You can generate them by running
+the following in the main Hyperion project directory:
+
+```bash
+./gradlew generateRsaKeys
+```
+
+Upon running that command, you should see a similar output:
+
+```
+Place these keys in the client:
+--------------------
+public key: 65537
+modulus: 100999061926131320211890128666520087044777396539376882501708703887408682559233168572277885244928601348273981834183968902153392673861546835559668044531568388256847825570496603537958729305524576420199594801586428179840063025548573925412227035737104387206365804547524209280051245052897314615859962743072062243209
+```
+
+Additionally, you should now have two new files, `data/rsa-private.pem` and 
+`data/rsa-public.pem`. Next, you'll need to go ahead and ensure RSA is enabled in 
+your client. Start by locating the login method inside the main client
+class. You can usually do this by searching for `36 + 1 + 1 + 2`, which should 
+bring up code similar to the following:
+
+```java
+out.encrypt(RSA_EXPONENT, RSA_MODULUS);
+login.position = 0;
+if (reconnect) {
+    login.put1(18);
+} else {
+    login.put1(16);
+}
+login.put1(out.position + 36 + 1 + 1 + 2);
+login.put1(255);
+login.put2(317);
+```
+
+In this case, we're looking for the `out#encrypt()` method. Navigate to it and ensure
+it looks similar to the following:
+
+```java
+public void encrypt(BigInteger exponent, BigInteger modulus) {
+    int length = position;
+    position = 0;
+    byte[] raw = new byte[length];
+    get(raw, 0, length);
+    byte[] encrypted = new BigInteger(raw).modPow(exponent, modulus).toByteArray();
+    position = 0;
+    put1(encrypted.length);
+    put(encrypted, 0, encrypted.length);
+}
+```
+
+The important parts to take note of are:
+
+```java
+byte[] encrypted = new BigInteger(raw).modPow(exponent, modulus).toByteArray();
+put1(encrypted.length);
+put(encrypted, 0, encrypted.length);
+```
+
+Some clients may skip the encryption and simply write the raw buffer contents. If yours
+skips the encryption process, please ensure you modify it to match the earlier example.
+
+Next, take the output of the key generation from earlier and place the "public key" in
+the exponent `BigInteger` and pace the modulus in the modulus `BigInteger`. If your
+encrypt method never had these arguments to begin with, you can simply declare these
+as static fields somewhere, like in your client class:
+
+```java
+public static final BigInteger RSA_MODULUS = new BigInteger("142327727008591673659846668239173186274361869919189896495127734028768384638560081884799220286290877235637102257574243057441820214777818794007187521887790798934792282873284438098369130136061859136221686643379278315806063383838237040384659523069407115879143650679163364509413863075654095423928375505587455863687");
+public static final BigInteger RSA_EXPONENT = new BigInteger("65537");
+```
 
 *The following is taken from: [http://archive.is/te51Q](http://archive.is/te51Q)*
 
