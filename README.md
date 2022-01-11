@@ -69,6 +69,8 @@ put(encrypted, 0, encrypted.length);
 Some clients may skip the encryption and simply write the raw buffer contents. If yours
 skips the encryption process, please ensure you modify it to match the earlier example.
 
+For a full reference of what each method does, please see [Dane's refactored buffer](https://github.com/thedaneeffect/RuneScape-317/blob/67c29aec892952d9b57ea6fd1387a37bd850c78d/src/main/java/Buffer.java#L335).
+
 Next, take the output of the key generation from earlier and place the "public key" in
 the exponent `BigInteger` and pace the modulus in the modulus `BigInteger`. If your
 encrypt method never had these arguments to begin with, you can simply declare these
